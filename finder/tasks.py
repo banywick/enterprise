@@ -1,8 +1,11 @@
+from multiprocessing.pool import AsyncResult
 import os
 import pandas as pd
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
+from celery import shared_task
 
 
+@shared_task
 def data_save_db(file_url):
     df = pd.read_excel(file_url, usecols=[11, 12, 13, 14, 15, 16, 17, 18])
     df = df.iloc[10:]  # Начинаем с 10 строки
@@ -19,7 +22,7 @@ def data_save_db(file_url):
         "project",
         "quantity",
     ]
+    df["quantity"] = df["quantity"].astype(float).round(2)
     df.to_sql("finder_remains", engine, if_exists="replace", index_label="id")
-    
-def delete_file(file_url):
-    os.remove(file_url) 
+    os.remove(file_url)
+
