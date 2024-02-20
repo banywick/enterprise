@@ -1,0 +1,255 @@
+
+.header {
+    background-image: url("../img/2.jpg");
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    padding-top: 5px;
+    justify-content: space-between;
+
+
+}
+
+
+
+.header_find_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.header_logo img {
+    height: 140px;
+    width: 200px;
+    border-radius: 20px;
+
+}
+
+.header_button_reset_filter_wrapper {
+    width: 170px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header_user_account {
+    border-radius: 10px;
+}
+
+.header_user_account img {
+    height: 70px;
+    width: 70px;
+    border-radius: 100%;
+    margin-bottom: -20px;
+    margin-top: 10px;
+}
+
+.header_user_account a {
+    text-decoration: none;
+
+}
+
+.header_user_account p {
+
+    font-size: 20px;
+}
+
+
+.header_list_sort {
+
+    height: 140px;
+    width: 200px;
+}
+
+
+
+.left_colum {
+    background-image: url("../img/2.jpg");
+    flex: 0 0 200px;
+    height: 85vh;
+
+}
+
+.center_colum {
+    flex: 1 1 auto;
+    max-height: 85vh;
+    overflow: auto;
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+}
+
+.table_div th {
+    position: sticky;
+    top: 0;
+
+}
+
+
+.container_left_center {
+    display: flex;
+}
+
+.header_list_sort {
+    max-height: 16vh;
+    overflow-x: hidden;
+
+}
+
+.left_colum h2 {
+    text-align: center;
+
+
+}
+
+.left_colum ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+.left_colum ul li {
+    margin-bottom: 15px;
+    font-size: 20px;
+    list-style: none;
+    text-align: left;
+}
+
+.left_colum ul a:hover {
+    color: #e22b2b;
+    transition: color 0.5s ease;
+    text-decoration: underline
+}
+
+
+
+.form_input input {
+    height: 42px;
+    padding-left: 10px;
+    border: 2px solid #0e0e0e;
+    width: 400px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+     box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+
+
+.find_button button {
+    height: 48px;
+    width: 70px;
+    border-left: None;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: #c58787;
+    box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+
+
+.find_button button:hover {
+    background-color: #81f178;
+    box-shadow: 0 0 10px #9ecaed;
+}
+
+.header_button_filter a.button {
+    margin-bottom: 5px;
+    display: inline-block;
+    padding: 9px 7px;
+    color: #fff;
+    background-color: #42a460;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.header_button_filter a.button:hover {
+    background-color: rgba(100, 245, 15, 0.64);
+
+}
+.header_button_filter{
+    text-align: center;
+}
+
+.header_button_reset a.button {
+    display: inline-block;
+     padding: 8px 30px;
+    color: #fff;
+    background-color: rgba(224, 33, 113, 0.66);
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.header_button_reset a.button:hover {
+    background-color: #b30000;
+
+}
+.header_button_reset{
+    text-align: center;
+}
+
+
+
+
+table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    border-radius: 10px;
+    border-spacing: 0;
+    text-align: center;
+    width: 100%;
+
+}
+
+
+th {
+    background: #878cc5;
+    color: #0e0e0e;
+    padding: 10px 20px;
+}
+
+th, td {
+    border: 1px solid black;
+}
+
+th:first-child, td:first-child {
+    text-align: left;
+}
+
+
+
+
+td {
+    padding: 10px 20px;
+    background: rgba(188, 201, 194, 0.4);
+}
+
+td a {
+    text-decoration: none;
+    color: black;
+}
+
+td a:hover {
+    color: rgba(226, 43, 43, 0.84);
+}
+
+tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+}
+
+tr:last-child td:last-child {
+    border-radius: 0 0 10px 0;
+}
+
+tr td:last-child {
+    border-right: none;
+}
+

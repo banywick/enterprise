@@ -1,5 +1,5 @@
-from multiprocessing.pool import AsyncResult
 import os
+from django.shortcuts import redirect
 import pandas as pd
 from sqlalchemy import create_engine
 from celery import shared_task
@@ -25,4 +25,3 @@ def data_save_db(file_url):
     df["quantity"] = df["quantity"].astype(float).round(2)
     df.to_sql("finder_remains", engine, if_exists="replace", index_label="id")
     os.remove(file_url)
-

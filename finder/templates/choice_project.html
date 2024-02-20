@@ -1,0 +1,52 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/choice_style.css' %}">
+    <title> Проект </title>
+</head>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <div class="header_logo">
+            <img src="{% static 'img/logo.jpg' %}" alt="">
+        </div>
+          <button class="button_form_submit"
+                    type="submit" form="form_project"
+              formaction="{% url 'choice' %}" formmethod="POST">Применить фильтр!
+          </button>
+
+          <div class="header_user_account">
+            {% if request.user.is_authenticated %}
+                 <img src="{% static 'img/user_icon.png' %}" alt="">
+                <h3> {{ user.username }}</h3>
+                <p><a href="{% url 'logout' %}">Выход</a></p>
+            {% endif %}
+        </div>
+    </header>
+    <div class="container_left_center">
+        <div class="left_colum">
+
+
+        </div>
+        <div class="center_colum">
+                <form id="form_project" action="" method="POST">
+                    {% csrf_token %}
+                    {% for p in all_project %}
+                    <div>
+                        <input type="checkbox" name="data_project" value="{{ p }}"> {{ p }} <br>
+                    </div>
+                    {% endfor %}
+
+                </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

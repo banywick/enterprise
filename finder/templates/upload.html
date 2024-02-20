@@ -2,20 +2,39 @@
 {% load static %}
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{% static 'css/update_style.css' %}" />
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="{% static 'css/style.css'%}" />
-        <title>Document</title>
+        <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Обновить</title>
     </head>
     <body>
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" name="doc" />
-            <button>ОК</button>
-            <input type="text" />
-            <a href="">ссылка</a>
-        </form>
-
-        <div></div>
+        <div class="main_wrapper">
+            <div class="header_logo">
+                <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
+            </div>
+            <div class="load_file">
+                <form enctype="multipart/form-data" action="" method="POST" id="myForm">
+                    {% csrf_token %}
+                    <input type="file" name="doc" />
+                    <button>Отправить на обработку</button>
+                </form>
+            </div>
+            <div id="alertBox">
+                <h2>
+                    Пожалуйста, будьте терпеливы, загрузка файла может занять некоторое время <br />
+                    После нажатия на "Отправить на обработку" дождитесь окончания загрузки.
+                </h2>
+            </div>
+            {% for message in messages %}
+            <div class="error_massage">
+                <h2>{{ message }}</h2>
+            </div>
+            {% endfor %}
+        </div>
+        <script src="{% static 'js/script.js' %}"></script>
     </body>
 </html>

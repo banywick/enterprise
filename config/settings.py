@@ -133,8 +133,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # CELERY_RESULT_BACKEND = env_keys.get("CELERY_BACKEND", "redis://127.0.0.1:6379/0")
 # CELERY_BROKER_URL = "redis://redis:6379/0"
 # CELERY_RESULT_BACKEND = "redis://redis:6379/0"
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://127.0.0.1:6379/0")
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
 
 FLOWER_RPC_HOST = "http://127.0.0.1:8000/"  # Хост, на котором запущен Celery

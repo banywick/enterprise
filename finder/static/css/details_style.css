@@ -1,0 +1,25 @@
+.main_wrapper {
+    background-image: url("../img/2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.description_container {
+    border: 2px solid black;
+    width: 500px;
+    min-height: 50vh;
+    text-align: center;
+    /*background: rgba(160, 190, 204, 0.49);*/
+    font-size: 20px;
+    box-shadow: 3px -4px 26px 13px rgba(34, 60, 80, 0.46) inset;
+    background-image: url("../img/55.png");
+    background-size: cover;
+
+
+}
+

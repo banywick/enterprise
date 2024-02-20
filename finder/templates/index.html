@@ -1,15 +1,97 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/search_style.css' %}" />
+        <title>{{ Поиск }}</title>
     </head>
     <body>
-        {% for m in model %}
-        <ul>
-            <li>{{m.title}} {{m.article}} - {{m.quantity}}</li>
-        </ul>
-        {% endfor %}
+        <div class="wrapper">
+            <header class="header">
+                <div class="header_logo">
+                    <a href=""><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
+                </div>
+                <div class="info_find_container">
+                    <p>Информационная база : {{ file_name }}</p>
+                    <div class="header_find_container">
+                        <div class="form_input">
+                            <form method="POST" id="find_form">{% csrf_token %} {{ form.as_p }}</form>
+                        </div>
+                        <div class="find_button">
+                            <button type="submit" form="find_form">Найти 🔎</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header_button_reset_filter_wrapper">
+                    <div class="header_button_filter">
+                        <a class="button" href="{% url 'choice' %}">Выбрать проект</a>
+                    </div>
+
+                    <div class="header_button_reset">
+                        <a class="button" href="{% url 'clear' %}">Очистить</a>
+                    </div>
+                </div>
+
+                <div class="header_list_sort">
+                    <ul>
+                        Сотрировка по :
+                        <hr />
+                        {% for p in project %}
+                        <li>{{ p }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="header_user_account">
+                    {% if request.user.is_authenticated %}
+                    <img src="{% static 'img/user_icon.png' %}" alt="" />
+                    <h3>{{ user.username }}</h3>
+                    <p><a href="">Выход</a></p>
+                    {% endif %}
+                </div>
+            </header>
+            <div class="container_left_center">
+                <div class="left_colum">
+                    <h2>Меню</h2>
+                    <hr />
+                    <ul>
+                        <li><a href="{% url 'upload' %}">Обновить базу</a></li>
+                    </ul>
+                </div>
+                <div class="center_colum">
+                    <div class="table_div">
+                        <table>
+                            <tr>
+                                <th style="width: 20px">Коментарий</th>
+                                <th>Код</th>
+                                <th>Артикул</th>
+                                <th>Партия</th>
+                                <th>Номенклатура</th>
+                                <th>Единица</th>
+                                <th>Проект</th>
+                                <th>Количество</th>
+                            </tr>
+                            {% for r in remains %}
+                            <tbody>
+                                <tr>
+                                    <td>{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
+                                    <td>{{ r.code }}</td>
+                                    <td>{{ r.article }}</td>
+                                    <td>{{ r.party }}</td>
+                                    <td><a href="">{{ r.title }}</a></td>
+                                    <td>{{ r.base_unit }}</td>
+                                    <td>{{ r.project }}</td>
+                                    <td>{{ r.quantity }}</td>
+                                </tr>
+                            </tbody>
+                            {% endfor %} {{ e_code }} {{ e_art_title }}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

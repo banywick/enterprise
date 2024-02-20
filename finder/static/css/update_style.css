@@ -1,0 +1,76 @@
+
+.main_wrapper {
+    background-image: url("../img/2.jpg");
+    height: 93vh;
+
+}
+
+
+.header_logo img {
+    height: 140px;
+    width: 200px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+
+.load_file {
+    width: 500px;
+    height: 125px;
+    border: 3px solid black;
+    justify-content: center;
+    margin: 0 auto;
+    background: #ff6f32e6;
+    text-align: center;
+
+
+}
+
+.load_file form button {
+    width: 250px;
+    height: 30px;
+}
+
+.load_file form input[type='file'] {
+    width: 300px;
+    height: 20px;
+}
+
+.load_file form button:hover {
+    border: 3px solid lightgreen;
+}
+
+.alert {
+    color: #f1ff32;
+    text-align: center;
+    font-family: "JetBrains Mono";
+    font-size: 20px;
+}
+
+.error_massage {
+    height: 100px;
+    width: 500px;
+    background: #6a43ff;
+    text-align: center;
+    border: #0e0e0e solid 3px;
+    color: #ffffff;
+    margin: 0 auto;
+
+
+}
+
+#alertBox {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+#alertBox h2 {
+    background-color: #fff;
+    border: 2px solid #000;
+    padding: 15px;
+
+}
