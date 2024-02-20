@@ -17,23 +17,15 @@
                 <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
             </div>
             <div class="load_file">
-                <form enctype="multipart/form-data" action="" method="POST" id="myForm">
+                <form enctype="multipart/form-data" action="" method="POST">
                     {% csrf_token %}
-                    <input type="file" name="doc" />
-                    <button>Отправить на обработку</button>
+                    <label for="file-upload" class="drop-container" id="dropcontainer">
+                        <span class="drop-title">Перетащите файл сюда</span> или
+                        <input type="file" id="file-upload" name="doc" accept=".xls, .xlsx" required />
+                        <button>Загрузить</button>
+                    </label>
                 </form>
             </div>
-            <div id="alertBox">
-                <h2>
-                    Пожалуйста, будьте терпеливы, загрузка файла может занять некоторое время <br />
-                    После нажатия на "Отправить на обработку" дождитесь окончания загрузки.
-                </h2>
-            </div>
-            {% for message in messages %}
-            <div class="error_massage">
-                <h2>{{ message }}</h2>
-            </div>
-            {% endfor %}
         </div>
         <script src="{% static 'js/script.js' %}"></script>
     </body>

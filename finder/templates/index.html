@@ -25,26 +25,6 @@
                     </div>
                 </div>
 
-                <div class="header_button_reset_filter_wrapper">
-                    <div class="header_button_filter">
-                        <a class="button" href="{% url 'choice' %}">Выбрать проект</a>
-                    </div>
-
-                    <div class="header_button_reset">
-                        <a class="button" href="{% url 'clear' %}">Очистить</a>
-                    </div>
-                </div>
-
-                <div class="header_list_sort">
-                    <ul>
-                        Сотрировка по :
-                        <hr />
-                        {% for p in project %}
-                        <li>{{ p }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
                 <div class="header_user_account">
                     {% if request.user.is_authenticated %}
                     <img src="{% static 'img/user_icon.png' %}" alt="" />
@@ -55,12 +35,32 @@
             </header>
             <div class="container_left_center">
                 <div class="left_colum">
-                    <h2>Меню</h2>
-                    <hr />
-                    <ul>
-                        <li><a href="{% url 'upload' %}">Обновить базу</a></li>
-                    </ul>
+                    <div class="header_button_reset_filter_wrapper">
+                        <div class="menu">
+                            <h2>Меню</h2>
+                            <a class="button-link" href="{% url 'upload' %}">Обновить базу</a>
+                        </div>
+
+                        <div class="header_button_reset">
+                            <a class="button-link" href="{% url 'clear' %}">Очистить фильтр</a>
+                        </div>
+
+                        <div class="header_button_filter">
+                            <a class="button-link" href="{% url 'choice' %}">Выбрать проект</a>
+                        </div>
+
+                        <div class="header_list_sort">
+                            <ul>
+                                <p>Сотрировка по :</p>
+                                <hr />
+                                {% for p in project %}
+                                <li>{{ p }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="center_colum">
                     <div class="table_div">
                         <table>

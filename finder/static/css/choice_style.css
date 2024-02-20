@@ -25,19 +25,10 @@
 
 .header_user_account a {
     text-decoration: none;
-
 }
 
 .header_user_account p {
-
     font-size: 20px;
-}
-
-
-.left_colum {
-    background-image: url("../img/2.jpg");
-    flex: 0 0 200px;
-    height: 81vh;
 }
 
 .center_colum {
@@ -50,15 +41,12 @@
 
 .container_left_center {
     display: flex;
-
 }
 
 .center_colum form {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     gap: 10px;
-
-
 }
 
 .center_colum form div {
@@ -66,12 +54,10 @@
     width: 190px;
     background: rgba(188, 201, 194, 0.4);
     border: 2px solid black;
-
 }
 
 .center_colum form div:hover {
     border: #e22b2b solid 2px;
-
 }
 
 .button_form_submit {
@@ -82,9 +68,12 @@
     font: 28px Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: #1c511c;
-    background:#21eb3b70;
+    background: #21eb3b70;
     box-shadow: inset 0px 5px 15px #9d634f;
 }
 
-
-
+.list_project {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
