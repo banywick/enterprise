@@ -1,0 +1,36 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/details_style.css' %}">
+    <title> Детали </title>
+</head>
+<body>
+<div class="main_wrapper">
+    <div class="description_container">
+        <div>
+            <h2>Артикул</h2>
+            <h2> {{ art }}</h2>
+            <h3>{{ title }}</h3>
+            <h3>Общая сумма : <span style="color: darkred;"><strong>{{ sum }}</strong></span></h3>
+            <hr>
+        </div>
+        <div>
+            <h4>Проекты</h4>
+        </div>
+        <div>
+            {% for d in det %}
+                <ul>
+                    <li>  {{ d.project }} </li>
+                    <p><span style="color: orangered;"><strong>{{ d.quantity }}</strong></span> {{ d.base_unit }}</p>
+                </ul>
+            {% endfor %}
+
+        </div>
+    </div>
+</body>
+</html>

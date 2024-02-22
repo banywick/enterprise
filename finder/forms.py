@@ -8,5 +8,7 @@ class InputValue(forms.Form):
         label="",
         max_length=50,
         required=True,
-        widget=forms.TextInput(attrs={"placeholder": "Искать здесь...."}),
+        widget=forms.TextInput(
+            attrs={"class": "search-input", "placeholder": "Искать здесь...."}
+        ),
     )

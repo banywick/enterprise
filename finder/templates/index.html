@@ -9,6 +9,7 @@
     </head>
     <body>
         <div class="wrapper">
+            
             <header class="header">
                 <div class="header_logo">
                     <a href=""><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
@@ -19,9 +20,7 @@
                         <div class="form_input">
                             <form method="POST" id="find_form">{% csrf_token %} {{ form.as_p }}</form>
                         </div>
-                        <div class="find_button">
-                            <button type="submit" form="find_form">Найти 🔎</button>
-                        </div>
+                        <button class="search-button" type="submit" form="find_form">Найти 🔎</button>
                     </div>
                 </div>
 
@@ -29,15 +28,35 @@
                     {% if request.user.is_authenticated %}
                     <img src="{% static 'img/user_icon.png' %}" alt="" />
                     <h3>{{ user.username }}</h3>
-                    <p><a href="">Выход</a></p>
+                    <p><a href="{% url 'logout' %}">Выход</a></p>
                     {% endif %}
                 </div>
             </header>
+            <div class="overlay">
+                <div class="button_hide">
+                    <p>Скрыть</p>
+                </div>
+                <div class='details_item'>
+                    <p class='details_info'>Артикул</p>
+                    <p class='details_article' >Б00065987</p>
+                    <p class='details_title'>Гайка М2</p>
+                    <p class='details_sum'>255 </p>
+                    <p class='details_project'>Проект</p>
+                    <p class='delails_proj_item'> </p>
+                    <p class='details_project_quantity'></p>
+                   
+                </div>
+            </div>    
             <div class="container_left_center">
+               
                 <div class="left_colum">
                     <div class="header_button_reset_filter_wrapper">
+                        {% if user_is_in_group %}
+                        <p>hello</p>
+                        {% endif %}
                         <div class="menu">
                             <h2>Меню</h2>
+
                             <a class="button-link" href="{% url 'upload' %}">Обновить базу</a>
                         </div>
 
@@ -60,9 +79,11 @@
                         </div>
                     </div>
                 </div>
-
+               
                 <div class="center_colum">
+                   
                     <div class="table_div">
+                   
                         <table>
                             <tr>
                                 <th style="width: 20px">Коментарий</th>
@@ -76,12 +97,12 @@
                             </tr>
                             {% for r in remains %}
                             <tbody>
-                                <tr>
+                                <tr data-id="{{ r.id }}">
                                     <td>{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
                                     <td>{{ r.code }}</td>
                                     <td>{{ r.article }}</td>
                                     <td>{{ r.party }}</td>
-                                    <td><a href="">{{ r.title }}</a></td>
+                                    <td>{{ r.title }}</td>
                                     <td>{{ r.base_unit }}</td>
                                     <td>{{ r.project }}</td>
                                     <td>{{ r.quantity }}</td>
@@ -92,6 +113,8 @@
                     </div>
                 </div>
             </div>
+            
         </div>
+        <script src='{% static 'js/search.js'%}'></script>
     </body>
 </html>

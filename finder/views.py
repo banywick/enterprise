@@ -1,3 +1,5 @@
+import json
+from django.contrib.auth import authenticate, login, logout
 import os
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -11,6 +13,27 @@ from finder.tasks import data_save_db
 from celery.app.control import Inspect
 
 from finder.utils import choice_project_dict, get_context_input_filter_all
+
+
+def user_logout(request):
+    logout(request)
+    return redirect("login")
+
+
+def get_access(request):
+    context = {}
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("main")
+        else:
+            context["error"] = "Неверное имя пользователя или пароль"
+    if request.user.is_authenticated:
+        return redirect("main")
+    return render(request, "registration.html", context)
 
 
 def upload_file(request):
@@ -42,6 +65,34 @@ def choice_projects(request):
     if request.method == "POST":
         return redirect("main")
     return render(request, "choice_project.html", context=context)
+
+
+def get_details_product(request, id):
+    details = Remains.objects.filter(id=id)
+    if not details:
+        return JsonResponse({"error": "Детали не найдены"})
+
+    detail = details.first()
+    article = detail.article
+    unit = detail.base_unit
+    title = detail.title
+
+    det = Remains.objects.filter(article=article)
+    sum_art = sum(float(d.quantity) for d in det)
+    sum_art_str = f"{sum_art:.2f} {unit}"
+    proj_quan_unit = []
+    for p in det:
+        proj_quan_unit.append(f"{p.project} -- {p.quantity} {p.base_unit}")
+
+    return JsonResponse(
+        {
+            "title": "Детализация",
+            "project": proj_quan_unit,
+            "sum": sum_art_str,
+            "art": article,
+            "title": title,
+        }
+    )
 
 
 def check_task_status(request):

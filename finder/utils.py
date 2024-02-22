@@ -77,9 +77,9 @@ def get_context_input_filter_all(request):  # Поиск всему
             "project": choice_project.values(),
             "file_name": file_name,
         }
-
-    return {
-        "form": form,
-        "project": choice_project.values(),
-        "file_name": file_name,
-    }  # Возврат контест GET
+    else:
+        return {
+            "form": form,
+            "project": choice_project.values(),
+            "file_name": file_name,
+        }  # Возврат контест GET

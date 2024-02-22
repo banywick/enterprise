@@ -11,11 +11,12 @@
 
 .header_find_container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100%;
+    border-radius: 5px;
 }
-
+.errorlist {
+    display: none;
+}
 .header_logo img {
     height: 140px;
     width: 200px;
@@ -40,12 +41,9 @@
     height: 70px;
     width: 70px;
     border-radius: 100%;
-    margin-bottom: -20px;
-    margin-top: 10px;
 }
-
-.header_user_account a {
-    text-decoration: none;
+.header_user_account h3 {
+    font-size: 20px;
 }
 
 .header_user_account p {
@@ -81,16 +79,6 @@
     background: black;
     font-size: 19px;
     border-radius: 5px;
-}
-
-.form_input input {
-    height: 42px;
-    padding-left: 10px;
-    border: 2px solid #0e0e0e;
-    width: 400px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .button-link {
@@ -162,4 +150,54 @@ tr:last-child td:last-child {
 
 tr td:last-child {
     border-right: none;
+}
+.search-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 40px;
+    margin-top: 10px;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.search-input {
+    margin-top: 10px;
+    height: 40px;
+    padding-left: 10px;
+    width: 400px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.overlay {
+    position: absolute;
+    display: none;
+    width: 211px;
+    height: 100%;
+    background-color: #fff;
+    z-index: 1;
+    padding: 2px;
+    color: black;
+}
+.button_hide {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    height: 37px;
+    background: #629ca3;
+    align-items: center;
+    cursor: pointer;
+}
+& p:hover {
+    color: #dd2280;
+}
+.details_item {
+    text-align: center;
 }
