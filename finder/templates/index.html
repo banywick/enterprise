@@ -9,7 +9,6 @@
     </head>
     <body>
         <div class="wrapper">
-            
             <header class="header">
                 <div class="header_logo">
                     <a href=""><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
@@ -22,13 +21,23 @@
                         </div>
                         <button class="search-button" type="submit" form="find_form">Найти 🔎</button>
                     </div>
+                    <div class="choice_find">
+                     <p> - Коментарий </p>
+                     <p> * Код </p>
+                    </div>
                 </div>
 
                 <div class="header_user_account">
                     {% if request.user.is_authenticated %}
                     <img src="{% static 'img/user_icon.png' %}" alt="" />
                     <h3>{{ user.username }}</h3>
-                    <p><a href="{% url 'logout' %}">Выход</a></p>
+                    <p class='auth_text'>
+                        <a class='auth_text' href="{% url 'logout' %}">Выход</a>
+                    </p>
+                    {% else%}
+                    <p class='auth_text'>
+                        <a  href="{% url 'login' %}">Войти</a>
+                    </p>
                     {% endif %}
                 </div>
             </header>
@@ -37,28 +46,25 @@
                     <p>Скрыть</p>
                 </div>
                 <div class='details_item'>
-                    <p class='details_info'>Артикул</p>
-                    <p class='details_article' >Б00065987</p>
-                    <p class='details_title'>Гайка М2</p>
-                    <p class='details_sum'>255 </p>
-                    <p class='details_project'>Проект</p>
-                    <p class='delails_proj_item'> </p>
-                    <p class='details_project_quantity'></p>
-                   
+                    <div class='details_info'>Артикул</div>
+                    <div class='details_article' ></div>
+                    <div class='details_sum'> </div>
+                    <div class='details_title'> </div>
+                    <div class='details_project'>Проект</div>
+                    <div class='delails_proj_item'></div>
                 </div>
             </div>    
             <div class="container_left_center">
-               
                 <div class="left_colum">
                     <div class="header_button_reset_filter_wrapper">
-                        {% if user_is_in_group %}
-                        <p>hello</p>
-                        {% endif %}
                         <div class="menu">
                             <h2>Меню</h2>
-
+                        </div>
+                        {% if request.user.is_authenticated %}
+                        <div>
                             <a class="button-link" href="{% url 'upload' %}">Обновить базу</a>
                         </div>
+                        {% endif %}
 
                         <div class="header_button_reset">
                             <a class="button-link" href="{% url 'clear' %}">Очистить фильтр</a>
@@ -102,7 +108,7 @@
                                     <td>{{ r.code }}</td>
                                     <td>{{ r.article }}</td>
                                     <td>{{ r.party }}</td>
-                                    <td>{{ r.title }}</td>
+                                    <td class='title_remains'>{{ r.title }}</td>
                                     <td>{{ r.base_unit }}</td>
                                     <td>{{ r.project }}</td>
                                     <td>{{ r.quantity }}</td>
@@ -113,7 +119,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
         <script src='{% static 'js/search.js'%}'></script>
     </body>

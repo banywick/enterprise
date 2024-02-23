@@ -13,6 +13,7 @@
     display: flex;
     align-items: center;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 .errorlist {
     display: none;
@@ -46,8 +47,9 @@
     font-size: 20px;
 }
 
-.header_user_account p {
+.auth_text {
     font-size: 20px;
+    color: red;
 }
 
 .left_colum {
@@ -140,30 +142,25 @@ td a:hover {
     color: rgba(226, 43, 43, 0.84);
 }
 
-tr:last-child td:first-child {
-    border-radius: 0 0 0 10px;
-}
-
-tr:last-child td:last-child {
-    border-radius: 0 0 10px 0;
-}
-
 tr td:last-child {
     border-right: none;
 }
 .search-button {
     background-color: #007bff;
     color: #fff;
-    border: none;
+    border: 1px;
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     height: 40px;
     margin-top: 10px;
+    font-size: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
 .search-button:hover {
-    background-color: #0056b3;
+    background-color: rgb(77, 228, 66);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
 .search-input {
@@ -173,7 +170,7 @@ tr td:last-child {
     width: 400px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
 .overlay {
@@ -195,9 +192,55 @@ tr td:last-child {
     align-items: center;
     cursor: pointer;
 }
-& p:hover {
-    color: #dd2280;
+.button_hide:hover {
+    background-color: yellow;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 .details_item {
     text-align: center;
+}
+.details_info {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+.details_article {
+    font-weight: bold;
+    font-size: 16px;
+    color: red;
+    margin-bottom: 5px;
+}
+.details_title {
+    font-size: 18px;
+    border: 1px solid black;
+    margin-bottom: 5px;
+    background-color: #53e5747d;
+}
+.details_sum {
+    font-weight: bold;
+    font-size: 16px;
+    color: #1300ff;
+    margin-bottom: 10px;
+}
+.details_project {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+.delails_proj_item div {
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #ff45459c;
+    padding: 10px;
+}
+.choice_find {
+    display: flex;
+    justify-content: space-around;
+}
+.title_remains:hover {
+    /* Ваши стили для подсветки */
+    background-color: yellow; /* Например, желтый фон */
+    cursor: pointer;
 }

@@ -21,7 +21,9 @@ tableRows.forEach((row) => {
             project_item.innerHTML = "" 
           
             data.project.forEach((proj) => {
-                const listItem = document.createElement("p");
+               
+                const listItem = document.createElement("div");
+                console.log(listItem)
                 listItem.textContent = proj;
                 project_item.appendChild(listItem)
             

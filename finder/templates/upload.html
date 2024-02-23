@@ -13,20 +13,32 @@
     </head>
     <body>
         <div class="main_wrapper">
-            <div class="header_logo">
-                <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
+            <div class="back">
+                <a href="{%url 'main' %}">Назад</a>
             </div>
             <div class="load_file">
                 <form enctype="multipart/form-data" action="" method="POST">
                     {% csrf_token %}
                     <label for="file-upload" class="drop-container" id="dropcontainer">
+                        <p style="color: red">{{error}}</p>
                         <span class="drop-title">Перетащите файл сюда</span> или
                         <input type="file" id="file-upload" name="doc" accept=".xls, .xlsx" required />
-                        <button>Загрузить</button>
+                        <button class="button">Загрузить</button>
                     </label>
                 </form>
             </div>
+            <div class="error_load_file">
+                <h1>Произошла ошибка загрузки данных!!</h1>
+            </div>
+            <div class="load_animation">
+                <div class="load_info">
+                    <p>Пожалуйста подождите! Данные обрабатываются!</p>
+                </div>
+                <div class="animate_process">
+                    <img src="{% static '/img/loading-71.gif' %}" alt="" />
+                </div>
+            </div>
         </div>
-        <script src="{% static 'js/script.js' %}"></script>
+        <script src="{% static 'js/query.js' %}"></script>
     </body>
 </html>
