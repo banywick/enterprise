@@ -1,12 +1,15 @@
-import copy
+import redis
+
+
+r = redis.StrictRedis(host="localhost", port=6379, db=0)
 
 
 def get_file_name(request):
-    doc = request.FILES.get("doc")
-    doc_copy = copy.copy(doc)
-    return {"file_name": doc_copy}
+    file_name = r.get("file_name")
+    file_name = file_name.decode("utf8")
+    return {"file_name": file_name}
 
 
 def user_permission_is_in_group(request):
-    user_is_in_group = request.user.groups.filter(name='update_bace').exists()
-    return {'user_is_in_group': user_is_in_group}
+    user_is_in_group = request.user.groups.filter(name="update_bace").exists()
+    return {"user_is_in_group": user_is_in_group}

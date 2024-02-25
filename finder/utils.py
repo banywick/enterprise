@@ -1,7 +1,10 @@
 from django.shortcuts import redirect
+import redis
 from finder.forms import InputValue
 from finder.models import Remains
 from django.db.models import Q, Sum
+
+   
 
 choice_project = dict()  # Хранилище выбранных проектов
 

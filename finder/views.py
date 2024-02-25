@@ -4,6 +4,7 @@ import os
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
+import redis
 
 from config import settings
 from config.context_processors import get_file_name
@@ -37,9 +38,17 @@ def get_access(request):
     return render(request, "registration.html", context)
 
 
+r = redis.StrictRedis(host="localhost", port=6379, db=0)
+
+
 def upload_file(request):
     if request.POST and request.FILES:
         doc = request.FILES.get("doc")
+        # Получение имени файла
+        filename = doc.name
+        # Сохранение в Redis
+        r.set("file_name", filename)
+
         if doc.content_type.startswith(
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         ):
