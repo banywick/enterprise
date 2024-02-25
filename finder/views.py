@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
 
 from config import settings
+from config.context_processors import get_file_name
 from finder.models import Remains
 from celery.result import AsyncResult
 
@@ -17,7 +18,7 @@ from finder.utils import choice_project_dict, get_context_input_filter_all
 
 def user_logout(request):
     logout(request)
-    return redirect("login")
+    return redirect("main")
 
 
 def get_access(request):
@@ -39,7 +40,6 @@ def get_access(request):
 def upload_file(request):
     if request.POST and request.FILES:
         doc = request.FILES.get("doc")
-        file_name = request.session["file_name"] = str(doc)
         if doc.content_type.startswith(
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         ):
@@ -54,12 +54,11 @@ def upload_file(request):
             return render(
                 request, "upload.html", {"error": "Выберите пожалуйста тип файла *xlsx"}
             )
-    
+
     return render(request, "upload.html")
 
 
 def search_engine(request):
-    
     request.session["task_id"] = ""
     context = get_context_input_filter_all(request)
     return render(request, "index.html", context=context)

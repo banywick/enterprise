@@ -25,8 +25,8 @@ def data_save_db(file_url):
         df.to_sql("finder_remains", engine, if_exists="replace", index_label="id")
         os.remove(file_url)
     except:
-        print(f"Ошибка")
         os.remove(file_url)
+        raise
 
 
 # data_save_db()

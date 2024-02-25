@@ -23,7 +23,6 @@ def choice_project_dict(request):  # Словарь из выбранных пр
 
 
 def get_context_input_filter_all(request):  # Поиск всему
-    file_name = request.session.get("file_name")
     form = InputValue(request.POST)
     if request.method == "POST":
         input_str = str(request.POST["input"])
@@ -69,17 +68,14 @@ def get_context_input_filter_all(request):  # Поиск всему
             return {
                 "form": form,
                 "e_art_title": error_message,
-                "file_name": file_name,
             }
         return {
             "remains": remains,
             "form": form,
             "project": choice_project.values(),
-            "file_name": file_name,
         }
     else:
         return {
             "form": form,
             "project": choice_project.values(),
-            "file_name": file_name,
         }  # Возврат контест GET
