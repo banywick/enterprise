@@ -93,9 +93,9 @@
                         <table>
                             <tr>
                                 <th style="width: 20px">Коментарий</th>
-                                <th>Код</th>
-                                <th>Артикул</th>
                                 <th>Партия</th>
+                                <th>Артикул</th>
+                                <th>Код</th>
                                 <th>Номенклатура</th>
                                 <th>Единица</th>
                                 <th>Проект</th>
@@ -105,9 +105,9 @@
                             <tbody>
                                 <tr data-id="{{ r.id }}">
                                     <td>{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
-                                    <td>{{ r.code }}</td>
-                                    <td>{{ r.article }}</td>
                                     <td>{{ r.party }}</td>
+                                    <td>{{ r.article }}</td>
+                                    <td>{{ r.code }}</td>
                                     <td class='title_remains'>{{ r.title }}</td>
                                     <td>{{ r.base_unit }}</td>
                                     <td>{{ r.project }}</td>

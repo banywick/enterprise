@@ -6,7 +6,9 @@ r = redis.StrictRedis(host="localhost", port=6379, db=0)
 
 def get_file_name(request):
     file_name = r.get("file_name")
-    file_name = file_name.decode("utf8")
+    if file_name:
+        file_name = file_name.decode("utf8")
+        return {"file_name": file_name}
     return {"file_name": file_name}
 
 

@@ -115,6 +115,7 @@ def check_task_status(request):
     else:
         task_id = request.session.get("task_id")
         task_result = AsyncResult(task_id)
+        print(task_result)
         if task_result.state == "SUCCESS":
             return JsonResponse({"status": "success"})
         elif task_result.state == "FAILURE":

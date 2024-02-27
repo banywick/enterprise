@@ -1,10 +1,10 @@
+import re
 from django.shortcuts import redirect
 import redis
 from finder.forms import InputValue
 from finder.models import Remains
 from django.db.models import Q, Sum
 
-   
 
 choice_project = dict()  # Хранилище выбранных проектов
 
@@ -46,24 +46,35 @@ def get_context_input_filter_all(request):  # Поиск всему
             error_message = "Такой коментарий не найден"
         else:
             values = input_str.split(" ")  # сбор значений с инпута
-            values += [""] * (
-                4 - len(values)
-            )  # Добавляем пустые строки, если введено менее четырех слов
+            values += [" "] * (5 - len(values))
+            # )  # Добавляем пустые строки, если введено менее четырех слов
+            metiz_all = Q()  # Создаем пустой объект Q
+            any_text = []
+            for v in values:
+                if re.match(r"^(\d+(\.\d+)?[*]\d+|5f[*]\d+)$", v):
+                    v1 = v.lower().replace("*", "х")  # Кириллица
+                    v2 = v.lower().replace("*", "x")  # Латиница
+                    metiz_all |= (
+                        Q(title__icontains=v1)
+                        | Q(title__icontains=v2)
+                        | Q(title__icontains=v)
+                    )
+                else:
+                    any_text.append(v)
             query = (
-                Q(title__icontains=values[0])
-                & Q(title__icontains=values[1])
-                & Q(title__icontains=values[2])
-                & Q(title__icontains=values[3])
+                Q(title__icontains=any_text[0])
+                & Q(title__icontains=any_text[1])
+                & Q(title__icontains=any_text[2])
+                & Q(title__icontains=any_text[3])
             )
             error_message = "Товар не найден"
-        print(input_str[1:])
         projects_filter_q = Q()
         for value in choice_project.values():
             projects_filter_q |= Q(
                 **{"project": value}
             )  # Динамическое создание Q по выбранным проектам
         remains = Remains.objects.filter(projects_filter_q).filter(
-            query
+           query & metiz_all
         ) | Remains.objects.filter(article__contains=input_str)
         if (
             not remains.exists()
