@@ -27,11 +27,16 @@ def choice_project_dict(request):  # Словарь из выбранных пр
 
 def get_context_input_filter_all(request):  # Поиск всему
     form = InputValue(request.POST)
+    metiz_all = Q()  # Создаем пустой объект Q
+    comment_filter = Q()
+    any_text = []
     if request.method == "POST":
         input_str = str(request.POST["input"])
+
         if input_str.startswith("*"):  # поиск по коду
             query = Q(code__icontains=input_str[1:])
             error_message = "Такой код не найден"
+
         elif input_str.startswith("-"):  # поиск по коментарию
             values = input_str[1:].split(" ")  # сбор значений с инпута по комменту
             values += [""] * (
@@ -44,12 +49,11 @@ def get_context_input_filter_all(request):  # Поиск всему
                 & Q(comment__icontains=values[3])
             )
             error_message = "Такой коментарий не найден"
-        else:
+
+        elif input_str != "":  # метизы и текст
             values = input_str.split(" ")  # сбор значений с инпута
-            values += [" "] * (5 - len(values))
+            values += [""] * (5 - len(values))
             # )  # Добавляем пустые строки, если введено менее четырех слов
-            metiz_all = Q()  # Создаем пустой объект Q
-            any_text = []
             for v in values:
                 if re.match(r"^(\d+(\.\d+)?[*]\d+|5f[*]\d+)$", v):
                     v1 = v.lower().replace("*", "х")  # Кириллица
@@ -60,25 +64,24 @@ def get_context_input_filter_all(request):  # Поиск всему
                         | Q(title__icontains=v)
                     )
                 else:
+
                     any_text.append(v)
             query = (
                 Q(title__icontains=any_text[0])
-                & Q(title__icontains=any_text[1])
-                & Q(title__icontains=any_text[2])
-                & Q(title__icontains=any_text[3])
-            )
+            & Q(title__icontains=any_text[1]))
+            if any_text[2]:
+                comment_filter = Q(comment__icontains=any_text[2])
+                print(comment_filter)
             error_message = "Товар не найден"
+
         projects_filter_q = Q()
         for value in choice_project.values():
             projects_filter_q |= Q(
                 **{"project": value}
             )  # Динамическое создание Q по выбранным проектам
-        remains = Remains.objects.filter(projects_filter_q).filter(
-           query & metiz_all
-        ) | Remains.objects.filter(article__contains=input_str)
-        if (
-            not remains.exists()
-        ):  # если ничего не найдено из нескольких значений в инпуте
+
+        remains = Remains.objects.filter(projects_filter_q).filter(query & metiz_all).filter(comment_filter) | Remains.objects.filter(article__contains=input_str)
+        if (not remains.exists()):  # если ничего не найдено из нескольких значений в инпуте
             return {
                 "form": form,
                 "e_art_title": error_message,

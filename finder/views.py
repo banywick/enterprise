@@ -122,3 +122,7 @@ def check_task_status(request):
             return JsonResponse({"status": "failure"})
         elif task_result.state == "PENDING":
             return JsonResponse({"status": "pending"})
+        
+        
+def get_manual(request):
+    return render(request, 'manual.html')
