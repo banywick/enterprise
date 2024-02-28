@@ -1,6 +1,33 @@
 .wrapper {
     border: 1px solid black;
     height: 100vh;
-    width: 658px;
+    width: 750px;
     margin: 0 auto;
+}
+h1 {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 800;
+}
+
+.info_block {
+    font-size: 20px;
+}
+& p {
+    margin-top: 50px;
+}
+
+& img {
+    width: 100%;
+    height: auto;
+}
+.back {
+    color: red;
+    font-size: 24px;
+}
+.link_back {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 25px;
 }

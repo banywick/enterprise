@@ -66,9 +66,7 @@ def get_context_input_filter_all(request):  # Поиск всему
                 else:
 
                     any_text.append(v)
-            query = (
-                Q(title__icontains=any_text[0])
-            & Q(title__icontains=any_text[1]))
+            query = Q(title__icontains=any_text[0]) & Q(title__icontains=any_text[1])
             if any_text[2]:
                 comment_filter = Q(comment__icontains=any_text[2])
                 print(comment_filter)
@@ -80,8 +78,15 @@ def get_context_input_filter_all(request):  # Поиск всему
                 **{"project": value}
             )  # Динамическое создание Q по выбранным проектам
 
-        remains = Remains.objects.filter(projects_filter_q).filter(query & metiz_all).filter(comment_filter) | Remains.objects.filter(article__contains=input_str)
-        if (not remains.exists()):  # если ничего не найдено из нескольких значений в инпуте
+        remains = (
+            Remains.objects.filter(projects_filter_q)
+            .filter(query & metiz_all)
+            .filter(comment_filter)[:100]
+            | Remains.objects.filter(article__contains=input_str)
+        )
+        if (
+            not remains.exists()
+        ):  # если ничего не найдено из нескольких значений в инпуте
             return {
                 "form": form,
                 "e_art_title": error_message,
