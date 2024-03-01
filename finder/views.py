@@ -67,6 +67,7 @@ def upload_file(request):
     return render(request, "upload.html")
 
 
+
 def search_engine(request):
     request.session["task_id"] = ""
     context = get_context_input_filter_all(request)

@@ -14,22 +14,16 @@ import os
 from pathlib import Path
 from dotenv import dotenv_values
 
+from config.local_settings import BASE_DIR
+
 env_keys = dotenv_values()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-rx^y3(1ll3wps36@0%#r3j4%tib=%hk$2p9w-a4sx@w_*h0$4k"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -87,16 +81,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "sklad_db",
-        "USER": "sklad",
-        "PASSWORD": "sklad",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
-    }
-}
 
 
 # Password validation
@@ -135,6 +119,10 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+
+MEDIA_URL = '/madia/'
+MEDIA_URL = os.path.join(BASE_DIR, 'media/')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -151,3 +139,9 @@ CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
 FLOWER_RPC_HOST = "http://127.0.0.1:8000/"  # Хост, на котором запущен Celery
 FLOWER_RPC_PORT = 5555  # Порт для Flower
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    from .prod_settings import *

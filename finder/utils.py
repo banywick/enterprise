@@ -66,9 +66,9 @@ def get_context_input_filter_all(request):  # Поиск всему
                 else:
 
                     any_text.append(v)
-            query = Q(title__icontains=any_text[0]) & Q(title__icontains=any_text[1])
-            if any_text[2]:
-                comment_filter = Q(comment__icontains=any_text[2])
+            query = Q(title__icontains=any_text[0]) & Q(title__icontains=any_text[1]) & Q(title__icontains=any_text[2])
+            if any_text[3]:
+                comment_filter = Q(comment__icontains=any_text[3])
                 print(comment_filter)
             error_message = "Товар не найден"
 
