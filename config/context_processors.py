@@ -13,5 +13,5 @@ def get_file_name(request):
 
 
 def user_permission_is_in_group(request):
-    user_is_in_group = request.user.groups.filter(name="update_bace").exists()
+    user_is_in_group = request.user.groups.filter(name="update_base").exists()
     return {"user_is_in_group": user_is_in_group}

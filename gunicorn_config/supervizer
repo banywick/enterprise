@@ -1,7 +1,0 @@
-[program:reload_gunicorn]
-command=/home/benix/venv/bin/gunicorn config.wsgi:aplication - c /home/benix/enterprice/gunicorn_config/gunicorn.conf.py
-directory=/home/benix/enterprice/config
-user=benix
-redirect_stderr = true
-autostart=true
-stdout_logfile = /home/benix/enterprice/logs/debug.log
