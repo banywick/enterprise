@@ -29,7 +29,7 @@ def get_context_input_filter_all(request):  # Поиск всему
     comment_filter = Q()
     repl_a = Q()
     query = Q()
-    any_text = []
+    fi = Q()
     if request.method == "POST":
         input_str = str(request.POST["input"])
 
@@ -59,9 +59,12 @@ def get_context_input_filter_all(request):  # Поиск всему
                     r1 = v.lower().replace('а', 'a') #Меняем кирилицу на латиницу A4, A2
                     repl_a = (Q(title__icontains=v) | Q(title__icontains=r1))
                     
+                elif v.startswith('-'):
+                    fi = Q(comment__icontains=v[1:])  
+                    
                 else:
                     query &= Q(title__icontains=v)
-        query_all = query & metiz_all & repl_a      
+        query_all = query & metiz_all & repl_a & fi   
         print(query_all)            
                    
          
