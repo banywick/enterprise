@@ -65,7 +65,6 @@ def get_context_input_filter_all(request):  # Поиск всему
                 else:
                     query &= Q(title__icontains=v)
         query_all = query & metiz_all & repl_a & fi   
-        print(query_all)            
                    
          
         error_message = "Товар не найден"
