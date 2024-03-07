@@ -12,10 +12,10 @@ from .views import (
 from .utils import clear_sort
 
 urlpatterns = [
-    path("", get_access, name="login"),
+    path("login", get_access, name="login"),
     path("logout/", user_logout, name="logout"),
     path("upload/", upload_file, name="upload"),
-    path("main/", search_engine, name="main"),
+    path("", search_engine, name="main"),
     path("check_task_status/", check_task_status, name="check_task_status"),
     path("choice/", choice_projects, name="choice"),
     path("clear/", clear_sort, name="clear"),
