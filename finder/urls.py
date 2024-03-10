@@ -7,7 +7,7 @@ from .views import (
     get_access,
     user_logout,
     get_details_product,
-    get_manual
+    get_manual,
 )
 from .utils import clear_sort
 
@@ -20,6 +20,6 @@ urlpatterns = [
     path("choice/", choice_projects, name="choice"),
     path("clear/", clear_sort, name="clear"),
     path("details/<int:id>", get_details_product, name="details"),
-    path('manual/', get_manual, name='manual')
+    path('manual/', get_manual, name='manual'),
    
 ]

@@ -19,15 +19,6 @@ from config.local_settings import BASE_DIR
 env_keys = dotenv_values()
 
 
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-
-
-# Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -72,17 +63,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -105,7 +85,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "UTC"
 
@@ -120,24 +100,19 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 
-MEDIA_URL = '/madia/'
-MEDIA_URL = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = "/madia/"
+MEDIA_URL = os.path.join(BASE_DIR, "media/")
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# CELERY_BROKER_URL = env_keys.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
-# CELERY_RESULT_BACKEND = env_keys.get("CELERY_BACKEND", "redis://127.0.0.1:6379/0")
-# CELERY_BROKER_URL = "redis://redis:6379/0"
-# CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True 
 
 
-FLOWER_RPC_HOST = "http://127.0.0.1:8000/"  # Хост, на котором запущен Celery
+FLOWER_RPC_HOST = "http://127.0.0.1:8000"  # Хост, на котором запущен Celery
 FLOWER_RPC_PORT = 5555  # Порт для Flower
 
 

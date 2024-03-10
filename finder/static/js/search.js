@@ -34,3 +34,6 @@ tableRows.forEach((row) => {
 function hide_details() {
     details_div.style.display = 'none'
 }
+
+
+

@@ -8,7 +8,8 @@ import redis
 
 from config import settings
 from config.context_processors import get_file_name
-from finder.models import Remains
+from finder.forms import InputValue
+from finder.models import Remains, UserIP
 from celery.result import AsyncResult
 
 
@@ -61,15 +62,16 @@ def upload_file(request):
             request.session["task_id"] = str(task_id)
         else:
             return render(
-                request, "upload.html", {"error": "Выберите пожалуйста тип файла *xlsx"}
-            )
-
+                request, "upload.html", {"error": "Выберите пожалуйста тип файла *xlsx"})
     return render(request, "upload.html")
 
 
-
 def search_engine(request):
+    ip = request.META.get('REMOTE_ADDR')
+    name = request.META.get('USERNAME')
+    UserIP.objects.get_or_create(ip_address=ip, name=name)
     request.session["task_id"] = ""
+
     context = get_context_input_filter_all(request)
     return render(request, "index.html", context=context)
 

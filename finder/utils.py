@@ -20,7 +20,7 @@ def choice_project_dict(request):  # Словарь из выбранных пр
     for i, projects in enumerate(projects):
         request.session['i'] = projects
     
-    return {"all_project": all_project, "project": request.session['project']}
+    return {"all_project": all_project, "project": request.session.get('projects')}
 
 
 def get_context_input_filter_all(request):  # Поиск всему
@@ -65,10 +65,10 @@ def get_context_input_filter_all(request):  # Поиск всему
                 else:
                     query &= Q(title__icontains=v)
         query_all = query & metiz_all & repl_a & fi   
-                   
-         
         error_message = "Товар не найден"
-
+        
+        if not request.session.get('project'):
+            request.session['project'] = ''
         projects_filter_q = Q()
         for value in request.session.get('project'):
             projects_filter_q |= Q(
@@ -93,3 +93,7 @@ def get_context_input_filter_all(request):  # Поиск всему
             "form": form,
             "project": request.session.get('project'),
         }  # Возврат контест GET
+        
+        
+        
+  
