@@ -67,8 +67,8 @@ def get_context_input_filter_all(request):  # Поиск всему
         query_all = query & metiz_all & repl_a & fi   
         error_message = "Товар не найден"
         
-        # if not request.session.get('project'):
-        #     request.session['project'] = ''
+        if not request.session.get('project'):
+            request.session['project'] = ''
         projects_filter_q = Q()
         for value in request.session.get('project'):
             projects_filter_q |= Q(
