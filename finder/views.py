@@ -67,10 +67,10 @@ def upload_file(request):
 
 
 def search_engine(request):
-        ip = request.META.get('REMOTE_ADDR')
-        name = request.META.get('USERNAME')
-        if ip or name:
-            UserIP.objects.get_or_create(ip_address=ip, name=name)
+        # ip = request.META.get('REMOTE_ADDR')
+        # name = request.META.get('USERNAME')
+        # if ip or name:
+        #     UserIP.objects.get_or_create(ip_address=ip, name=name)
         request.session["task_id"] = ""
 
         context = get_context_input_filter_all(request)
