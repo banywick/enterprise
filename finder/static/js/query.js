@@ -11,7 +11,7 @@ submit_button.addEventListener('click', (event) => {
 
 
 function checkTaskStatus() {
-    fetch('http://10.10.44.4:80/check_task_status/')
+    fetch('http://127.0.0.1:8000/check_task_status/')
         .then(response => response.json())
         .then(data => {
             if (data.status === 'pending') {
@@ -33,7 +33,7 @@ function checkTaskStatus() {
             if (data.status === 'success') {
                 console.log('Задача выполнена!');
                 clearInterval(intervalId); // Останавливаем интервал
-                window.location.href = "http://10.10.44.4:80/main/";
+                window.location.href = "http://127.0.0.1:8000";
             }
         });
 }

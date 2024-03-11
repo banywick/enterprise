@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import dotenv_values
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-from config.local_settings import BASE_DIR
 
 env_keys = dotenv_values()
 
@@ -41,6 +41,24 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+
+
+SECRET_KEY = env_keys.get('SECRET_KEY')
+
+DEBUG = True
+
+ALLOWED_HOSTS = ["*"]
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "sklad_db",
+        "USER": "sklad",
+        "PASSWORD": "sklad",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
+    }
+}
 
 TEMPLATES = [
     {
@@ -97,11 +115,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
 
-
-MEDIA_URL = "/madia/"
-MEDIA_URL = os.path.join(BASE_DIR, "media/")
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -115,8 +129,9 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 FLOWER_RPC_HOST = "http://127.0.0.1:8000"  # Хост, на котором запущен Celery
 FLOWER_RPC_PORT = 5555  # Порт для Flower
 
-
-try:
-    from .local_settings import *
-except ImportError:
-    from .prod_settings import *
+STATIC_URL = "static/"
+MEDIA_URL = "/madia/"
+MEDIA_URL = os.path.join(BASE_DIR, "media/")
+STATIC_DIR = os.path.join(BASE_DIR, "finder/static")
+STATICFILES_DIRS = [STATIC_DIR]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
