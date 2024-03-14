@@ -77,7 +77,7 @@ def get_context_input_filter_all(request):  # Поиск всему
         remains = (
             Remains.objects.filter(projects_filter_q)
             .filter(query_all)
-            .filter(comment_filter)[:50] | Remains.objects.filter(article__contains=input_str)[:50])
+            .filter(comment_filter)[:500] | Remains.objects.filter(article__contains=input_str)[:500])
         if (not remains.exists()):  # если ничего не найдено из нескольких значений в инпуте
             return {
                 "form": form,

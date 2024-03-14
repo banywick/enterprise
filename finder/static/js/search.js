@@ -13,7 +13,6 @@ tableRows.forEach((row) => {
         fetch(`http://127.0.0.1:8000/details/${id}`)
         .then(data=> data.json())
         .then(data => {
-            console.log(data)
             document.querySelector(".details_article").textContent = data.art;
             document.querySelector(".details_title").textContent = data.title;
             document.querySelector(".details_sum").textContent = data.sum;
@@ -23,7 +22,6 @@ tableRows.forEach((row) => {
             data.project.forEach((proj) => {
                
                 const listItem = document.createElement("div");
-                console.log(listItem)
                 listItem.textContent = proj;
                 project_item.appendChild(listItem)
             

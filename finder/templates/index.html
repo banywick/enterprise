@@ -26,7 +26,9 @@
                      <p> * Код </p>
                     </div>
                 </div>
-
+                <div>
+                <button class='copy-button'>Копировать</button>
+                </div>
                 <div class="header_user_account">
                     {% if request.user.is_authenticated %}
                     <img src="{% static 'img/user_icon.png' %}" alt="" />
@@ -92,29 +94,32 @@
                 <div class="center_colum">
                    
                     <div class="table_div">
-                   
                         <table>
+                            <thead>
                             <tr>
                                 <th style="width: 20px">Коментарий</th>
                                 <th>Партия</th>
                                 <th>Артикул</th>
                                 <th>Код</th>
                                 <th>Номенклатура</th>
+                                <th>Количество</th>
                                 <th>Единица</th>
                                 <th>Проект</th>
-                                <th>Количество</th>
+                               
                             </tr>
+                            </thead>
                             {% for r in remains %}
                             <tbody>
-                                <tr data-id="{{ r.id }}">
-                                    <td>{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
-                                    <td>{{ r.party }}</td>
-                                    <td>{{ r.article }}</td>
-                                    <td>{{ r.code }}</td>
+                                  <tr data-id="{{ r.id }}">
+                                    <td class='comment_remains'>{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
+                                    <td class='party_remains'>{{ r.party }}</td>
+                                    <td class='article_remains'>{{ r.article }}</td>
+                                    <td class='code_remains'>{{ r.code }}</td>
                                     <td class='title_remains'>{{ r.title }}</td>
-                                    <td>{{ r.base_unit }}</td>
-                                    <td>{{ r.project }}</td>
-                                    <td>{{ r.quantity }}</td>
+                                    <td class='quantity_remains'>{{ r.quantity }}</td>
+                                    <td class='base_unit_remains'>{{ r.base_unit }}</td>
+                                    <td class='project_remains'>{{ r.project }}</td>
+                                   
                                 </tr>
                             </tbody>
                             {% endfor %} {{ e_code }} {{ e_art_title }}
@@ -124,5 +129,6 @@
             </div>
         </div>
         <script src='{% static 'js/search.js'%}'></script>
+        <script src='{% static 'js/copypast.js'%}'></script>
     </body>
 </html>
