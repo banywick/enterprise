@@ -26,9 +26,6 @@
                      <p> * Код </p>
                     </div>
                 </div>
-                <div>
-                <button class='copy-button'>Копировать</button>
-                </div>
                 <div class="header_user_account">
                     {% if request.user.is_authenticated %}
                     <img src="{% static 'img/user_icon.png' %}" alt="" />
@@ -68,6 +65,9 @@
                         {% if user_is_in_group %}
                         <div>
                             <a class="button-link" href="{% url 'upload' %}">Обновить базу</a>
+                        </div>
+                        <div>
+                            <a class="button-link" href="{% url 'sahr' %}">С.А.ХР</a>
                         </div>
                         {% endif %}
 

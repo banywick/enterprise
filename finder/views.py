@@ -9,7 +9,7 @@ import redis
 from config import settings
 from config.context_processors import get_file_name
 from finder.forms import InputValue
-from finder.models import Remains, UserIP
+from finder.models import Address_Prod, Data_Table, Remains, UserIP
 from celery.result import AsyncResult
 
 
@@ -62,19 +62,20 @@ def upload_file(request):
             request.session["task_id"] = str(task_id)
         else:
             return render(
-                request, "upload.html", {"error": "Выберите пожалуйста тип файла *xlsx"})
+                request, "upload.html", {"error": "Выберите пожалуйста тип файла *xlsx"}
+            )
     return render(request, "upload.html")
 
 
 def search_engine(request):
-        ip = request.META.get('REMOTE_ADDR')
-        name = request.META.get('USERNAME')
-        if ip or name:
-            UserIP.objects.get_or_create(ip_address=ip, name=name)
-        request.session["task_id"] = ""
+    ip = request.META.get("REMOTE_ADDR")
+    name = request.META.get("USERNAME")
+    if ip or name:
+        UserIP.objects.get_or_create(ip_address=ip, name=name)
+    request.session["task_id"] = ""
 
-        context = get_context_input_filter_all(request)
-        return render(request, "index.html", context=context)
+    context = get_context_input_filter_all(request)
+    return render(request, "index.html", context=context)
 
 
 def choice_projects(request):
@@ -125,7 +126,33 @@ def check_task_status(request):
             return JsonResponse({"status": "failure"})
         elif task_result.state == "PENDING":
             return JsonResponse({"status": "pending"})
-        
-        
+
+
 def get_manual(request):
-    return render(request, 'manual.html')
+    return render(request, "manual.html")
+
+
+def sahr(request):
+    if request.POST:
+        id = request.POST.get("id")
+        address = request.POST.get("address")
+        address_cell = Address_Prod.objects.create(address_cell=address)
+        remains = Remains.objects.get(id=id)
+        article = remains.article
+        title = remains.title
+        base_unit = remains.base_unit
+        comment = request.POST.get("comment")
+        data_table, create =  Data_Table.objects.get_or_create(
+            article=article, title=title, base_unit=base_unit, comment=comment)
+        data_table.address.add(address_cell)
+    data_table =  Data_Table.objects.all()
+    return render(request, "sahr.html", {"data_table":data_table})
+
+
+def check_article(request, art):
+    article = Remains.objects.filter(article__icontains=art).first()
+    if article:
+        title = article.title
+        id = article.id
+        return JsonResponse({"title": title, "id": id})
+    return JsonResponse({"error": "Товара нет в базе"})

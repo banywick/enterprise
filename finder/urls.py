@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path
 from .views import (
     upload_file,
@@ -8,6 +9,8 @@ from .views import (
     user_logout,
     get_details_product,
     get_manual,
+    sahr,
+    check_article
 )
 from .utils import clear_sort
 
@@ -21,5 +24,7 @@ urlpatterns = [
     path("clear/", clear_sort, name="clear"),
     path("details/<int:id>", get_details_product, name="details"),
     path('manual/', get_manual, name='manual'),
+    path('sahr/', sahr, name='sahr'),
+    path('check_article/<str:art>', check_article, name='check_article')
    
 ]
