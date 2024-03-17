@@ -13,7 +13,7 @@ class Remains(models.Model):
     quantity = models.FloatField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.article}"
 
 
 class UserIP(models.Model):
@@ -31,10 +31,20 @@ class Address_Prod(models.Model):
         return self.address_cell
 
 
+class Paty_Prod(models.Model):
+    party = models.CharField(max_length=20, null=True)
+
+    def __str__(self):
+        return self.party
+
+
 class Data_Table(models.Model):
     article = models.CharField(max_length=50, null=True)
+    party = models.ForeignKey(Paty_Prod, on_delete=models.CASCADE)
     title = models.TextField(null=True)
     base_unit = models.CharField(max_length=10, null=True)
     comment = models.TextField(null=True)
     date = models.DateField(auto_now_add=True)
-    address = models.ManyToManyField(Address_Prod)
+    address = models.ForeignKey(Address_Prod, on_delete=models.CASCADE)
+
+    

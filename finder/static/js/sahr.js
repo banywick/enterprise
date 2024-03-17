@@ -3,36 +3,53 @@ const views_title = document.querySelector('.views_title');
 const write_address = document.querySelector('.write_address');
 const save_button = document.querySelector('.save_button');
 const hidden_id = document.querySelector('.hidden_id');
+const selectElement = document.querySelector('.selectElement');
 
 check_article.addEventListener('input', async function () {
     const enteredArticle = check_article.value; 
-    // console.log(enteredArticle);
+    console.log(enteredArticle);
 
     try {
         if (enteredArticle.trim() === '') {
             // Если в инпуте нет значений, очищаем название
-            views_title.innerHTML = '';
+            views_title.value = '';
+            selectElement.innerHTML= '';
+
         } else {
             const response = await fetch(`http://127.0.0.1:8000/check_article/${enteredArticle}`);
             const data = await response.json();
-            console.log(data.id)
+            console.log(data.party)
+            
+            selectElement.innerHTML= ''
+            for ( let i in data.party) {
+                const option = document.createElement('option');
+               ;
+                console.log(data.party[i]);
+                option.value = data.party[i];
+                option.text = data.party[i];
+                selectElement.appendChild(option);
+            }
+          
+            
+
         
             // Отображаем название рядом с инпутом
             if (data.title) {
                 views_title.value = data.title;
                 hidden_id.value = data.id;
-                write_address.style.display = 'block'
-                save_button.style.display = 'block'
+               
             }
             if (data.error) {
                 views_title.innerHTML = data.error;
             }
+        
+
         }
+
     } catch (error) {
         console.error('Ошибка при выполнении fetch-запроса:', error);
     }
 });
-
 
 
 

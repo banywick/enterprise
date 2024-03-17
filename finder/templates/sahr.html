@@ -17,14 +17,21 @@
           <div class="header_find_container">
            <form action="" method='POST'>
             {% csrf_token %}
-            <input class='check_article' type="text" placeholder='артикул' name='article'>
-            <input class='views_title' type='text' placeholder='Название' name='title'>
+            <input class='check_article' type="text" placeholder='артикул' name='article' required>
+            <input class='views_title' type='text' placeholder='Название' name='title' required>
             <input class='comment' type='text' placeholder='Коментарий' name='comment'>
-            <input class='write_address' type="text" placeholder='адрес' name='address' >
+            <input class='write_address' type="text" placeholder='адрес' name='address' required >
             <input class='hidden_id' type="text" hidden name='id'>
+            <select class='selectElement' name="select" size=6 required>
+            
+            </select>
             <button>Сохранить</button>
-        </form>
-        {% comment %} <div class="header_user_account">
+           </form>
+
+           {{error_save}}
+
+         
+        <div class="header_user_account">
           {% if request.user.is_authenticated %}
           <img src="{% static 'img/user_icon.png' %}" alt="" />
           <h3>{{ user.username }}</h3>
@@ -36,12 +43,15 @@
             <a href="{% url 'login' %}">Войти</a>
           </p>
           {% endif %}
-        </div> {% endcomment %}
+       </div>
+      
+      
       </header>
       <div class="table_div">
         <table>
           <thead>
             <tr>
+              <th>Партия</th>
               <th>Артикул</th>
               <th>Номенклатура</th>
               <th>Единица</th>
@@ -54,15 +64,12 @@
           {% for t in data_table %}
           <tbody>
             <tr>
+              <td class="title_remains">{{t.party}}</td>
               <td class="article_remains">{{t.article}}</td>
               <td class="title_remains">{{t.title}}</td>
               <td class="base_unit_remains">{{t.base_unit}}</td>
               <td class="comment_remains">{{t.comment}}</td>
-              <td class="address_remains">
-                {% for address in t.address.all %}
-                    {{ address }}<br>
-                {% endfor %}
-            </td>
+              <td class="address_remains">{{ t.address }}</td>
               <td class="quantity_remains">анотация количества</td>
               <td class="comment_remains">{{t.date}}</td>
             </tr>

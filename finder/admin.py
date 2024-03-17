@@ -1,14 +1,7 @@
 from django.contrib import admin
 
-from .models import UserIP
+from .models import *
 
-@admin.register(UserIP)
-class UserIPAdmin(admin.ModelAdmin):
-    list_display = ('ip_address', 'name')
-    
-    
-
-# class UserIPAdmin(admin.ModelAdmin):
-#     list_display = ('ip_address', 'name')
-
-# admin.site.register(UserIP, UserIPAdmin)
+admin.site.register(Address_Prod)
+admin.site.register(Paty_Prod)
+admin.site.register(Data_Table)

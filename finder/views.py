@@ -1,7 +1,7 @@
 import copy
 from django.contrib.auth import authenticate, login, logout
 import os
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
 import redis
@@ -9,7 +9,7 @@ import redis
 from config import settings
 from config.context_processors import get_file_name
 from finder.forms import InputValue
-from finder.models import Address_Prod, Data_Table, Remains, UserIP
+from finder.models import Address_Prod, Data_Table, Paty_Prod, Remains, UserIP
 from celery.result import AsyncResult
 
 
@@ -133,26 +133,52 @@ def get_manual(request):
 
 
 def sahr(request):
-    if request.POST:
-        id = request.POST.get("id")
+    data_table_all = Data_Table.objects.all()
+    if request.method == "POST":
+        remains_id = request.POST.get("id")
         address = request.POST.get("address")
+        comment = request.POST.get("comment")
+        part_select = request.POST.get("select")
+        party = Paty_Prod.objects.create(party=part_select)
+        remains = Remains.objects.get(id=remains_id)
         address_cell = Address_Prod.objects.create(address_cell=address)
-        remains = Remains.objects.get(id=id)
         article = remains.article
         title = remains.title
         base_unit = remains.base_unit
-        comment = request.POST.get("comment")
-        data_table, create =  Data_Table.objects.get_or_create(
-            article=article, title=title, base_unit=base_unit, comment=comment)
-        data_table.address.add(address_cell)
-    data_table =  Data_Table.objects.all()
-    return render(request, "sahr.html", {"data_table":data_table})
+      
+        data_table = Data_Table(
+            article=article,
+            title=title,
+            base_unit=base_unit,
+            comment=comment,
+            party=party,
+            address=address_cell,
+        )
+        part_address = Data_Table.objects.select_related("party", "address")
+        if not part_address:
+            data_table.save()
+        flag = True
+        for item in part_address:
+            if str(item.address) == str(address) and str(item.party) == str(party):
+                flag = False
+                break
+        if not flag:
+            error_save = "Вы не можете в одной ячейке сохранять одинаковую патрию!"
+            return render(request, "sahr.html", {"data_table": data_table_all, "error_save": error_save})
+        else:
+            data_table.save()
+            return render(request, "sahr.html", {"data_table": data_table_all})
+    return render(request, "sahr.html", {"data_table": data_table_all})
 
 
 def check_article(request, art):
     article = Remains.objects.filter(article__icontains=art).first()
     if article:
+        all_party = Remains.objects.filter(article=article)
+        party = {}
+        for i, p in enumerate(all_party):
+            party[i] = p.party
         title = article.title
         id = article.id
-        return JsonResponse({"title": title, "id": id})
+        return JsonResponse({"title": title, "id": id, "party": party})
     return JsonResponse({"error": "Товара нет в базе"})
