@@ -89,7 +89,7 @@ def choice_projects(request):
 def get_details_product(request, id):
     details = Remains.objects.filter(id=id)
     if not details:
-        return JsonResponse({"error": "Детали не найдены"})
+        return JsonResponse({"error": "Товар отсутствует в базе"})
 
     detail = details.first()
     article = detail.article
@@ -162,6 +162,7 @@ def sahr(request):
 
 
         data_table = Data_Table(
+            index_remains=remains_id,
             article=article,
             title=title,
             base_unit=base_unit,
@@ -176,11 +177,11 @@ def sahr(request):
         part_address = Data_Table.objects.filter(Q(party=party) & Q(address=address))
 
         if part_address.exists():
-            error_save = "Вы не можете в одной ячейке сохранять одинаковую партию!"
+            error_save = "На этом адресе такая позиция существует!"
             return render(request, "sahr.html", {"data_table": Data_Table.objects.all(), "error_save": error_save})
         else:
             data_table.save()
-            return render(request, "sahr.html", {"data_table": Data_Table.objects.all(), 'x': x})
+            return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
     return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
 
 
@@ -194,6 +195,7 @@ def del_row_shhr(request, id):
 
 def check_article(request, art):
     article = Remains.objects.filter(article__icontains=art).first()
+    total_quantity = Remains.objects.filter(article=article).aggregate(sum_quantity=Sum('quantity'))['sum_quantity']
     if article:
         all_party = Remains.objects.filter(article=article)
         party = {}
@@ -201,7 +203,10 @@ def check_article(request, art):
             party[i] = p.party
         title = article.title
         id = article.id
-        return JsonResponse({"title": title, "id": id, "party": party})
+        total_quantity = f'{total_quantity:.2f}'
+        return JsonResponse({"title": title, "id": id, "party": party, 'total_quantity': total_quantity})
     return JsonResponse({"error": "Товара нет в базе"})
+
+
 
 

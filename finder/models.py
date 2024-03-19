@@ -26,6 +26,7 @@ class UserIP(models.Model):
 
 
 class Data_Table(models.Model):
+    index_remains = models.IntegerField()
     article = models.CharField(max_length=50, null=True)
     party = models.CharField(max_length=20, null=True)
     title = models.TextField(null=True)

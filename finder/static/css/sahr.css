@@ -1,0 +1,60 @@
+header {
+    background:rgb(70 111 89);
+    width: 100%;
+    height: 215px;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    padding-top: 5px;
+    justify-content: space-between;
+  }
+
+
+
+.popup_sahr {
+    position: absolute;
+    top: 0px;
+    right: -4px;
+    height: 150px;
+    width: 405px;
+    background-color:#6a931bc7;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 2;
+    display: none;
+}
+
+.check_article, .views_title, .comment, .write_address {
+    font-size: 17px;
+    margin: 5px 5px;
+    height: 26px;
+    padding-left: 10px;
+    width: 370px;
+    border-radius: 9px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+
+.inputs_div {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.selectElement {
+    font-size: 16px;
+    font-family: sans-serif;
+    padding: 2.5999999999999996em 3.4000000000000004em 0.5em 1.8000000000000007em;
+    background-color: #f5232300;
+}
+  
+.search-input_sahr {
+    font-size: 15px;
+    height: 40px;
+    padding-left: 10px;
+    width: 143px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
