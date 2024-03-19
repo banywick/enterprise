@@ -1,6 +1,7 @@
 import copy
 from django.contrib.auth import authenticate, login, logout
 import os
+from django.db.models import Q, Sum, Value
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
@@ -9,7 +10,7 @@ import redis
 from config import settings
 from config.context_processors import get_file_name
 from finder.forms import InputValue
-from finder.models import Address_Prod, Data_Table, Paty_Prod, Remains, UserIP
+from finder.models import Data_Table, Remains, UserIP
 from celery.result import AsyncResult
 
 
@@ -109,6 +110,7 @@ def get_details_product(request, id):
             "sum": sum_art_str,
             "art": article,
             "title": title,
+            
         }
     )
 
@@ -132,43 +134,62 @@ def get_manual(request):
     return render(request, "manual.html")
 
 
+
 def sahr(request):
-    data_table_all = Data_Table.objects.all()
     if request.method == "POST":
         remains_id = request.POST.get("id")
         address = request.POST.get("address")
         comment = request.POST.get("comment")
-        part_select = request.POST.get("select")
-        party = Paty_Prod.objects.create(party=part_select)
-        remains = Remains.objects.get(id=remains_id)
-        address_cell = Address_Prod.objects.create(address_cell=address)
+        party = request.POST.get("select")
+
+        try:
+            remains = Remains.objects.get(id=remains_id)
+        except Remains.DoesNotExist:
+            # Обработка случая, когда запись с указанным ID не найдена
+            return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
+
         article = remains.article
         title = remains.title
         base_unit = remains.base_unit
-      
+        # total_quantity = Remains.objects.filter(article=article).aggregate(sum_quantity=Sum('quantity'))['sum_quantity']
+        # x = Data_Table.objects.filter(article=article).annotate(total_quantity=Value(total_quantity))
+        # for item in x:
+        #     print(item.article, item.total_quantity)
+        # x = Remains.objects.filter(article=article).aggregate(sum_quantity=Sum('quantity'))['sum_quantity']
+        # print(x)
+            
+
+
+
         data_table = Data_Table(
             article=article,
             title=title,
             base_unit=base_unit,
             comment=comment,
             party=party,
-            address=address_cell,
+            address=address,
         )
-        part_address = Data_Table.objects.select_related("party", "address")
-        if not part_address:
-            data_table.save()
-        flag = True
-        for item in part_address:
-            if str(item.address) == str(address) and str(item.party) == str(party):
-                flag = False
-                break
-        if not flag:
-            error_save = "Вы не можете в одной ячейке сохранять одинаковую патрию!"
-            return render(request, "sahr.html", {"data_table": data_table_all, "error_save": error_save})
+
+        # queryset = Table1.objects.annotate(total_amount=Subquery(subquery))
+
+
+        part_address = Data_Table.objects.filter(Q(party=party) & Q(address=address))
+
+        if part_address.exists():
+            error_save = "Вы не можете в одной ячейке сохранять одинаковую партию!"
+            return render(request, "sahr.html", {"data_table": Data_Table.objects.all(), "error_save": error_save})
         else:
             data_table.save()
-            return render(request, "sahr.html", {"data_table": data_table_all})
-    return render(request, "sahr.html", {"data_table": data_table_all})
+            return render(request, "sahr.html", {"data_table": Data_Table.objects.all(), 'x': x})
+    return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
+
+
+
+def del_row_shhr(request, id):
+    Data_Table.objects.filter(id=id).delete()
+    return redirect("sahr")
+
+    
 
 
 def check_article(request, art):
@@ -182,3 +203,5 @@ def check_article(request, art):
         id = article.id
         return JsonResponse({"title": title, "id": id, "party": party})
     return JsonResponse({"error": "Товара нет в базе"})
+
+

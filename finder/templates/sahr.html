@@ -22,7 +22,7 @@
             <input class='comment' type='text' placeholder='Коментарий' name='comment'>
             <input class='write_address' type="text" placeholder='адрес' name='address' required >
             <input class='hidden_id' type="text" hidden name='id'>
-            <select class='selectElement' name="select" size=6 required>
+            <select class='selectElement' name="select" size=6 >
             
             </select>
             <button>Сохранить</button>
@@ -54,11 +54,11 @@
               <th>Партия</th>
               <th>Артикул</th>
               <th>Номенклатура</th>
+              <th>Адрес</th>
               <th>Единица</th>
               <th>Коментарий</th>
-              <th>Адрес</th>
-              <th>Количество</th>
               <th>Дата</th>
+              <th>Действие</th>
             </tr>
           </thead>
           {% for t in data_table %}
@@ -67,11 +67,11 @@
               <td class="title_remains">{{t.party}}</td>
               <td class="article_remains">{{t.article}}</td>
               <td class="title_remains">{{t.title}}</td>
+              <td class="address_remains">{{ t.address }}</td>
               <td class="base_unit_remains">{{t.base_unit}}</td>
               <td class="comment_remains">{{t.comment}}</td>
-              <td class="address_remains">{{ t.address }}</td>
-              <td class="quantity_remains">анотация количества</td>
               <td class="comment_remains">{{t.date}}</td>
+              <td class="quantity_remains"><a href="{% url 'del_row_shhr' t.id %}">Удалить</a></td>
             </tr>
           </tbody>
           

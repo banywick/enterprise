@@ -18,7 +18,7 @@ check_article.addEventListener('input', async function () {
         } else {
             const response = await fetch(`http://127.0.0.1:8000/check_article/${enteredArticle}`);
             const data = await response.json();
-            console.log(data.party)
+            console.log(data)
             
             selectElement.innerHTML= ''
             for ( let i in data.party) {
