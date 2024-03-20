@@ -1,4 +1,5 @@
 import copy
+from re import T
 from django.contrib.auth import authenticate, login, logout
 import os
 from django.db.models import Q, Sum, Value
@@ -136,31 +137,34 @@ def get_manual(request):
 
 
 def sahr(request):
+    if 'search_sahr_form' in request.POST:
+        value_input = request.POST.get('value_input')
+        article = Q(article__contains=value_input)
+        address = Q(address__icontains=value_input)
+        party = Q(party__icontains=value_input)
+        result_search = Data_Table.objects.filter(article | address | party)
+        if not result_search.exists():
+            error_search = 'Ничего не найдено'
+            return render(request, "sahr.html", {'error_search': error_search})
+        
+        all_remaims_id = Remains.objects.values_list('id', flat=True)
+        Data_Table.objects.exclude(index_remains__in=all_remaims_id).update(index_remains=None)
+        return render(request, "sahr.html", {'data_table': result_search})
     if request.method == "POST":
         remains_id = request.POST.get("id")
         address = request.POST.get("address")
         comment = request.POST.get("comment")
         party = request.POST.get("select")
-
         try:
             remains = Remains.objects.get(id=remains_id)
         except Remains.DoesNotExist:
             # Обработка случая, когда запись с указанным ID не найдена
             return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
+       
 
         article = remains.article
         title = remains.title
         base_unit = remains.base_unit
-        # total_quantity = Remains.objects.filter(article=article).aggregate(sum_quantity=Sum('quantity'))['sum_quantity']
-        # x = Data_Table.objects.filter(article=article).annotate(total_quantity=Value(total_quantity))
-        # for item in x:
-        #     print(item.article, item.total_quantity)
-        # x = Remains.objects.filter(article=article).aggregate(sum_quantity=Sum('quantity'))['sum_quantity']
-        # print(x)
-            
-
-
-
         data_table = Data_Table(
             index_remains=remains_id,
             article=article,
@@ -170,18 +174,19 @@ def sahr(request):
             party=party,
             address=address,
         )
-
-        # queryset = Table1.objects.annotate(total_amount=Subquery(subquery))
-
-
         part_address = Data_Table.objects.filter(Q(party=party) & Q(address=address))
-
         if part_address.exists():
             error_save = "На этом адресе такая позиция существует!"
             return render(request, "sahr.html", {"data_table": Data_Table.objects.all(), "error_save": error_save})
         else:
             data_table.save()
-            return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
+            return render(request, "sahr.html", {"data_table": Data_Table.objects.order_by('-id')[:10]})
+   
+    return render(request, "sahr.html", {"data_table": Data_Table.objects.order_by('-id')[:10]})
+    
+
+
+def sahr_table(request):
     return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
 
 

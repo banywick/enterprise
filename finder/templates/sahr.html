@@ -15,16 +15,16 @@
             <form action="" method='POST' id='sahr_form'>
                 {% csrf_token %}
                 <div>
-                <input class='check_article' type="text" placeholder='артикул' name='article' required>
+                <input class='check_article' type="text" placeholder='Артикул' name='article' required>
                 </div>
                 <div>                
                   <input class='views_title' type='text' placeholder='Название' name='title' required>
                 </div>
                 <div>                
-                  <input class='comment' type='text' placeholder='Коментарий' name='comment'>
+                  <input class='comment' type='text' placeholder='Комментарий' name='comment'>
                 </div>
                 <div>                
-                  <input class='write_address' type="text" placeholder='адрес' name='address' required >
+                  <input class='write_address' type="text" placeholder='Адрес' name='address' required >
                 </div>
                 <div>               
                   <input class='hidden_id' type="text" hidden name='id'>
@@ -38,12 +38,24 @@
             <select class='selectElement' name="select" size=6 form='sahr_form'  required>
             </select>
           </div>   
-         
-          <form action="" method='POST'>
-            {% csrf_token %}
-            <input class='search-input_sahr' type="text">
-            <button class="search-button" type="submit" >Найти 🔎</button>
-          </form>
+         <div class="input_container">
+          <div class="popup_sahr">
+            <div class='sahr_details_info'>Артикул</div>
+            <div class='sahr_details_article' ></div>
+            <div class='sahr_details_article' >Остаток:</div>
+            <div class='sahr_details_sum'> </div>
+          </div>
+          <div>
+            <form action="" method='POST'>
+              {% csrf_token %}
+              <input class='search-input_sahr' type="text" name='value_input'>
+              <button class="search-button" name='search_sahr_form'  >Найти 🔎</button>
+              <p style='color:red; font-size: 20px;'>{{error_search}}</p>
+            </form>
+          </div>
+           
+        </div>
+          
         <div class="header_user_account">
           {% if request.user.is_authenticated %}
           <img src="{% static 'img/user_icon.png' %}" alt="" />
@@ -58,13 +70,7 @@
           {% endif %}
         </div>
     </header>  
-      <div class="popup_sahr">
-        <div class='details_item'>
-          <div class='sahr_details_info'>Артикул</div>
-          <div class='sahr_details_article' ></div>
-          <div class='sahr_details_sum'> </div>
-      </div>
-      </div>
+     
       </div>
       <div class="table_div">
         <table>
@@ -85,8 +91,7 @@
           </thead>
           {% for t in data_table %}
           <tbody>
-            <tr data-id="{{ t.index_remains }}">
-              <td class="title_remains">{{t.party}}</td>
+            <tr data-id="{{ t.index_remains }}" class="{% if not t.index_remains %}red-row{% endif %}">              <td class="title_remains">{{t.party}}</td>
               <td class="article_remains">{{t.article}}</td>
               <td class="title_remains">{{t.title}}</td>
               <td class="address_remains">{{ t.address }}</td>

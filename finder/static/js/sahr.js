@@ -5,7 +5,6 @@ const save_button = document.querySelector('.save_button');
 const hidden_id = document.querySelector('.hidden_id');
 const selectElement = document.querySelector('.selectElement');
 const tableRowsSahr = document.querySelectorAll('tr[data-id]');
-const popup_sahr = document.querySelector('.popup_sahr')
 
 
 
@@ -14,7 +13,6 @@ tableRowsSahr.forEach((row) => {
         // Получаем значение атрибута data-id
         const id = row.getAttribute('data-id');
         console.log(id);
-        popup_sahr.style.display = 'block';
         fetch(`http://127.0.0.1:8000/details/${id}`)
         .then(data=> data.json())
         .then(data => {

@@ -11,17 +11,13 @@ header {
 
 
 
-.popup_sahr {
-    position: absolute;
-    top: 0px;
-    right: -4px;
-    height: 150px;
-    width: 405px;
-    background-color:#6a931bc7;
-    border: 1px solid #ccc;
+  .popup_sahr {
+    border: 2px solid #ccc;
     padding: 10px;
-    z-index: 2;
-    display: none;
+    display: block;
+    height: 94px;
+    width: 245px;
+    background: #ffffff61;
 }
 
 .check_article, .views_title, .comment, .write_address {
@@ -57,4 +53,13 @@ header {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+.input_container {
+    height: 100%;
+
+}
+
+.red-row {
+    background-color: red;
 }
