@@ -2,7 +2,7 @@ import copy
 from re import T
 from django.contrib.auth import authenticate, login, logout
 import os
-from django.db.models import Q, Sum, Value
+from django.db.models import F, Q, Func, Sum, Value
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
@@ -87,8 +87,8 @@ def choice_projects(request):
     return render(request, "choice_project.html", context=context)
 
 
-def get_details_product(request, id):
-    details = Remains.objects.filter(id=id)
+def get_details_product(request, art):
+    details = Remains.objects.filter(article__contains=art)
     if not details:
         return JsonResponse({"error": "Товар отсутствует в базе"})
 
@@ -137,52 +137,50 @@ def get_manual(request):
 
 
 def sahr(request):
-    if 'search_sahr_form' in request.POST:
-        value_input = request.POST.get('value_input')
-        article = Q(article__contains=value_input)
-        address = Q(address__icontains=value_input)
-        party = Q(party__icontains=value_input)
-        result_search = Data_Table.objects.filter(article | address | party)
-        if not result_search.exists():
-            error_search = 'Ничего не найдено'
-            return render(request, "sahr.html", {'error_search': error_search})
-        
-        all_remaims_id = Remains.objects.values_list('id', flat=True)
-        Data_Table.objects.exclude(index_remains__in=all_remaims_id).update(index_remains=None)
-        return render(request, "sahr.html", {'data_table': result_search})
-    if request.method == "POST":
-        remains_id = request.POST.get("id")
-        address = request.POST.get("address")
-        comment = request.POST.get("comment")
-        party = request.POST.get("select")
-        try:
-            remains = Remains.objects.get(id=remains_id)
-        except Remains.DoesNotExist:
-            # Обработка случая, когда запись с указанным ID не найдена
-            return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
-       
+    all_remains_art = Remains.objects.all().values_list('article', flat=True).distinct('article')
+    all_remains_art = list(map(str, all_remains_art)) # Преобразовываем все в трочное значение
+    Data_Table.objects.exclude(article__in=all_remains_art).update(index_remains=None)
+    if request.method == 'POST':
 
-        article = remains.article
-        title = remains.title
-        base_unit = remains.base_unit
-        data_table = Data_Table(
-            index_remains=remains_id,
-            article=article,
-            title=title,
-            base_unit=base_unit,
-            comment=comment,
-            party=party,
-            address=address,
-        )
-        part_address = Data_Table.objects.filter(Q(party=party) & Q(address=address))
-        if part_address.exists():
-            error_save = "На этом адресе такая позиция существует!"
-            return render(request, "sahr.html", {"data_table": Data_Table.objects.all(), "error_save": error_save})
-        else:
-            data_table.save()
-            return render(request, "sahr.html", {"data_table": Data_Table.objects.order_by('-id')[:10]})
-   
-    return render(request, "sahr.html", {"data_table": Data_Table.objects.order_by('-id')[:10]})
+        if 'search_sahr_form' in request.POST:
+            value_input = request.POST.get('value_input')
+            article = Q(article__contains=value_input)
+            address = Q(address__icontains=value_input)
+            party = Q(party__icontains=value_input)
+            result_search = Data_Table.objects.filter(article | address | party)
+            if not result_search.exists():
+                error_search = 'Ничего не найдено'
+                return render(request, "sahr.html", {'error_search': error_search})
+            return render(request, "sahr.html", {'data_table': result_search})
+        
+        if 'save_button_form' in request.POST:
+            remains_id = request.POST.get("id")
+            address = request.POST.get("address")
+            comment = request.POST.get("comment")
+            party = request.POST.get("select")
+            remains = Remains.objects.get(id=remains_id)
+            article = remains.article
+            title = remains.title
+            base_unit = remains.base_unit
+            data_table = Data_Table(
+                article=article,
+                title=title,
+                base_unit=base_unit,
+                comment=comment,
+                party=party,
+                address=address,)
+        
+            part_address = Data_Table.objects.filter(Q(party=party) & Q(address=address))
+            if part_address.exists():
+                error_save = "На этом адресе такая позиция существует!"
+                return render(request, "sahr.html", {"data_table": Data_Table.objects.all(), "error_save": error_save})
+            else:
+                data_table.save()
+                return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
+            
+        
+ 
+    return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
     
 
 

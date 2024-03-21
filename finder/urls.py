@@ -12,7 +12,8 @@ from .views import (
     sahr,
     check_article,
     del_row_shhr,
-    sahr_table
+    sahr_table,
+    # get_detail_sahr
 )
 from .utils import clear_sort
 
@@ -24,7 +25,8 @@ urlpatterns = [
     path("check_task_status/", check_task_status, name="check_task_status"),
     path("choice/", choice_projects, name="choice"),
     path("clear/", clear_sort, name="clear"),
-    path("details/<int:id>", get_details_product, name="details"),
+    path("details/<str:art>", get_details_product, name="details"),
+    # path('detail_sahr/<str:art>', get_detail_sahr, name='detail_sahr'),
     path("manual/", get_manual, name="manual"),
     path("sahr/", sahr, name="sahr"),
     path('sahr_table', sahr_table, name='sahr_table'),

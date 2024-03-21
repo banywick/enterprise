@@ -6,11 +6,12 @@ button_hide.addEventListener('click', hide_details)
 // Добавляем обработчик события для каждой строки
 tableRows.forEach((row) => {
     row.addEventListener('click', () => {
+        console.log(row);
         // Получаем значение атрибута data-id
-        const id = row.getAttribute('data-id');
+        const art = row.getAttribute('data-id');
         details_div.style.display = 'block'
         // Здесь вы можете выполнять дополнительные действия с полученным id
-        fetch(`http://127.0.0.1:8000/details/${id}`)
+        fetch(`http://127.0.0.1:8000/details/${art}`)
         .then(data=> data.json())
         .then(data => {
             console.log(data)

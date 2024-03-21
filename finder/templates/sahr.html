@@ -30,7 +30,7 @@
                   <input class='hidden_id' type="text" hidden name='id'>
                 </div>
                 <div>  
-                  <button class='search-button'  form='sahr_form'>Сохранить</button>
+                  <button class='search-button' name='save_button_form' form='sahr_form'>Сохранить</button>
                 </div> 
             </form>
           </div>  
@@ -91,7 +91,8 @@
           </thead>
           {% for t in data_table %}
           <tbody>
-            <tr data-id="{{ t.index_remains }}" class="{% if not t.index_remains %}red-row{% endif %}">              <td class="title_remains">{{t.party}}</td>
+            <tr data-id="{{ t.article }}" class="{% if not t.index_remains %}red-row{% endif %}">           
+              <td class="title_remains">{{t.party}}</td>
               <td class="article_remains">{{t.article}}</td>
               <td class="title_remains">{{t.title}}</td>
               <td class="address_remains">{{ t.address }}</td>

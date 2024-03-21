@@ -11,9 +11,8 @@ const tableRowsSahr = document.querySelectorAll('tr[data-id]');
 tableRowsSahr.forEach((row) => {
     row.addEventListener('click', () => {
         // Получаем значение атрибута data-id
-        const id = row.getAttribute('data-id');
-        console.log(id);
-        fetch(`http://127.0.0.1:8000/details/${id}`)
+        const art = row.getAttribute('data-id');
+        fetch(`http://127.0.0.1:8000/details/${art}`)
         .then(data=> data.json())
         .then(data => {
             console.log(data)
