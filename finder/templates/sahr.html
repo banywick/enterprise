@@ -71,7 +71,6 @@
         </div>
     </header>  
      
-      </div>
       <div class="table_div">
         <table>
           <div>  
@@ -99,13 +98,19 @@
               <td class="base_unit_remains">{{t.base_unit}}</td>
               <td class="comment_remains">{{t.comment}}</td>
               <td class="comment_remains">{{t.date}}</td>
-              <td class="delete_shr_row"><a href="{% url 'del_row_shhr' t.id %}">Удалить</a></td>
+              <td class="delete_shr_row">
+                <div class="div_del">
+                <a href="{% url 'del_row_shhr' t.id %}">Удалить</a> <br>
+              </div>
+              <div class="div_chenge">
+                <a href="#">Редактировать</a>
+              </div>
+              </td>
             </tr>
           </tbody>
           {% endfor %}
         </table>
       </div>
-    </div>
-    <script src='{% static 'js/sahr.js'%}'></script>
+  <script src='{% static 'js/sahr.js'%}'></script>
   </body>
 </html>

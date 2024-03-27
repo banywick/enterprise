@@ -137,7 +137,7 @@ def get_manual(request):
 
 
 def sahr(request):
-    all_remains_art = Remains.objects.all().values_list('article', flat=True).distinct('article')
+    all_remains_art = Remains.objects.all().values_list('article', flat=True).distinct()
     all_remains_art = list(map(str, all_remains_art)) # Преобразовываем все в трочное значение
     Data_Table.objects.exclude(article__in=all_remains_art).update(index_remains=None)
     if request.method == 'POST':

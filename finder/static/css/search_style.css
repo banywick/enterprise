@@ -245,4 +245,16 @@ tr td:last-child {
   cursor: pointer;
 }
 
-
+.div_del {
+  background-color: #e4504e;
+  border-radius: 5px;
+  border: 1px solid black; 
+  width: 110px;
+  margin-bottom: 10px;
+}
+.div_chenge {
+  background-color: #4ee45b;
+  border-radius: 5px;
+  border: 1px solid black; 
+  width: 110px;
+}
