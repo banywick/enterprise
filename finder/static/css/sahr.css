@@ -54,6 +54,7 @@ header {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+    margin-bottom: 10px;
 }
 
 .input_container {
@@ -64,3 +65,14 @@ header {
 .red-row {
     background-color: red;
 }
+
+.choice_address {
+    display: flex;
+    justify-content: space-between;
+}
+
+.choice_container {
+    display: flex;
+    justify-content: space-around;
+    gap: 100px;
+} 

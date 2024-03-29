@@ -33,3 +33,4 @@ urlpatterns = [
     path("check_article/<str:art>", check_article, name="check_article"),
     path("del_row_shhr/<int:id>", del_row_shhr, name='del_row_shhr'),
 ]
+
