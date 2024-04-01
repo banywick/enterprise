@@ -99,19 +99,23 @@
                     </form>
                 </div>
             </div>
-
-            <div class="header_user_account">
-                {% if request.user.is_authenticated %}
-                <img src="{% static 'img/user_icon.png' %}" alt="" />
-                <h3>{{ user.username }}</h3>
-                <p class="auth_text">
-                    <a class="auth_text" href="{% url 'logout' %}">Выход</a>
-                </p>
-                {% else%}
-                <p class="auth_text">
-                    <a href="{% url 'login' %}">Войти</a>
-                </p>
-                {% endif %}
+            <div class="header_right_container">
+                <div class="header_user_account">
+                    {% if request.user.is_authenticated %}
+                    <img src="{% static 'img/user_icon.png' %}" alt="" />
+                    <h3>{{ user.username }}</h3>
+                    <p class="auth_text">
+                        <a class="auth_text" href="{% url 'logout' %}">Выход</a>
+                    </p>
+                    {% else%}
+                    <p class="auth_text">
+                        <a href="{% url 'login' %}">Войти</a>
+                    </p>
+                    {% endif %}
+                </div>
+                <div>
+                  <a href="{% url "backup" %}">Сделать резервную копию</a>
+                </div>
             </div>
         </header>
         <div class="table_div">
@@ -120,22 +124,21 @@
                     <p style="text-align: center; color: red">{{error_save}}</p>
                 </div>
                 <div class="choice_address">
-                    <form action="">
+                    <form method='POST' action="{% url 'change_row' %}">
                         {% csrf_token %}
-                        <div class="choice_container">
-                            <input class='form_id_data_table' type="text" hidden name='id_data_table' />
-                            <div class='change_party_info'>Партия</div>
-                            <div class='change_article_info'>Артикул</div>
-                        </div>
-                        <input type="text" placeholder="Введите номер ячейки" />
-                        <input type="text" placeholder="Введите комментарий" />
-                        <button class="change_cell_button">
-                            Изменить ячейку
-                        </button>
+                         <div class="choice_container">
+                            <input class='form_id_data_table' type="id" hidden name='id_data_table'>
+                            <input type="text" placeholder="Введите номер ячейки" name='address' >
+                            <input type="text" placeholder="Введите комментарий" name='comment'>
+                            <button class="change_cell_button">
+                            Сохранить изменения
+                            </button>
+                      </div> 
                     </form>
                 </div>
                 <thead>
                     <tr>
+                        <th>id_позиции</th>
                         <th>Партия</th>
                         <th>Артикул</th>
                         <th>Номенклатура</th>
@@ -152,7 +155,7 @@
                         data-id="{{ t.article }}"
                         class="{% if not t.index_remains %}red-row{% endif %}"
                     >
-                        <td class="id_data_table" hidden>{{t.id}}</td>
+                        <td class="id_data_table">{{t.id}}</td>
                         <td class="title_remains">{{t.party}}</td>
                         <td class="article_remains">{{t.article}}</td>
                         <td class="title_remains">{{t.title}}</td>
@@ -162,7 +165,7 @@
                         <td class="comment_remains">{{t.date}}</td>
                         <td class="delete_shr_row">
                             <div class="div_del">
-                                <a href="{% url 'del_row_shhr' t.id %}">
+                                <a href="{% url 'del_row_sahr' t.id %}">
                                     Удалить
                                 </a>
                                 <br />

@@ -6,17 +6,15 @@ from django.db.models import F, Q, Func, Sum, Value
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
+import pandas as pd
 import redis
-
 from config import settings
 from config.context_processors import get_file_name
+from finder.export_sahr import doc_sahr
 from finder.forms import InputValue
 from finder.models import Data_Table, Remains, UserIP
 from celery.result import AsyncResult
-
-
-from finder.tasks import data_save_db
-
+from finder.tasks import backup_sahr_table, data_save_db
 from finder.utils import choice_project_dict, get_context_input_filter_all
 
 
@@ -141,7 +139,6 @@ def sahr(request):
     all_remains_art = list(map(str, all_remains_art)) # Преобразовываем все в трочное значение
     Data_Table.objects.exclude(article__in=all_remains_art).update(index_remains=None)
     if request.method == 'POST':
-
         if 'search_sahr_form' in request.POST:
             value_input = request.POST.get('value_input')
             article = Q(article__contains=value_input)
@@ -151,8 +148,10 @@ def sahr(request):
             if not result_search.exists():
                 error_search = 'Ничего не найдено'
                 return render(request, "sahr.html", {'error_search': error_search})
-            return render(request, "sahr.html", {'data_table': result_search})
-        
+            if value_input == "":
+                Data_Table.objects.all().order_by("-id")[:10]
+            else:    
+                return render(request, "sahr.html", {'data_table': result_search})
         if 'save_button_form' in request.POST:
             remains_id = request.POST.get("id")
             address = request.POST.get("address")
@@ -169,31 +168,43 @@ def sahr(request):
                 comment=comment,
                 party=party,
                 address=address,)
-        
             part_address = Data_Table.objects.filter(Q(party=party) & Q(address=address))
             if part_address.exists():
                 error_save = "На этом адресе такая позиция существует!"
-                return render(request, "sahr.html", {"data_table": Data_Table.objects.all(), "error_save": error_save})
+                return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:10], "error_save": error_save})
             else:
                 data_table.save()
-                return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
-            
-        
- 
-    return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
+                return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:10]})
+    return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:10]})
     
 
 
-def sahr_table(request):
-    return render(request, "sahr.html", {"data_table": Data_Table.objects.all()})
+# def sahr_table(request):
+#     return render(request, "sahr.html", {"data_table": Data_Table.objects.all()[30:]})
 
 
+def change_row(request):
+     id_data_table = request.POST.get('id_data_table')
+     address =  request.POST.get('address')
+     comment =  request.POST.get('comment')
+     data_table_entry = Data_Table.objects.filter(id=id_data_table)
+     if address:
+        data_table_entry.update(address=address)
+     if comment:
+         data_table_entry.update(comment=comment)   
+     return redirect('sahr')
 
-def del_row_shhr(request, id):
+def del_row_sahr(request, id):
     Data_Table.objects.filter(id=id).delete()
     return redirect("sahr")
 
+def backup_table(request):
+    # backup_sahr_table.delay()
+    doc_sahr()
+    return redirect("sahr")
+
     
+
 
 
 def check_article(request, art):

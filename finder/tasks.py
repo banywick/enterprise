@@ -1,32 +1,14 @@
 import os
+from django.http import FileResponse
 from django.shortcuts import redirect
 import pandas as pd
+import pytz
 from sqlalchemy import create_engine
 from celery import shared_task
 import re
+from datetime import datetime
 
-
-# def change_symbol():
-#     pattern = r'\d\w[xXхХ]\d|\w\d[xXхХ]\d|\d[xXхХ]\d'
-#     file_url = '/home/banywick/Документы/ОКБТСП разработка поисковика/меняем сиввал/13.07.23.xlsx'
-    
-#     # Чтение данных из файла Excel
-#     df = pd.read_excel(file_url,usecols=[11, 12, 13, 14, 15, 16, 17, 18] , skiprows=10)
-    
-#     # Замена символов
-#     for col in df.columns:
-#         df[col][15] = df[col].apply(lambda x: re.sub(pattern, '*', str(x)))
-    
-#     # Сохранение изменений
-#     df.to_excel(file_url, index=False)
-#     print('готово')
-
-# Вызов функции
-# change_symbol()
-
-
-
-
+from finder.models import Data_Table
 
 
 @shared_task
@@ -70,3 +52,23 @@ def data_save_db(file_url):
     except Exception as e:
         os.remove(file_url)
         raise "Файл который вы загружаете не соответсвует структуре"
+    
+
+@shared_task
+def backup_sahr_table():
+    timezone = pytz.timezone('Europe/Minsk')
+    current_date = datetime.now(timezone).strftime('%d.%m.%Y %H:%M:%S')
+    queryset = Data_Table.objects.all()  # Получите все записи из модели
+    df = pd.DataFrame(list(queryset.values()))  # Преобразуйте в DataFrame
+    df.drop(df.columns[[0, 1]], axis=1, inplace=True)
+    folder_path = 'finder/document/backup_sahr'  # Замените на свой путь
+    # Сохраняем в файл Excel с читаемой датой в названии
+    file_path = os.path.join(folder_path, f'CAXP_{current_date}.xlsx')
+    n = f'CAXP_{current_date}.xlsx'
+    df.to_excel(file_path, index=False)    
+
+   
+
+
+
+

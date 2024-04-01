@@ -66,13 +66,35 @@ header {
     background-color: red;
 }
 
-.choice_address {
-    display: flex;
-    justify-content: space-between;
-}
 
 .choice_container {
-    display: flex;
-    justify-content: space-around;
-    gap: 100px;
+    display: none;
+    justify-content: space-between;
+    height: 35px;
+    background: #53618dab;
+        & input {
+        border: 1px solid black;
+        width: 230px;
+        border-radius: 15px;
+        font-size: 17px;
+    }
 } 
+
+.change_cell_button {
+    background: #00ff0159;
+    border: 1px solid black;
+    border-radius: 9px;
+}
+
+
+.div_del, .change_button {
+    width: 110px;
+    margin-bottom: 10px;
+    border: none;
+  }
+  .div_chenge {
+    background-color: #4ee45b;
+    border-radius: 5px;
+    border: 1px solid black; 
+    width: 110px;
+  }
