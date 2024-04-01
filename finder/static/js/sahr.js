@@ -35,9 +35,14 @@ tableRowsSahr.forEach((row) => {
         fetch(`http://127.0.0.1:8000/details/${art}`)
         .then(data=> data.json())
         .then(data => {
-            // console.log(data)
+            console.log(data)
             document.querySelector(".sahr_details_article").textContent = data.art;
-            document.querySelector(".sahr_details_sum").textContent = data.sum;
+            if (data.sum) {
+                document.querySelector(".sahr_details_sum").textContent = data.sum;
+            }
+            if (data.error) {
+                document.querySelector(".sahr_details_sum").textContent = data.error;
+            }
           
     })})})
 

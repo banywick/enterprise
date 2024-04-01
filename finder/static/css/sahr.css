@@ -62,10 +62,17 @@ header {
 
 }
 
-.red-row {
-    background-color: red;
+.red_row {
+    background-color: #ff000082;
 }
 
+.change_button {
+    cursor: pointer;
+}
+
+.change_button:hover {
+    color:rgb(32, 121, 10);
+}
 
 .choice_container {
     display: none;
@@ -98,3 +105,54 @@ header {
     border: 1px solid black; 
     width: 110px;
   }
+
+.header_right_container {
+    height: 216px;
+    & .count_row {
+        margin-bottom: 100px;
+    }
+  }
+
+
+.header_user_account_sahr {
+    text-align: center;
+}
+
+.back_finder {
+    width: 47px;
+  
+}
+
+.header_left_container {
+    display: flex;
+}
+
+.emoji {
+    font-size: 25px;
+}
+
+.table_div {
+    overflow: auto;
+    max-height: 74vh;
+}
+
+.sahr_table {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+font-size: 14px;
+border-radius: 10px;
+border-spacing: 0;
+text-align: center;
+width: 100%;
+}
+
+.sahr_table td {
+    background: #bd9d1a4a;
+    padding: 6px;
+    border: 1px solid black;
+}
+
+.sahr_table th {
+    background: #87c587;
+    padding: 10px 20px;
+}
+
