@@ -135,21 +135,47 @@ def get_manual(request):
 
 
 def sahr(request):
+    count_row = Data_Table.objects.all().count()
     all_remains_art = Remains.objects.all().values_list('article', flat=True).distinct()
     all_remains_art = list(map(str, all_remains_art)) # Преобразовываем все в трочное значение
     Data_Table.objects.exclude(article__in=all_remains_art).update(index_remains=None)
     if request.method == 'POST':
         if 'search_sahr_form' in request.POST:
             value_input = request.POST.get('value_input')
+            def check_ru_symbol(): # все русские переводим в англисские
+                replacements = {
+                    'а': 'a',
+                    'б': 'b',
+                    'в': 'b',
+                    'с': 'c',
+                    'д': 'd',
+                    'е': 'e',
+                    'ф': 'f',
+                    'н': 'h'
+                }
+                return ''.join(replacements.get(char.lower(), char) for char in value_input)
+            def find_en_ru():
+                replacements = {
+                    'a': 'а',
+                    'b': 'б',
+                    'b': 'в',
+                    'c': 'с',
+                    'd': 'д',
+                    'e': 'е',
+                    'f': 'ф',
+                    'h': 'н'
+                }
+                return ''.join(replacements.get(char.lower(), char) for char in value_input)
             article = Q(article__contains=value_input)
-            address = Q(address__icontains=value_input)
+            address_ru = Q(address__icontains=check_ru_symbol())
+            address_en = Q(address__icontains=find_en_ru())
             party = Q(party__icontains=value_input)
-            result_search = Data_Table.objects.filter(article | address | party)
+            result_search = Data_Table.objects.filter(article | party | address_ru | address_en)
             if not result_search.exists():
                 error_search = 'Ничего не найдено'
                 return render(request, "sahr.html", {'error_search': error_search})
             if value_input == "":
-                Data_Table.objects.all().order_by("-id")[:10]
+                Data_Table.objects.all().order_by("-id")[:50][::-1]
             else:    
                 return render(request, "sahr.html", {'data_table': result_search})
         if 'save_button_form' in request.POST:
@@ -171,16 +197,12 @@ def sahr(request):
             part_address = Data_Table.objects.filter(Q(party=party) & Q(address=address))
             if part_address.exists():
                 error_save = "На этом адресе такая позиция существует!"
-                return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:10], "error_save": error_save})
+                return render(request, "sahr.html", {"data_table":Data_Table.objects.all().order_by("-id")[:50][::-1], "error_save": error_save,  'count_row':count_row})
             else:
                 data_table.save()
-                return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:10]})
-    return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:10]})
+                return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:50][::-1], 'count_row':count_row})
+    return render(request, "sahr.html", {"data_table":  Data_Table.objects.all().order_by("-id")[:50][::-1], 'count_row':count_row})
     
-
-
-# def sahr_table(request):
-#     return render(request, "sahr.html", {"data_table": Data_Table.objects.all()[30:]})
 
 
 def change_row(request):
@@ -199,11 +221,9 @@ def del_row_sahr(request, id):
     return redirect("sahr")
 
 def backup_table(request):
-    # backup_sahr_table.delay()
-    doc_sahr()
+    backup_sahr_table.delay()
+    # doc_sahr()
     return redirect("sahr")
-
-    
 
 
 
