@@ -111,7 +111,10 @@
             
             <div class="header_right_container">
                 <div>
-                    <a href="{% url "backup" %}">Сделать резервную копию</a>
+                    <a href="{% url 'dowload_backup' %}">Скачать Excel-файл</a>
+                </div>
+                <div>
+                    {% comment %} <a href="{% url "backup" %}">Сделать резервную копию</a> {% endcomment %}
                   </div>
                 <div class="count_row">
                     <p>

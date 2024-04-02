@@ -17,3 +17,9 @@ def doc_sahr():
             date=row[4],
         )
 # doc_sahr()            
+# def doc_sahr():
+#     wb = openpyxl.load_workbook("/home/banywick/Projects/enterprise/образец данных.xlsx")
+#     sheet = wb['Лист1']
+#     for row in sheet.iter_rows(min_row=0, max_row=6106, min_col=0, max_col=0, values_only=True):
+#         print( row[4])
+# # doc_sahr()            

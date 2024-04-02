@@ -1,4 +1,5 @@
 import copy
+from mimetypes import guess_type
 from re import T
 from django.contrib.auth import authenticate, login, logout
 import os
@@ -220,10 +221,10 @@ def del_row_sahr(request, id):
     Data_Table.objects.filter(id=id).delete()
     return redirect("sahr")
 
-def backup_table(request):
-    backup_sahr_table.delay()
-    # doc_sahr()
-    return redirect("sahr")
+# def backup_table(request):
+#     backup_sahr_table.delay()
+#     # doc_sahr()
+#     return redirect("sahr")
 
 
 
@@ -240,6 +241,22 @@ def check_article(request, art):
         total_quantity = f'{total_quantity:.2f}'
         return JsonResponse({"title": title, "id": id, "party": party, 'total_quantity': total_quantity})
     return JsonResponse({"error": "Товара нет в базе"})
+
+
+
+def download_backup(request):
+    file_path = backup_sahr_table()[0]
+
+    
+    
+    # Определение MIME-типа файла
+    mime_type, _ = guess_type(file_path)
+
+    # Отправка файла как HTTP-ответ
+    with open(file_path, 'rb') as file:
+        response = HttpResponse(file, content_type=mime_type)
+        response['Content-Disposition'] = f'attachment; filename="{backup_sahr_table()[1]}"'
+        return response
 
 
 

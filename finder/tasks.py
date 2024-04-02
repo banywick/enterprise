@@ -54,7 +54,7 @@ def data_save_db(file_url):
         raise "Файл который вы загружаете не соответсвует структуре"
     
 
-@shared_task
+
 def backup_sahr_table():
     timezone = pytz.timezone('Europe/Minsk')
     current_date = datetime.now(timezone).strftime('%d.%m.%Y %H:%M:%S')
@@ -65,7 +65,9 @@ def backup_sahr_table():
     # Сохраняем в файл Excel с читаемой датой в названии
     file_path = os.path.join(folder_path, f'CAXP_{current_date}.xlsx')
     n = f'CAXP_{current_date}.xlsx'
-    df.to_excel(file_path, index=False)    
+    df.to_excel(file_path, index=False)
+    filename = f'CAXP_{current_date}.xlsx'
+    return [file_path, filename]  
 
    
 

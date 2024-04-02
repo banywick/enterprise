@@ -36,7 +36,7 @@ class Data_Table(models.Model):
     title = models.TextField(null=True)
     base_unit = models.CharField(max_length=10, null=True)
     comment = models.TextField(null=True)
-    date = models.DateField(auto_now_add=True, null=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
     address = models.CharField(max_length=100, null=True)
 
     def __str__(self):

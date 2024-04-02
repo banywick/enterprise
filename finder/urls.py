@@ -16,9 +16,9 @@ urlpatterns = [
     path('change_row/', change_row, name='change_row'),
     path("manual/", get_manual, name="manual"),
     path("sahr/", sahr, name="sahr"),
-    # path('sahr_table', sahr_table, name='sahr_table'),
     path("check_article/<str:art>", check_article, name="check_article"),
     path("del_row_sahr/<int:id>", del_row_sahr, name='del_row_sahr'),
-    path('backup', backup_table, name='backup')
+    # path('backup', backup_table, name='backup'),
+    path('download-excel/', download_backup, name='dowload_backup'),
 ]
 
