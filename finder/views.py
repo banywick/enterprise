@@ -1,4 +1,4 @@
-import copy
+from datetime import datetime
 from mimetypes import guess_type
 from re import T
 from django.contrib.auth import authenticate, login, logout
@@ -8,12 +8,13 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
 import pandas as pd
+import pytz
 import redis
 from config import settings
 from config.context_processors import get_file_name
 from finder.export_sahr import doc_sahr
 from finder.forms import InputValue
-from finder.models import Data_Table, Remains, UserIP
+from finder.models import *
 from celery.result import AsyncResult
 from finder.tasks import backup_sahr_table, data_save_db
 from finder.utils import choice_project_dict, get_context_input_filter_all
@@ -69,12 +70,6 @@ def upload_file(request):
 
 
 def search_engine(request):
-    ip = request.META.get("REMOTE_ADDR")
-    name = request.META.get("USERNAME")
-    if ip or name:
-        UserIP.objects.get_or_create(ip_address=ip, name=name)
-    request.session["task_id"] = ""
-
     context = get_context_input_filter_all(request)
     return render(request, "index.html", context=context)
 
@@ -194,7 +189,8 @@ def sahr(request):
                 base_unit=base_unit,
                 comment=comment,
                 party=party,
-                address=address,)
+                address=address,
+                date=datetime.now())
             part_address = Data_Table.objects.filter(Q(party=party) & Q(address=address))
             if part_address.exists():
                 error_save = "На этом адресе такая позиция существует!"
@@ -202,29 +198,35 @@ def sahr(request):
             else:
                 data_table.save()
                 return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:50][::-1], 'count_row':count_row})
+    # doc_sahr()        
     return render(request, "sahr.html", {"data_table":  Data_Table.objects.all().order_by("-id")[:50][::-1], 'count_row':count_row})
     
 
 
 def change_row(request):
-     id_data_table = request.POST.get('id_data_table')
-     address =  request.POST.get('address')
-     comment =  request.POST.get('comment')
-     data_table_entry = Data_Table.objects.filter(id=id_data_table)
-     if address:
-        data_table_entry.update(address=address)
-     if comment:
-         data_table_entry.update(comment=comment)   
-     return redirect('sahr')
+    id_data_table = request.POST.get('id_data_table')
+    address =  request.POST.get('address')
+    comment =  request.POST.get('comment')
+    data_table_entry = Data_Table.objects.get(id=id_data_table)
+    if address:
+        data_table_entry.address = address
+        data_table_entry.save(update_fields=['address'])
+    if comment:
+        data_table_entry.comment = comment
+        data_table_entry.save(update_fields=['comment'])
+    return redirect('sahr')
+
+
+def get_history(request, id):
+    data_table = History.objects.filter(data_table_id=id).order_by('date')
+    info = 'Закрыть историю'
+    return render(request, "sahr.html", {"data_table": data_table, 'info': info})
+
+
 
 def del_row_sahr(request, id):
     Data_Table.objects.filter(id=id).delete()
     return redirect("sahr")
-
-# def backup_table(request):
-#     backup_sahr_table.delay()
-#     # doc_sahr()
-#     return redirect("sahr")
 
 
 
@@ -246,12 +248,8 @@ def check_article(request, art):
 
 def download_backup(request):
     file_path = backup_sahr_table()[0]
-
-    
-    
     # Определение MIME-типа файла
     mime_type, _ = guess_type(file_path)
-
     # Отправка файла как HTTP-ответ
     with open(file_path, 'rb') as file:
         response = HttpResponse(file, content_type=mime_type)

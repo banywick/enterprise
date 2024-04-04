@@ -65,6 +65,9 @@ header {
 .red_row {
     background-color: #ff000082;
 }
+.white_row {
+    background: none;
+}
 
 .change_button {
     cursor: pointer;
@@ -73,10 +76,12 @@ header {
 .change_button:hover {
     color:rgb(32, 121, 10);
 }
-
+.history a:hover {
+    color:rgb(57, 145, 204)
+}
 .choice_container {
     display: none;
-    justify-content: space-between;
+    justify-content: center;
     height: 35px;
     background: #53618dab;
         & input {
@@ -159,4 +164,20 @@ width: 100%;
 
 .title_remains_sahr:hover {
     color: rgb(18, 148, 235);
+}
+
+.close_history {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: blue;
+    font-size: 30px;
+    background-color: #f1ff39a1;
+}
+
+.delete_sahr_row {
+    border: 1px solid;
+    width: 109px;
+    background: #7aff4866;
+    border-radius: 10px;
 }

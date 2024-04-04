@@ -1,3 +1,4 @@
+from pyclbr import Class
 from django.db import models
 
 
@@ -20,14 +21,6 @@ class Remains(models.Model):
         super(Remains, self).save(*args, **kwargs)
 
 
-class UserIP(models.Model):
-    ip_address = models.CharField(max_length=12)
-    name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return f"{self.name} {self.ip_address}"
-
-
 
 class Data_Table(models.Model):
     index_remains = models.IntegerField(null=True, default=1)
@@ -36,7 +29,7 @@ class Data_Table(models.Model):
     title = models.TextField(null=True)
     base_unit = models.CharField(max_length=10, null=True)
     comment = models.TextField(null=True)
-    date = models.DateTimeField(auto_now_add=True, null=True)
+    date = models.DateTimeField(null=True)
     address = models.CharField(max_length=100, null=True)
 
     def __str__(self):
@@ -48,4 +41,14 @@ class Data_Table(models.Model):
         super(Data_Table, self).save(*args, **kwargs)
 
 
-    
+class History(models.Model):
+    data_table = models.ForeignKey(Data_Table, on_delete=models.CASCADE)
+    article = models.TextField(null=True)
+    party = models.CharField(max_length=9, null=True)
+    title = models.TextField(null=True)
+    comment = models.TextField(null=True)
+    date = models.DateTimeField(null=True)
+    address = models.CharField(max_length=100, null=True)
+
+   
+       
