@@ -1,4 +1,5 @@
 from pyclbr import Class
+from unittest.util import _MAX_LENGTH
 from django.db import models
 
 
@@ -14,12 +15,11 @@ class Remains(models.Model):
 
     def __str__(self):
         return f"{self.article}"
-    
+
     def save(self, *args, **kwargs):
         # Обрезаем пробелы в начале и конце строки поля my_field
         self.my_field = self.article.strip()
         super(Remains, self).save(*args, **kwargs)
-
 
 
 class Data_Table(models.Model):
@@ -34,7 +34,7 @@ class Data_Table(models.Model):
 
     def __str__(self):
         return self.article
-    
+
     def save(self, *args, **kwargs):
         # Обрезаем пробелы в начале и конце строки поля my_field
         self.my_field = self.article.strip()
@@ -50,5 +50,21 @@ class History(models.Model):
     date = models.DateTimeField(null=True)
     address = models.CharField(max_length=100, null=True)
 
-   
-       
+
+class Standart(models.Model):
+    din = models.CharField("ДИН", max_length=20)
+    gost = models.CharField("ГОСТ", max_length=20)
+    iso = models.CharField("ISO", max_length=20)
+    another = models.CharField("Другое", max_length=20)
+
+    def __str__(self) -> str:
+        return f"{self.din}{self.gost}"
+
+
+class Metiz(models.Model):
+    description = models.TextField()
+    standards = models.ManyToManyField(Standart)  # Многие-ко-многим отношение
+
+
+    def __str__(self) -> str:
+        return f"{self.description}"

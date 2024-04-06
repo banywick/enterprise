@@ -113,9 +113,7 @@
                 <div>
                     <a href="{% url 'dowload_backup' %}">Скачать Excel-файл</a>
                 </div>
-                <div>
-                    {% comment %} <a href="{% url "backup" %}">Сделать резервную копию</a> {% endcomment %}
-                  </div>
+              
                 <div class="count_row">
                     <p>
                         Количество строк - {{count_row}}
@@ -182,6 +180,8 @@
                         {% elif not t.index_remains %}
                             red_row
                         {% endif %}"
+
+                        
                        
                         >   
                         <td hidden>{{t.id}}</td>

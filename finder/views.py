@@ -1,19 +1,14 @@
 from datetime import datetime
 from mimetypes import guess_type
-from re import T
 from django.contrib.auth import authenticate, login, logout
 import os
-from django.db.models import F, Q, Func, Sum, Value
+from django.db.models import Q, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
-import pandas as pd
-import pytz
 import redis
 from config import settings
-from config.context_processors import get_file_name
 from finder.export_sahr import doc_sahr
-from finder.forms import InputValue
 from finder.models import *
 from celery.result import AsyncResult
 from finder.tasks import backup_sahr_table, data_save_db
@@ -76,11 +71,11 @@ def search_engine(request):
 
 def choice_projects(request):
     context = choice_project_dict(request)
+    
     if request.method == "POST":
         return redirect("main")
-    return render(request, "choice_project.html", context=context)
-
-
+    
+    
 def get_details_product(request, art):
     details = Remains.objects.filter(article__contains=art)
     if not details:
@@ -123,8 +118,6 @@ def check_task_status(request):
             return JsonResponse({"status": "failure"})
         elif task_result.state == "PENDING":
             return JsonResponse({"status": "pending"})
-
-
 def get_manual(request):
     return render(request, "manual.html")
 
@@ -198,7 +191,7 @@ def sahr(request):
             else:
                 data_table.save()
                 return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:50][::-1], 'count_row':count_row})
-    # doc_sahr()        
+    # doc_sahr()  #функция сохранения в базу исходника САХР
     return render(request, "sahr.html", {"data_table":  Data_Table.objects.all().order_by("-id")[:50][::-1], 'count_row':count_row})
     
 
