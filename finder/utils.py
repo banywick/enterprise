@@ -148,8 +148,8 @@ def get_context_input_filter_all(request):  # Поиск всему
             search_standarts()
             | search_another()
             | search_code()
-            | search_start_comment())[:100] |  Remains.objects.filter(
-            article__contains=input_str)[:100]
+            | search_start_comment())[:500] |  Remains.objects.filter(
+            article__contains=input_str)[:500]
 
         if (not remains.exists()): 
             return {

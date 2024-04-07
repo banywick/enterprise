@@ -137,10 +137,6 @@ def sahr(request):
                 deleted = Deleted.objects.filter(article__icontains=value_input[1])
                 info = 'Закрыть историю удаленных строк'
                 return render(request, "sahr.html", {'data_table': deleted,  'info': info})
-            
-
-
-
 
             def check_ru_symbol(): # все русские переводим в англисские
                 replacements = {
