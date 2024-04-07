@@ -71,9 +71,9 @@ def search_engine(request):
 
 def choice_projects(request):
     context = choice_project_dict(request)
-    
     if request.method == "POST":
         return redirect("main")
+    return render(request, "choice_project.html", context=context)
     
     
 def get_details_product(request, art):
@@ -131,6 +131,17 @@ def sahr(request):
     if request.method == 'POST':
         if 'search_sahr_form' in request.POST:
             value_input = request.POST.get('value_input')
+
+            if str(value_input).startswith('d'):
+                value_input =str(value_input).split(' ')
+                deleted = Deleted.objects.filter(article__icontains=value_input[1])
+                info = 'Закрыть историю удаленных строк'
+                return render(request, "sahr.html", {'data_table': deleted,  'info': info})
+            
+
+
+
+
             def check_ru_symbol(): # все русские переводим в англисские
                 replacements = {
                     'а': 'a',
@@ -167,6 +178,9 @@ def sahr(request):
                 Data_Table.objects.all().order_by("-id")[:50][::-1]
             else:    
                 return render(request, "sahr.html", {'data_table': result_search})
+       
+
+
         if 'save_button_form' in request.POST:
             remains_id = request.POST.get("id")
             address = request.POST.get("address")
@@ -191,7 +205,7 @@ def sahr(request):
             else:
                 data_table.save()
                 return render(request, "sahr.html", {"data_table": Data_Table.objects.all().order_by("-id")[:50][::-1], 'count_row':count_row})
-    # doc_sahr()  #функция сохранения в базу исходника САХР
+    # doc_sahr() #функция сохранения в базу исходника САХР
     return render(request, "sahr.html", {"data_table":  Data_Table.objects.all().order_by("-id")[:50][::-1], 'count_row':count_row})
     
 

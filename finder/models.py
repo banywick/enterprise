@@ -1,5 +1,3 @@
-from pyclbr import Class
-from unittest.util import _MAX_LENGTH
 from django.db import models
 
 
@@ -51,20 +49,11 @@ class History(models.Model):
     address = models.CharField(max_length=100, null=True)
 
 
-class Standart(models.Model):
-    din = models.CharField("ДИН", max_length=20)
-    gost = models.CharField("ГОСТ", max_length=20)
-    iso = models.CharField("ISO", max_length=20)
-    another = models.CharField("Другое", max_length=20)
+class Deleted(models.Model):
+    article = models.TextField(null=True)
+    party = models.CharField(max_length=9, null=True)
+    title = models.TextField(null=True)
+    comment = models.TextField(null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    address = models.CharField(max_length=100, null=True)
 
-    def __str__(self) -> str:
-        return f"{self.din}{self.gost}"
-
-
-class Metiz(models.Model):
-    description = models.TextField()
-    standards = models.ManyToManyField(Standart)  # Многие-ко-многим отношение
-
-
-    def __str__(self) -> str:
-        return f"{self.description}"

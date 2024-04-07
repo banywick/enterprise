@@ -191,7 +191,7 @@
                         <td class="address_remains">{{ t.address }}</td>
                         <td class='base_unit_remains'>{% if t.base_unit %}{{ t.base_unit }}{% else %}{% endif %}</td>
                         <td class='comment_remains'>{% if t.comment %}{{ t.comment }}{% else %}{% endif %}</td>
-                        <td class="date_remains">{{t.date}}</td>
+                        <td class="date_remains">{% if t.date %}{{ t.date }}{% else %}{% endif %}</td>
                         {% if not info %}
                         <td>
                             <div class="delete_sahr_row">

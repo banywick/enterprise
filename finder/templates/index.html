@@ -1,134 +1,140 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/search_style.css' %}" />
-        <title>{{ Поиск }}</title>
-    </head>
-    <body>
-        <div class="wrapper">
-            <header class="header">
-                <div class="header_logo">
-                    <a href=""><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
-                </div>
-                <div class="info_find_container">
-                    <p>Информационная база : {{ file_name }}</p>
-                    <div class="header_find_container">
-                        <div class="form_input">
-                            <form method="POST" id="find_form">{% csrf_token %} {{ form.as_p }}</form>
-                        </div>
-                        <button class="search-button" type="submit" form="find_form">Найти 🔎</button>
-                    </div>
-                    <div class="choice_find">
-                     <p> - Коментарий </p>
-                     <p> * Код </p>
-                    </div>
-                </div>
-                <div class="header_user_account">
-                    {% if request.user.is_authenticated %}
-                    <img src="{% static 'img/user_icon.png' %}" alt="" />
-                    <h3>{{ user.username }}</h3>
-                    <p class='auth_text'>
-                        <a class='auth_text' href="{% url 'logout' %}">Выход</a>
-                    </p>
-                    {% else%}
-                    <p class='auth_text'>
-                        <a  href="{% url 'login' %}">Войти</a>
-                    </p>
-                    {% endif %}
-                </div>
-            </header>
-            <div class="overlay">
-                <div class="button_hide">
-                    <p>Скрыть</p>
-                </div>
-                <div class='details_item'>
-                    <div class='details_info'>Артикул</div>
-                    <div class='details_article' ></div>
-                    <div class='details_sum'> </div>
-                    <div class='details_title'> </div>
-                    <div class='details_project'>Проект</div>
-                    <div class='delails_proj_item'></div>
-                </div>
-            </div>    
-            <div class="container_left_center">
-                <div class="left_colum">
-                    <div class="header_button_reset_filter_wrapper">
-                        <div class="menu">
-                            <h2>Меню</h2>
-                        <div class="manual">
-                            <a class="button-link" href="{% url 'manual' %}">Инструкция</a>
-                        </div>    
-                        </div>
-                        {% if user_is_in_group %}
-                        <div>
-                            <a class="button-link" href="{% url 'upload' %}">Обновить базу</a>
-                        </div>
-                        <div>
-                            <a class="button-link" href="{% url 'sahr' %}">С.А.ХР</a>
-                        </div>
-                        {% endif %}
-
-                        <div class="header_button_reset">
-                            <a class="button-link" href="{% url 'clear' %}">Очистить фильтр</a>
-                        </div>
-
-                        <div class="header_button_filter">
-                            <a class="button-link" href="{% url 'choice' %}">Выбрать проект</a>
-                        </div>
-
-                        <div class="header_list_sort">
-                            <ul>
-                                <p>Сотрировка по :</p>
-                                <hr />
-                                {% for p in project %}
-                                <li>{{ p }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-               
-                <div class="center_colum">
-                   
-                    <div class="table_div">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th style="width: 20px">Коментарий</th>
-                                <th>Партия</th>
-                                <th>Артикул</th>
-                                <th>Код</th>
-                                <th>Номенклатура</th>
-                                <th>Количество</th>
-                                <th>Единица</th>
-                                <th>Проект</th>
-                               
-                            </tr>
-                            </thead>
-                            {% for r in remains %}
-                            <tbody>
-                                  <tr data-id="{{ r.article }}">
-                                    <td class='comment_remains'>{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
-                                    <td class='party_remains'>{{ r.party }}</td>
-                                    <td class='article_remains'>{{ r.article }}</td>
-                                    <td class='code_remains'>{{ r.code }}</td>
-                                    <td class='title_remains'>{{ r.title }}</td>
-                                    <td class='quantity_remains'>{{ r.quantity }}</td>
-                                    <td class='base_unit_remains'>{{ r.base_unit }}</td>
-                                    <td class='project_remains'>{{ r.project }}</td>
-                                   
-                                </tr>
-                            </tbody>
-                            {% endfor %} {{ e_code }} {{ e_art_title }}
-                        </table>
-                    </div>
-                </div>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/search_style.css' %}" />
+    <title>{{ Поиск }}</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <div class="header_logo">
+          <a href=""><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
         </div>
-        <script src='{% static 'js/search.js'%}'></script>
-        <script src='{% static 'js/copypast.js'%}'></script>
-    </body>
+        <div class="info_find_container">
+          <p>Информационная база : {{ file_name }}</p>
+          <div class="standart_list">
+            {% for st in standart_list %}
+            <p>sdfgfd</p>
+            {% endfor %}
+            <div class="header_find_container">
+              <div class="form_input">
+                <form method="POST" id="find_form">{% csrf_token %} {{ form.as_p }}
+                </form>
+
+              </div>
+              <button class="search-button" type="submit" form="find_form">Найти 🔎</button>
+            </div>
+            <div class="choice_find">
+              <p>+Аналоги</p>
+              <p>-Коментарий</p>
+              <p>*Код</p>
+            </div>
+          </div>
+        </div>
+        <div>{% for st in standart_list %} {{st}} {% endfor %}</div>
+        <div class="header_user_account">
+          {% if request.user.is_authenticated %}
+          <img src="{% static 'img/user_icon.png' %}" alt="" />
+          <h3>{{ user.username }}</h3>
+          <p class="auth_text">
+            <a class="auth_text" href="{% url 'logout' %}">Выход</a>
+          </p>
+          {% else%}
+          <p class="auth_text">
+            <a href="{% url 'login' %}">Войти</a>
+          </p>
+          {% endif %}
+        </div>
+      </header>
+      <div class="overlay">
+        <div class="button_hide">
+          <p>Скрыть</p>
+        </div>
+        <div class="details_item">
+          <div class="details_info">Артикул</div>
+          <div class="details_article"></div>
+          <div class="details_sum"></div>
+          <div class="details_title"></div>
+          <div class="details_project">Проект</div>
+          <div class="delails_proj_item"></div>
+        </div>
+      </div>
+      <div class="container_left_center">
+        <div class="left_colum">
+          <div class="header_button_reset_filter_wrapper">
+            <div class="menu">
+              <h2>Меню</h2>
+              <div class="manual">
+                <a class="button-link" href="{% url 'manual' %}">Инструкция</a>
+              </div>
+            </div>
+            {% if user_is_in_group %}
+            <div>
+              <a class="button-link" href="{% url 'upload' %}">Обновить базу</a>
+            </div>
+            <div>
+              <a class="button-link" href="{% url 'sahr' %}">С.А.ХР</a>
+            </div>
+            {% endif %}
+
+            <div class="header_button_reset">
+              <a class="button-link" href="{% url 'clear' %}">Очистить фильтр</a>
+            </div>
+
+            <div class="header_button_filter">
+              <a class="button-link" href="{% url 'choice' %}">Выбрать проект</a>
+            </div>
+
+            <div class="header_list_sort">
+              <ul>
+                <p>Сотрировка по :</p>
+                <hr />
+                {% for p in project %}
+                <li>{{ p }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="center_colum">
+          <div class="table_div">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20px">Коментарий</th>
+                  <th>Партия</th>
+                  <th>Артикул</th>
+                  <th>Код</th>
+                  <th>Номенклатура</th>
+                  <th>Количество</th>
+                  <th>Единица</th>
+                  <th>Проект</th>
+                </tr>
+              </thead>
+              {% for r in remains %}
+              <tbody>
+                <tr data-id="{{ r.article }}">
+                  <td class="comment_remains">{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
+                  <td class="party_remains">{{ r.party }}</td>
+                  <td class="article_remains">{{ r.article }}</td>
+                  <td class="code_remains">{{ r.code }}</td>
+                  <td class="title_remains">{{ r.title }}</td>
+                  <td class="quantity_remains">{{ r.quantity }}</td>
+                  <td class="base_unit_remains">{{ r.base_unit }}</td>
+                  <td class="project_remains">{{ r.project }}</td>
+                </tr>
+              </tbody>
+              {% endfor %} {{ e_code }} {{ e_art_title }}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='{% static "js/search.js"%}'></script>
+    <script src='{% static "js/copypast.js"%}'></script>
+  </body>
 </html>
