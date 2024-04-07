@@ -13,7 +13,7 @@ from finder.models import *
 from celery.result import AsyncResult
 from finder.tasks import backup_sahr_table, data_save_db
 from finder.utils import choice_project_dict, get_context_input_filter_all
-
+from django.contrib.auth.decorators import login_required
 
 def user_logout(request):
     logout(request)
@@ -121,13 +121,14 @@ def check_task_status(request):
 def get_manual(request):
     return render(request, "manual.html")
 
-
-
+@login_required
 def sahr(request):
     count_row = Data_Table.objects.all().count()
     all_remains_art = Remains.objects.all().values_list('article', flat=True).distinct()
-    all_remains_art = list(map(str, all_remains_art)) # Преобразовываем все в трочное значение
-    Data_Table.objects.exclude(article__in=all_remains_art).update(index_remains=None)
+    all_remains_art = list(map(str, all_remains_art)) # Преобразовываем все в строчное значение
+    # Data_Table.objects.filter(article__in=all_remains_art).update(index_remains=1)
+    # Data_Table.objects.filter(article__isnull=False).update(index_remains=1)
+    Data_Table.objects.filter(article__in=all_remains_art).update(index_remains=2)
     if request.method == 'POST':
         if 'search_sahr_form' in request.POST:
             value_input = request.POST.get('value_input')

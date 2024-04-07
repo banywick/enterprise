@@ -178,7 +178,7 @@
                         data-id="{{ t.article }}"
                         class="{% if info %}
                             white_row
-                        {% elif not t.index_remains %}
+                        {% elif t.index_remains == 1 %}
                             red_row
                         {% endif %}"
 
