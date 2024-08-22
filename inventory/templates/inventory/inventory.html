@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/inventory_style.css' %}">
+    <title>Инвентаризация</title>
+</head>
+<body>
+<div class="main_wrapper">
+    <header>
+
+        <div class="header_logo">
+            <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+        </div>
+        <div class="info_container">
+
+
+            <div class="all_check_position">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                     <input type="radio" id="сошлось" name="marker" value="сошлось">
+                    <label for="сошлось">Сошлось</label><br>
+                    <input type="radio" id="в работе" name="marker" value="в работе">
+                    <label for="в работе">В работе</label><br>
+                    <input type="radio" id="перепроверить" name="marker" value="перепроверить">
+                    <label for="перепроверить">Перепроверить</label><br>
+                    <button>Выбрать сортировку</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="header_find_error_container">
+             <div>Инвентаризация. <br>
+                Остаток ТМЦ от 03.10.23
+            </div>
+            <div class="header_find_container">
+
+            <div class="form_input">
+
+                <form method="POST" id="find_form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </form>
+            </div>
+            <div class="find_button">
+                <button type="submit" form="find_form">
+                    Найти 🔎
+                </button>
+            </div>
+        </div>
+            <div class="errors">
+                <H3>{{ e_art_title }}</H3>
+            </div>
+        </div>
+
+
+
+        <div class="info">
+            <ul>
+                <li>Выполнеено - {{ percentage }}</li>
+                <li>Поститанно - {{ not_empty_row }} </li>
+                <li>Общее количество - {{ count_row }}</li>
+                <li>Осталось - {{ remainder_row }}</li>
+            </ul>
+        </div>
+
+
+        <div class="header_user_account">
+            {% if request.user.is_authenticated %}
+                {% comment %} <a href="{% url 'user_detail' %}"> <img src="{% static 'img/user_icon.png' %}" alt=""></a> {% endcomment %}
+                <h3> {{ user.username }}</h3>
+                <p><a href="{% url 'logout' %}">Выход</a></p>
+            {% endif %}
+        </div>
+
+    </header>
+
+
+    <div class="table">
+        <table class="table_inv">
+            <tr>
+                <th>Артикул</th>
+                <th>Наименование</th>
+                <th>Базовая единица</th>
+                <th>Количество</th>
+                <th>Статус</th>
+            </tr>
+            {% for i in inventory %}
+                <tr>
+                    <td class="article_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.article }}</a></td>
+                    <td class="title_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.title }}</a></td>
+                    <td>{{ i.base_unit }}</td>
+                    <td>{{ i.total_quantity }}</td>
+                    <td class="{% if  i.status == 'Сошлось' %} green
+                            {% elif  i.status == 'В работе' %} yellow
+                            {% elif  i.status == 'Перепроверить' %} red
+                            {% endif %}">
+                        {% if i.status %}{{ i.status }}{% else %}{% endif %}
+                    </td>
+
+
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+</body>
+</html>
