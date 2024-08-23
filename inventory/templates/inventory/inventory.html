@@ -88,8 +88,8 @@
             </tr>
             {% for i in inventory %}
                 <tr>
-                    <td class="article_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.article }}</a></td>
-                    <td class="title_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.title }}</a></td>
+                    <td class="article_table"><a href="#">{{ i.article }}</a></td>
+                    <td class="title_table"><a href="#">{{ i.title }}</a></td>
                     <td>{{ i.base_unit }}</td>
                     <td>{{ i.total_quantity }}</td>
                     <td class="{% if  i.status == 'Сошлось' %} green
