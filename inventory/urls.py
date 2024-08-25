@@ -5,7 +5,8 @@ from inventory.views import get_main_inventory
 
 
 urlpatterns = [
-    path('inventory/', get_main_inventory, name='inventory')
+    path('inventory/', get_main_inventory, name='inventory'),
+    # path('detail-product/<str:article>', inventory_detail, name='inventory_detail'),
     
     # path('inventory/', get_main_inventory, name='inventory'),
     # path('detail-product/<str:article>', inventory_detail, name='inventory_detail'),

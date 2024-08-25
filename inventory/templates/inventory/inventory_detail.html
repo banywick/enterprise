@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/inventory_detail_style.css' %}">
+    <title>Детализация</title>
+</head>
+<body>
+
+<div class="main_wrapper">
+    <header>
+        <div class="header_logo">
+            <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+        </div>
+        <div class="title_article">
+            <h3>Детализация позиции</h3>
+            <hr>
+            <h2>{{ product.title }}</h2>
+            <h2>{{ product.article }}</h2>
+        </div>
+        <div class="description_product_container">
+            <div>Единица
+                <div>{{ product.base_unit }}</div>
+            </div>
+            <div>Остаток по инвентаризации
+                <div>{{ unic_sum_posit }}</div>
+            </div>
+            <div>
+                {% if remains_sum < 0 %}
+                    Излишек товара!!
+                    <div style="background-color: #e22b2b">{{ remains_sum }}</div>
+                {% endif %}
+                {% if remains_sum > 0 %}
+                    Осталось посчитать
+                    <div>{{ remains_sum }}</div>
+                {% endif %}
+                 {% if remains_sum == 0 %}
+                    Сошлось
+                    <div style="background-color: #6fc253">{{ remains_sum }}</div>
+                {% endif %}
+            </div>
+            <div>Остаток на сегодня
+                <div>{{ sum_remains_now }}</div>
+            </div>
+            <div>Движение товара
+                <div>{{ move_product }}</div>
+            </div>
+            <div>Статус
+                {% if get_status == 'Перепроверить' %}
+                    <div style="background-color: #e22b2b">{{ get_status }}</div>
+                {% endif %}
+                {% if get_status == 'Сошлось' %}
+                    <div style="background-color: #49bd49">{{ get_status }}</div>
+                {% endif %}
+                {% if get_status == 'В работе' %}
+                    <div style="background-color: yellow">{{ get_status }}</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="header_user_account">
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'user_detail' %}"> <img src="{% static 'img/user_icon.png' %}" alt=""></a>
+                <h3> {{ user.username }}</h3>
+                <p><a href="{% url 'logout' %}">Выход</a></p>
+            {% endif %}
+        </div>
+    </header>
+    <div class="wrapper_choice">
+        <div class="input_set_value_container">
+            <div>
+                <h3> Введите значения</h3>
+            </div>
+            <div class="form_set_quantity">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="text" placeholder="количество найдено" name="quantity_set" required="required">
+                    <input type="text" placeholder="адрес" name="address">
+                    <input type="text" placeholder="Коментарий" name="comment">
+                    <button class="find_button">отправить</button>
+                </form>
+            </div>
+        </div>
+        <div class="choice_status">
+            <h3>Выберите статус позийии</h3>
+            <a class="button" href="{% url 'set_status'  'Сошлось' product.article %}">Сошлось</a>
+            <a class="button" href="{% url 'set_status'  'Перепроверить' product.article %}">Перепроверить</a>
+            <a class="button" href="{% url 'set_status'  'В работе' product.article %}">В работе</a>
+        </div>
+        <div class="button_link_back">
+            <a class="button" href="{% url 'inventory' %}"> Продолжить поиск </a>
+        </div>
+    </div>
+    {% if remains_sum < 0 %}
+        <h2 style="color: #e22b2b; text-align: center">
+            Внимание!! Обнаружен излишек товара! <br>
+            {{ alert_count }}  {{ product.base_unit }}
+        </h2>
+    {% endif %}
+    <div class="table">
+        <table class="table_inv">
+            <tr>
+                <th>Пользователь</th>
+                <th>Артикул</th>
+                <th>Наименование</th>
+                <th>Единица</th>
+                <th>Найдено</th>
+                <th>Дата время</th>
+                <th>Адрес</th>
+                <th>Коментарий</th>
+                <th>Редактировать</th>
+            </tr>
+            {% for d in user_set_invent %}
+
+                <tr>
+                    <td>{{ d.user }}</td>
+                    <td>{{ d.product.article }}</td>
+                    <td>{{ d.product.title }}</td>
+                    <td>{{ d.product.base_unit }}</td>
+                    <td>{{ d.quantity_ord }}</td>
+                    <td>{{ d.created_at }}</td>
+                    <td>{{ d.address }}</td>
+                    <td>{{ d.comment }}</td>
+                    <td><a href="{% url 'delete' d.id %}">Удалить</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+
+</body>
+</html>
