@@ -1,12 +1,15 @@
 from django.urls import path
 
-from inventory.views import get_main_inventory
+from finder.views import search_engine
+from inventory.utils.inventory_engine import inventory_detail
+from inventory.views import get_main_inventory, get_inventory_detail
 
 
 
 urlpatterns = [
     path('inventory/', get_main_inventory, name='inventory'),
-    # path('detail-product/<str:article>', inventory_detail, name='inventory_detail'),
+    path('detail-product/<str:article>', get_inventory_detail, name='inventory_detail'),
+    path('find/', search_engine, name='find'),
     
     # path('inventory/', get_main_inventory, name='inventory'),
     # path('detail-product/<str:article>', inventory_detail, name='inventory_detail'),
