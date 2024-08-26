@@ -16,9 +16,8 @@
         <div class="title_article">
             <h3>Детализация позиции</h3>
             <hr>
-            {% for p in product %}
-            <h2>{{ p.title }}</h2>
-            <h2>{{ p.article }}</h2>
+            <h2>{{ product.title }}</h2>
+            <h2>{{ product.article }}</h2>
           
         </div>
         <div class="description_product_container">
@@ -27,9 +26,8 @@
             </div>
             
             <div>Остаток на сегодня
-                <div>{{ p.total_quantity }}</div>
+                <div>{{ product.total_quantity }}</div>
             </div>
-            {% endfor %}
            
             <div>Статус
                 {% if get_status == 'Перепроверить' %}
@@ -106,7 +104,8 @@
                     <td>{{ d.created_at }}</td>
                     <td>{{ d.address }}</td>
                     <td>{{ d.comment }}</td>
-                    <td><a href="{% url 'delete' d.id %}">Удалить</a></td>
+                    {% comment %} <td><a href="{% url 'delete' d.id %}">Удалить</a></td> {% endcomment %}
+                    <td><a href="#">Удалить</a></td>
                 </tr>
             {% endfor %}
         </table>

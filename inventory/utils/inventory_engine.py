@@ -44,8 +44,8 @@ def get_one_product(article):
     return x
 
 
-# def get_user_set_invent(product):
-#     return OrderInventory.objects.filter(product=product)
+def get_user_set_invent(product):
+    return OrderInventory.objects.filter(product=product)
 
 
 # def get_total_quantity_ord(product):
@@ -84,10 +84,8 @@ def create_inventory_item(product, user, quantity_ord, address, comment):
 
 
 def inventory_detail(request, article):
-    product = get_one_product(article)  # выбор первой позицци по артикулу для детализации
-    for pr in product:
-        print(pr)
-    # user_set_invent = get_user_set_invent(product)  # Фильтрация по выбору для всех пользователей
+    product = RemainsInventory.objects.get(article=article)
+    user_set_invent = get_user_set_invent(product)  # Фильтрация по выбору для всех пользователей
     # total_quantity_ord = get_total_quantity_ord(product)  # Посчитанно всеми пользователями
     # unic_sum_posit = get_unic_sum_posit(article)  # Остаток по инвентаризации
 
@@ -110,8 +108,8 @@ def inventory_detail(request, article):
         user = request.user
 
         create_inventory_item(product, user, quantity_ord, set_address, set_comment)
-        return HttpResponseRedirect(reverse('inventory_detail', args=(article,)))
+        # return HttpResponseRedirect(reverse('inventory_detail', args=(article,)))
     # get_status = RemainsInventory.objects.filter(article=article).status
 
-    context = {'product': product}
+    context = {'product': product, 'user_set_invent':user_set_invent}
     return context    
