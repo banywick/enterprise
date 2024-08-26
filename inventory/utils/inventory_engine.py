@@ -20,8 +20,7 @@ def get_inventory(request):
 
            
             error_message = 'Товар не найден'
-            inventory = RemainsInventory.objects.filter(query)[:500] | RemainsInventory.objects.filter(
-                article__icontains=request.POST['input'])
+            inventory = RemainsInventory.objects.filter(query)[:500] | Q(article__icontains=values)
             # inventory = unic_sum_posit.filter(query)[:500] | unic_sum_posit.filter(
             #     article__contains=request.POST['input'])
             if not inventory.exists():  # если ничего не найдено из нескольких значений в инпуте
