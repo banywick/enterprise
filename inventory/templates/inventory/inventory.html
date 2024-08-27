@@ -31,8 +31,8 @@
         </div>
 
         <div class="header_find_error_container">
-             <div>Инвентаризация. <br>
-                Остаток ТМЦ от 03.10.23
+             <div>Инвентаризация 2024 <br>
+                
             </div>
             <div class="header_find_container">
 
@@ -68,7 +68,7 @@
 
         <div class="header_user_account">
             {% if request.user.is_authenticated %}
-                {% comment %} <a href="{% url 'user_detail' %}"> <img src="{% static 'img/user_icon.png' %}" alt=""></a> {% endcomment %}
+                <a href="{% url 'user_detail' %}"> <img src="{% static 'img/user_icon.png' %}" alt=""></a>
                 <h3> {{ user.username }}</h3>
                 <p><a href="{% url 'logout' %}">Выход</a></p>
             {% endif %}
@@ -83,7 +83,7 @@
                 <th>Артикул</th>
                 <th>Наименование</th>
                 <th>Базовая единица</th>
-                <th>Количество</th>
+                <th>Остаток</th>
                 <th>Статус</th>
             </tr>
             {% for i in inventory %}

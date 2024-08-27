@@ -21,14 +21,30 @@
           
         </div>
         <div class="description_product_container">
-            <div>Единица
-                <div>{{ p.base_unit }}</div>
-            </div>
             
             <div>Остаток на сегодня
-                <div>{{ product.total_quantity }}</div>
+                {% for r in remains_prodoct %}
+                <div>{{ r.total_quantity }}</div>
+                {% endfor %}
             </div>
-           
+            <div>Единица
+                <div>{{ product.base_unit }}</div>
+            </div>
+            <div>
+                {% if remains_sum < 0 %}
+                    Излишек товара!!
+                    <div style="background-color: #e22b2b">{{ remains_sum }}</div>
+                {% endif %}
+                {% if remains_sum > 0 %}
+                    Осталось посчитать
+                    <div>{{ remains_sum }}</div>
+                {% endif %}
+                {% if remains_sum == 0 %}
+                    Сошлось
+                    <div style="background-color: #6fc253">{{ remains_sum }}</div>
+                {% endif %}
+            </div>
+            
             <div>Статус
                 {% if get_status == 'Перепроверить' %}
                     <div style="background-color: #e22b2b">{{ get_status }}</div>
@@ -43,7 +59,7 @@
         </div>
         <div class="header_user_account">
             {% if request.user.is_authenticated %}
-                {% comment %} <a href="{% url 'user_detail' %}"> <img src="{% static 'img/user_icon.png' %}" alt=""></a> {% endcomment %}
+                <a href="{% url 'user_detail' %}"> <img src="{% static 'img/user_icon.png' %}" alt=""></a>
                 <h3> {{ user.username }}</h3>
                 <p><a href="{% url 'logout' %}">Выход</a></p>
             {% endif %}
@@ -66,9 +82,9 @@
         </div>
         <div class="choice_status">
             <h3>Выберите статус позийии</h3>
-            {% comment %} <a class="button" href="{% url 'set_status'  'Сошлось' product.article %}">Сошлось</a>
+            <a class="button" href="{% url 'set_status'  'Сошлось' product.article %}">Сошлось</a>
             <a class="button" href="{% url 'set_status'  'Перепроверить' product.article %}">Перепроверить</a>
-            <a class="button" href="{% url 'set_status'  'В работе' product.article %}">В работе</a> {% endcomment %}
+            <a class="button" href="{% url 'set_status'  'В работе' product.article %}">В работе</a>
         </div>
         <div class="button_link_back">
             <a class="button" href="{% url 'inventory' %}"> Продолжить поиск </a>
@@ -104,8 +120,7 @@
                     <td>{{ d.created_at }}</td>
                     <td>{{ d.address }}</td>
                     <td>{{ d.comment }}</td>
-                    {% comment %} <td><a href="{% url 'delete' d.id %}">Удалить</a></td> {% endcomment %}
-                    <td><a href="#">Удалить</a></td>
+                    <td><a href="{% url 'delete' d.id %}">Удалить</a></td>
                 </tr>
             {% endfor %}
         </table>
