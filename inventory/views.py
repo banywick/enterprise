@@ -15,8 +15,12 @@ def get_inventory_detail(request, article):
 
 
 def delete_row(request, id_row):
+    """Ударяем строку в детализации. Если все удалено меняется статус"""
     order = OrderInventory.objects.get(id=id_row)
     order.delete()
+    article = order.product.article
+    if not OrderInventory.objects.filter(product=order.product ).exists(): 
+        RemainsInventory.objects.filter(article=article).update(status=None)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

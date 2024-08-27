@@ -1,10 +1,7 @@
-from django.db.models import F, Sum, Q, OuterRef, Subquery
-from django.shortcuts import redirect
+from django.db.models import Sum, Q, OuterRef, Subquery
 from finder.models import Remains
 from ..forms import InputValue
 from ..models import RemainsInventory, OrderInventory
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 
 subquery = Remains.objects.filter(article=OuterRef('article')).values('article').annotate(total_quantity=Sum('quantity')).values('total_quantity')
