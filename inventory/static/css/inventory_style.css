@@ -16,6 +16,11 @@ header {
 
 }
 
+.info a {
+    color: #e22b2b;
+    font-size: 18px;
+}
+
 .info_container{
     margin-bottom: 25px;
 }
@@ -168,3 +173,5 @@ header {
 .all_check_position form button:hover {
     border: 1px solid #e22b2b;
 }
+
+

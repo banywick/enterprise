@@ -53,6 +53,10 @@ def user_detail(request):
     return render(request, 'inventory/user_detail.html', {'order': order, 'order_count': order_count})
 
 
+def report_inventory(request):
+    pass
+
+
 
 
 

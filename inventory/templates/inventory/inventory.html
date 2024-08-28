@@ -13,9 +13,8 @@
         <div class="header_logo">
             <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
+        
         <div class="info_container">
-
-
             <div class="all_check_position">
                 <form action="" method="POST">
                     {% csrf_token %}
@@ -31,9 +30,11 @@
         </div>
 
         <div class="header_find_error_container">
-             <div>Инвентаризация 2024 <br>
-                
-            </div>
+            <div class="info_report_block">
+                <div>
+                    Инвентаризация 2024
+                </div>
+            </div>    
             <div class="header_find_container">
 
             <div class="form_input">
@@ -56,13 +57,16 @@
 
 
 
+
         <div class="info">
             <ul>
                 <li>Выполнеено - {{ percentage }}</li>
                 <li>Поститанно - {{ not_empty_row }} </li>
                 <li>Общее количество - {{ count_row }}</li>
                 <li>Осталось - {{ remainder_row }}</li>
+                <a href="{% url 'report_inventory' %}">Скачать отчет в Excel</a>
             </ul>
+            
         </div>
 
 
