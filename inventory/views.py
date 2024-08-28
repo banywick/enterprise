@@ -1,5 +1,7 @@
-from django.http import HttpResponseRedirect
+from mimetypes import guess_type
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from finder.tasks import backup_inventory_table
 from inventory.utils.inventory_engine import create_inventory_item, get_inventory, inventory_detail
 from .models import OrderInventory, RemainsInventory
 
@@ -54,7 +56,14 @@ def user_detail(request):
 
 
 def report_inventory(request):
-    pass
+    file_path, file_name = backup_inventory_table()  # Однократный вызов функции
+    # Определение MIME-типа файла
+    mime_type, _ = guess_type(file_path)
+    # Отправка файла как HTTP-ответ
+    with open(file_path, 'rb') as file:
+        response = HttpResponse(file, content_type=mime_type)
+        response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+        return response
 
 
 

@@ -1,3 +1,4 @@
+from itertools import product
 import os
 from django.http import FileResponse
 from django.shortcuts import redirect
@@ -9,6 +10,7 @@ import re
 from datetime import datetime
 
 from finder.models import Data_Table
+from inventory.models import OrderInventory
 
 
 @shared_task
@@ -69,7 +71,51 @@ def backup_sahr_table():
     filename = f'CAXP_{current_date}.xlsx'
     return [file_path, filename]  
 
-   
+
+def backup_inventory_table():
+    timezone = pytz.timezone('Europe/Minsk')
+    current_date = datetime.now(timezone).strftime('%d.%m.%Y %H:%M:%S')
+    
+    # Получите данные из базы
+    queryset = OrderInventory.objects.select_related('product').values(
+        'product__article', 
+        'product__title', 
+        'product__base_unit', 
+        'product__status', 
+        'quantity_ord', 
+        'created_at', 
+        'address', 
+        'comment'
+    ).filter(product__status__iexact='Сошлось')
+    
+    # Преобразование в DataFrame
+    df = pd.DataFrame(list(queryset))
+
+    # Переименовываем столбцы
+    df.rename(columns={
+        'product__article': 'Артикул',
+        'product__title': 'Наименование',
+        'product__base_unit': 'Единица',
+        'quantity_ord': 'Посчитанно',
+        'address': 'Адрес',
+        'comment': 'Комментарий',
+        'created_at': 'Дата создания',
+        'product__status': 'Статус',
+    }, inplace=True)
+
+    # Задайте порядок столбцов
+    columns_order = ['Артикул', 'Наименование', 'Единица', 'Посчитанно', 'Адрес', 'Комментарий', 'Дата создания', 'Статус']  # Замените на нужный порядок
+    df = df[columns_order]  # Измените порядок столбцов
+    
+    # Задайте путь к папке и создайте его, если он не существует
+    folder_path = os.path.join('finder', 'document', 'report_inventory')  # путь к папке
+    os.makedirs(folder_path, exist_ok=True)
+    
+    # Сохраняем в файл Excel с читаемой датой в названии
+    file_path = os.path.join(folder_path, f'report_inv.xlsx')
+    df.to_excel(file_path, index=True)
+    
+    return [file_path, f'report_inv.xlsx']
 
 
 
