@@ -1,14 +1,10 @@
-from itertools import product
 import os
-from django.http import FileResponse
-from django.shortcuts import redirect
 import pandas as pd
 import pytz
 from sqlalchemy import create_engine
 from celery import shared_task
-import re
 from datetime import datetime
-
+from django.contrib.auth.models import User 
 from finder.models import Data_Table
 from inventory.models import OrderInventory
 
@@ -77,7 +73,8 @@ def backup_inventory_table():
     current_date = datetime.now(timezone).strftime('%d.%m.%Y %H:%M:%S')
     
     # Получите данные из базы
-    queryset = OrderInventory.objects.select_related('product').values(
+    queryset = OrderInventory.objects.select_related('product', 'user').values(
+        'user__username',
         'product__article', 
         'product__title', 
         'product__base_unit', 
@@ -85,7 +82,7 @@ def backup_inventory_table():
         'quantity_ord', 
         'created_at', 
         'address', 
-        'comment'
+        'comment',
     ).filter(product__status__iexact='Сошлось')
     
     # Преобразование в DataFrame
@@ -93,6 +90,7 @@ def backup_inventory_table():
 
     # Переименовываем столбцы
     df.rename(columns={
+        'user__username': 'Пользователь',
         'product__article': 'Артикул',
         'product__title': 'Наименование',
         'product__base_unit': 'Единица',
@@ -104,7 +102,7 @@ def backup_inventory_table():
     }, inplace=True)
 
     # Задайте порядок столбцов
-    columns_order = ['Артикул', 'Наименование', 'Единица', 'Посчитанно', 'Адрес', 'Комментарий', 'Дата создания', 'Статус']  # Замените на нужный порядок
+    columns_order = ['Пользователь','Артикул', 'Наименование', 'Единица', 'Посчитанно', 'Адрес', 'Комментарий', 'Дата создания', 'Статус']  # Замените на нужный порядок
     df = df[columns_order]  # Измените порядок столбцов
     
     # Задайте путь к папке и создайте его, если он не существует

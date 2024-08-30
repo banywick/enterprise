@@ -87,6 +87,9 @@ def inventory_detail(request, article):
         set_comment = request.POST.get('comment')
         user = request.user
         create_inventory_item(product, user, quantity_ord, set_address, set_comment)
+        RemainsInventory.objects.filter(article=article).update(status='В работе')
+
+
     remains_product = RemainsInventory.objects.filter(article=article).annotate(total_quantity=Subquery(subquery)) # остаток на сегодня
     user_set_invent =  OrderInventory.objects.filter(product=product)  # Фильтрация по выбору для всех пользователей
     total_quantity_ord = get_total_quantity_ord(product)  # Посчитанно всеми пользователями
@@ -97,7 +100,6 @@ def inventory_detail(request, article):
         else:
             alert_count = remains_sum
     get_status = RemainsInventory.objects.filter(article=article).first().status
-
     context = {'product': product,
                 'user_set_invent':user_set_invent,
                 'remains_product': remains_product,

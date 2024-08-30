@@ -84,7 +84,7 @@
             <h3>Выберите статус позийии</h3>
             <a class="button" href="{% url 'set_status'  'Сошлось' product.article %}">Сошлось</a>
             <a class="button" href="{% url 'set_status'  'Перепроверить' product.article %}">Перепроверить</a>
-            <a class="button" href="{% url 'set_status'  'В работе' product.article %}">В работе</a>
+            {% comment %} <a class="button" href="{% url 'set_status'  'В работе' product.article %}">В работе</a> {% endcomment %}
         </div>
         <div class="button_link_back">
             <a class="button" href="{% url 'inventory' %}"> Продолжить поиск </a>
