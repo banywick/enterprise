@@ -1,6 +1,6 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from finder.models import Remains
-from .models import RemainsInventory
+from .models import RemainsInventory, OrderInventory
 from django.db import transaction
 
 @admin.register(Remains)
@@ -40,10 +40,83 @@ class RemainsModelAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(RemainsInventory) 
+
+
+@admin.register(RemainsInventory)
 class RemainsInventoryModelAdmin(admin.ModelAdmin):
-    list_display = ('article','title','base_unit') 
-    search_fields = ('article',) 
+    list_display = ('article', 'title', 'base_unit', 'status')
+    search_fields = ('article',)
+    actions = ['set_status_to_new', 'set_status_to_old', 'delete_selected']
+
+    @admin.action(description='Удалить выбранные записи')
+    def delete_selected(self, request, queryset):
+        with transaction.atomic():
+            queryset.delete()
+        self.message_user(request, 'Выбранные записи успешно удалены.')
+
+    @admin.action(description='Установить статус "Сошлось"')
+    def set_status_to_new(self, request, queryset):
+        queryset.update(status='Сошлось')
+        self.message_user(request, 'Статус выбранных объектов успешно обновлен на "Сошлось".')
+
+    @admin.action(description='Установить статус "Перепроверить"')
+    def set_status_to_old(self, request, queryset):
+        queryset.update(status='Перепроверить')
+        self.message_user(request, 'Статус выбранных объектов успешно обновлен на "Перепроверить".')
+
+    @admin.action(description='Удалить статус')
+    def remove_status(self, request, queryset):
+        queryset.update(status=None)
+        self.message_user(request, 'Статус выбранных объектов успешно удалён.')
+
+
+
+    
+
+@admin.register(OrderInventory)
+class OrderInventoryModelAdmin(admin.ModelAdmin):
+    list_display = (
+        'get_user_name',
+        'get_product_article',
+        'get_product_title',
+        'get_product_base_unit',
+        'quantity_ord',
+        'address', 'comment',
+        'created_at',
+        'get_product_status')
+
+    def get_product_article(self, obj):
+        return obj.product.article  
+    get_product_article.short_description = 'Артикул'  # заголовок столбца
+
+    def get_user_name(self, obj):
+        return obj.user.username  
+    get_user_name.short_description = 'Пользователь'  # заголовок столбца
+
+
+    def get_product_title(self, obj):
+        return obj.product.title 
+    get_product_title.short_description = 'Название'  # заголовок столбца
+
+    def get_product_base_unit(self, obj):
+        return obj.product.base_unit 
+    get_product_base_unit.short_description = 'Единица'  # заголовок столбца
+
+    def get_product_status(self, obj):
+        return obj.product.status 
+    get_product_status.short_description = 'Статус'  # заголовок столбца
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -24,6 +24,8 @@
                     <label for="в работе">В работе</label><br>
                     <input type="radio" id="перепроверить" name="marker" value="перепроверить">
                     <label for="перепроверить">Перепроверить</label><br>
+                    <input type="radio" id="Нет в базе" name="marker" value="Нет в базе">
+                    <label for="перепроверить">Нет в базе</label><br>
                     <button>Выбрать сортировку</button>
                 </form>
             </div>
@@ -91,21 +93,33 @@
                 <th>Статус</th>
             </tr>
             {% for i in inventory %}
-                <tr>
-                    <td class="article_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.article }}</a></td>
-                    <td class="title_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.title }}</a></td>
-                    <td>{{ i.base_unit }}</td>
-                    <td>{{ i.total_quantity }}</td>
-                    <td class="{% if  i.status == 'Сошлось' %} green
+            <tr>
+                <td class="article_table">
+                    {% if i.total_quantity == 0 %}
+                        <span class="disabled-link">{{ i.article }}</span>
+                    {% else %}
+                        <a href="{% url 'inventory_detail' i.article %}">{{ i.article }}</a>
+                    {% endif %}
+                </td>
+                <td class="title_table">
+                    {% if i.total_quantity == 0 %}
+                        <span class="disabled-link">{{ i.title }} (Выписано)</span>
+                    {% else %}
+                        <a href="{% url 'inventory_detail' i.article %}">{{ i.title }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ i.base_unit }}</td>
+                <td>{{ i.total_quantity }}</td>
+                <td class="{% if  i.status == 'Сошлось' %} green
                             {% elif  i.status == 'В работе' %} yellow
                             {% elif  i.status == 'Перепроверить' %} red
+                            {% elif  i.status == 'Нет в базе' %} orange
                             {% endif %}">
-                        {% if i.status %}{{ i.status }}{% else %}{% endif %}
-                    </td>
-
-
-                </tr>
-            {% endfor %}
+                    {% if i.status %}{{ i.status }}{% else %}{% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        
         </table>
     </div>
 </div>

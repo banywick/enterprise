@@ -6,6 +6,15 @@ from ..models import RemainsInventory, OrderInventory
 
 subquery = Remains.objects.filter(article=OuterRef('article')).values('article').annotate(total_quantity=Sum('quantity')).values('total_quantity')
 
+def set_status_if_none(inventory):
+    for i in inventory:
+        check_status = RemainsInventory.objects.filter(article=i.article).values('status').first()
+        if i.total_quantity == None and check_status['status'] == None:
+            RemainsInventory.objects.filter(article=i.article).update(status='Нет в базе')
+        if i.total_quantity == None:    
+            i.total_quantity = 0
+    return RemainsInventory.objects.filter(article__in=[i.article for i in inventory]).annotate(total_quantity=Subquery(subquery))
+
 def get_inventory(request):
     form = InputValue(request.POST)
     count_row = RemainsInventory.objects.values('article').distinct().count()  # количество уникальных строк
@@ -15,17 +24,38 @@ def get_inventory(request):
     if request.method == 'POST':
         if request.POST.get('marker') == 'сошлось':
             inventory = RemainsInventory.objects.filter(status='Сошлось')
-            return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+            annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
+            for i in annotated_inventory:
+                if i.total_quantity == None :
+                    i.total_quantity = 0
+            return {'form': form, 'inventory': annotated_inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
                     'remainder_row': remainder_row, 'percentage': percentage}
         
         if request.POST.get('marker') == 'в работе':
             inventory = RemainsInventory.objects.filter(status='В работе')
-            return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+            annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
+            for i in annotated_inventory:
+                if i.total_quantity == None :
+                    i.total_quantity = 0
+            return {'form': form, 'inventory': annotated_inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
                     'remainder_row': remainder_row, 'percentage': percentage}
         
         if request.POST.get('marker') == 'перепроверить':
             inventory = RemainsInventory.objects.filter(status='Перепроверить')
-            return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+            annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
+            for i in annotated_inventory:
+                if i.total_quantity == None :
+                    i.total_quantity = 0
+            return {'form': form, 'inventory': annotated_inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+                    'remainder_row': remainder_row, 'percentage': percentage}
+        
+        if request.POST.get('marker') == 'Нет в базе':
+            inventory = RemainsInventory.objects.filter(status='Нет в базе')
+            annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
+            for i in annotated_inventory:
+                if i.total_quantity == None :
+                    i.total_quantity = 0
+            return {'form': form, 'inventory': annotated_inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
                     'remainder_row': remainder_row, 'percentage': percentage}
         query = Q()
         input_value = request.POST.get('input')
@@ -39,6 +69,8 @@ def get_inventory(request):
             inventory = RemainsInventory.objects.filter(query).annotate(total_quantity=Subquery(subquery))[:50]
 
             if inventory.exists():
+                set_status_if_none(inventory)
+
                 return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
                     'remainder_row': remainder_row, 'percentage': percentage}
             
@@ -46,9 +78,7 @@ def get_inventory(request):
             # Создаем подзапрос для суммирования quantity из Remains, где article соответствует статье из Remains
             inventory = RemainsInventory.objects.filter(article__icontains=values[0]).annotate(total_quantity=Subquery(subquery))
             if inventory.exists():
-                for i in inventory:
-                    if i.total_quantity == None:
-                        i.total_quantity = 0
+                set_status_if_none(inventory)
                 return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
                     'remainder_row': remainder_row, 'percentage': percentage}
         

@@ -24,7 +24,11 @@ class OrderInventory(models.Model):
     comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'OrderInventory (id: {self.id}, product: {self.product.title} {self.product.article}'        
+        return f'OrderInventory (id: {self.id}, product: {self.product.title} {self.product.article}'    
+
+    class Meta:
+        verbose_name = 'Детализация иннвентаризации'
+        verbose_name_plural = 'Детализация иннвентаризации'     
 
 
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Status</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Task Status</h1>
+    <div id="status">Processing...</div>
+
+    <script>
+        const taskId = "{{ task_id }}";
+        
+        function checkStatus() {
+            $.get(`/check-task-status/${taskId}/`, function(data) {
+                if (data.status === 'completed') {
+                    $('#status').text('Completed! Result: ' + data.result);
+                    // Вы можете добавить редирект или другую логику здесь
+                    setTimeout(() => {
+                        window.location.href = '/another-page/';  // Меняем на нужный URL
+                    }, 2000);
+                } else {
+                    setTimeout(checkStatus, 2000);  // Проверяем статус каждые 2 секунды
+                }
+            });
+        }
+
+        checkStatus();
+    </script>
+</body>
+</html>

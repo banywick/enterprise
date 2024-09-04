@@ -10,6 +10,8 @@ class Remains(models.Model):
     base_unit = models.CharField(max_length=10, null=True, verbose_name='Единица')
     project = models.CharField(max_length=30, null=True, verbose_name='Проект')
     quantity = models.FloatField(blank=True, null=True, verbose_name='Количество')
+    price = models.IntegerField(null=True)
+
 
     def __str__(self):
         return f"{self.article}"

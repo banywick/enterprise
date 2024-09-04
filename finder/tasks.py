@@ -4,16 +4,17 @@ import pytz
 from sqlalchemy import create_engine
 from celery import shared_task
 from datetime import datetime
-from django.contrib.auth.models import User 
 from finder.models import Data_Table
+from finder.utils import connect_redis
 from inventory.models import OrderInventory
 
 
 @shared_task
 def data_save_db(file_url):
     try:
-        collums_document = []
-        collums_template = [
+        # Шаблон колонок
+        columns_template = [
+            "Цена",
             "Комментарий",
             "Код",
             "Артикул",
@@ -23,33 +24,49 @@ def data_save_db(file_url):
             "Склад",
             "Конечный остаток (Количество)",
         ]
-        df = pd.read_excel(file_url, usecols=[11, 12, 13, 14, 15, 16, 17, 18])
-        order_colums = df.iloc[7].fillna("Конечный остаток (Количество)")
-        for col in order_colums:
-            collums_document.append(col)
-        if collums_document == collums_template:
-            df = df.iloc[10:]  # Начинаем с 10 строки
-            engine = create_engine("postgresql://sklad:sklad@127.0.0.1:5432/sklad_db")
-            df.columns = [
-                "comment",
-                "code",
-                "article",
-                "party",
-                "title",
-                "base_unit",
-                "project",
-                "quantity",
-            ]
-            df["quantity"] = df["quantity"].astype(float).round(2)
-            df.to_sql("finder_remains", engine, if_exists="replace", index_label="id")
-            os.remove(file_url)
-        else:
-            os.remove(file_url)
-            raise "Не соответсвует порядок столбцов в документе"
+
+        # Читаем файл
+        df = pd.read_excel(file_url, usecols=[0, 11, 12, 13, 14, 15, 16, 17, 18])
+        
+        # Проверяем порядок столбцов
+        order_columns = df.iloc[7].fillna("Конечный остаток (Количество)").tolist()
+        if order_columns != columns_template:
+            raise ValueError("Не соответствует порядок столбцов в документе")
+
+        # Удаляем первые 10 строк
+        df = df.iloc[10:]
+
+        # Переименование колонок
+        df.columns = [
+            "price",
+            "comment",
+            "code",
+            "article",
+            "party",
+            "title",
+            "base_unit",
+            "project",
+            "quantity",
+        ]
+
+        # Обработка данных
+        df["quantity"] = df["quantity"].astype(float).round(2)
+
+        # Сохранение в базу данных
+        engine = create_engine("postgresql://sklad:sklad@127.0.0.1:5432/sklad_db")
+        df.to_sql("finder_remains", engine, if_exists="replace", index_label="id")
+        success_message = 'Данные успешно загружены'  # Задаем сообщение об успехе
+
 
     except Exception as e:
-        os.remove(file_url)
-        raise "Файл который вы загружаете не соответсвует структуре"
+        raise ValueError(f"Ошибка при обработке файла: {e}")
+
+    finally:
+        # Удаляем файл вне зависимости от результата выполнения
+        if file_url and os.path.exists(file_url):
+            os.remove(file_url)
+
+    return success_message  # Возвращаем сообщение об успехе (или None, если была ошибка)
     
 
 
@@ -102,7 +119,9 @@ def backup_inventory_table():
     }, inplace=True)
 
     # Задайте порядок столбцов
-    columns_order = ['Пользователь','Артикул', 'Наименование', 'Единица', 'Посчитанно', 'Адрес', 'Комментарий', 'Дата создания', 'Статус']  # Замените на нужный порядок
+    columns_order = ['Пользователь','Артикул', 'Наименование', 
+                    'Единица', 'Посчитанно', 'Адрес', 'Комментарий',
+                    'Дата создания', 'Статус']  # Замените на нужный порядок
     df = df[columns_order]  # Измените порядок столбцов
     
     # Задайте путь к папке и создайте его, если он не существует

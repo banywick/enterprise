@@ -150,6 +150,10 @@ header {
 
 }
 
+.orange {
+    background-color: #FF7F50;
+}
+
 .red {
     background-color: rgba(255, 0, 0, 0.44);
 }
@@ -172,6 +176,12 @@ header {
 
 .all_check_position form button:hover {
     border: 1px solid #e22b2b;
+}
+
+.disabled-link {
+    color:#ff6c00;
+    cursor: not-allowed;
+    text-decoration: none; /* Убрать подчеркивание */
 }
 
 
