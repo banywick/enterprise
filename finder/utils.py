@@ -4,9 +4,11 @@ import redis
 from finder.forms import InputValue
 from finder.models import Remains
 from django.db.models import Q, Sum
-
 from finder.standarts import standarts_collection
 
+
+def connect_redis():
+    return redis.StrictRedis(host="localhost", port=6379, db=0)
 
 def clear_sort(request):
     request.session["project"] = ""

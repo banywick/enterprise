@@ -19,6 +19,7 @@ urlpatterns = [
     path("check_article/<str:art>", check_article, name="check_article"),
     path("del_row_sahr/<int:id>", del_row_sahr, name='del_row_sahr'),
     path('download-excel/', download_backup, name='dowload_backup'),
-    path('history/<int:id>', get_history, name='history')
+    path('history/<int:id>', get_history, name='history'),
+    path('check_task_status/<str:task_id>/', check_task_status, name='check_task_status'),
 ]
 

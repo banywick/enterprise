@@ -1,26 +1,26 @@
+import os
+from config import settings
 from datetime import datetime
 from mimetypes import guess_type
 from django.contrib.auth import authenticate, login, logout
-import os
 from django.db.models import Q, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
-import redis
-from config import settings
-from finder.export_sahr import doc_sahr
 from finder.models import *
 from celery.result import AsyncResult
 from finder.tasks import backup_sahr_table, data_save_db
-from finder.utils import choice_project_dict, get_context_input_filter_all
+from finder.utils import choice_project_dict, connect_redis, get_context_input_filter_all
 from django.contrib.auth.decorators import login_required
 
+
 def user_logout(request):
+    """Выход"""
     logout(request)
     return redirect("main")
 
-
 def get_access(request):
+    """Логин"""
     context = {}
     if request.method == "POST":
         username = request.POST["username"]
@@ -36,40 +36,48 @@ def get_access(request):
     return render(request, "registration.html", context)
 
 
-r = redis.StrictRedis(host="localhost", port=6379, db=0)
 
-
+@login_required
 def upload_file(request):
+    """Загрузка документа для обновления"""
     if request.POST and request.FILES:
         doc = request.FILES.get("doc")
-        # Получение имени файла
-        filename = doc.name
-        # Сохранение в Redis
-        r.set("file_name", filename)
-
         if doc.content_type.startswith(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ):
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"):
             upload_folder = FileSystemStorage(location="finder/document")
             file_name = upload_folder.save(doc, doc)
             file_url = os.path.join(settings.BASE_DIR) + "/finder/document/" + file_name
             task = data_save_db.delay(file_url)
-            request.session["task_id"] = ""
-            task_id = AsyncResult(task.id)
-            request.session["task_id"] = str(task_id)
+            return render(request, 'upload.html', {'task_id': task.id})
         else:
             return render(
-                request, "upload.html", {"error": "Выберите пожалуйста тип файла *xlsx"}
+                request, "upload.html", {
+                    "error": "Выберите пожалуйста тип файла *xlsx",
+                    'task_id': 'unknown'}
             )
-    return render(request, "upload.html")
+    return render(request, "upload.html", {'task_id': 'unknown'})
+
+
+def check_task_status(request, task_id):
+    """Получение статуса задачи"""
+    if task_id == 'unknown' :
+        return JsonResponse({"status": 'unknown'})
+    else:
+        async_result = AsyncResult(task_id)
+        if async_result.status == "SUCCESS":
+            date_update_document = datetime.now().date().strftime('%d.%m.%Y')
+            connect_redis().set("file_name", date_update_document)
+        return JsonResponse({"status": async_result.status})
 
 
 def search_engine(request):
+    """Логика поисковика собирается вся в контекст"""
     context = get_context_input_filter_all(request)
     return render(request, "index.html", context=context)
 
 
 def choice_projects(request):
+    """Выбор проекта"""
     context = choice_project_dict(request)
     if request.method == "POST":
         return redirect("main")
@@ -77,6 +85,7 @@ def choice_projects(request):
     
     
 def get_details_product(request, art):
+    """Детализация позиции при переходе по ссылке"""
     details = Remains.objects.filter(article__contains=art)
     if not details:
         return JsonResponse({"error": "Товар отсутствует в базе"})
@@ -94,40 +103,24 @@ def get_details_product(request, art):
         proj_quan_unit.append(f"{p.project} -- {p.quantity} {p.base_unit}")
 
     return JsonResponse(
-        {
-            "title": "Детализация",
-            "project": proj_quan_unit,
-            "sum": sum_art_str,
-            "art": article,
-            "title": title,
-            
-        }
-    )
+        {"title": "Детализация",
+        "project": proj_quan_unit,
+        "sum": sum_art_str,
+        "art": article,
+        "title": title,
+        })
 
 
-def check_task_status(request):
-    task_id = request.session.get("task_id")  # Получите идентификатор задачи из запроса
-    if task_id == "":
-        return JsonResponse({"status": "unknown"})
-    else:
-        task_id = request.session.get("task_id")
-        task_result = AsyncResult(task_id)
-        if task_result.state == "SUCCESS":
-            return JsonResponse({"status": "success"})
-        elif task_result.state == "FAILURE":
-            return JsonResponse({"status": "failure"})
-        elif task_result.state == "PENDING":
-            return JsonResponse({"status": "pending"})
 def get_manual(request):
+    """Инструкция для поисковика"""
     return render(request, "manual.html")
 
 @login_required
 def sahr(request):
+    """Логика С.А.ХР (Система Адресного Хранения)"""
     count_row = Data_Table.objects.all().count()
     all_remains_art = Remains.objects.all().values_list('article', flat=True).distinct()
     all_remains_art = list(map(str, all_remains_art)) # Преобразовываем все в строчное значение
-    # Data_Table.objects.filter(article__in=all_remains_art).update(index_remains=1)
-    # Data_Table.objects.filter(article__isnull=False).update(index_remains=1)
     Data_Table.objects.filter(article__in=all_remains_art).update(index_remains=2)
     if request.method == 'POST':
         if 'search_sahr_form' in request.POST:
@@ -135,9 +128,10 @@ def sahr(request):
 
             if str(value_input).startswith('d'):
                 value_input =str(value_input).split(' ')
-                deleted = Deleted.objects.filter(article__icontains=value_input[1])
-                info = 'Закрыть историю удаленных строк'
-                return render(request, "sahr.html", {'data_table': deleted,  'info': info})
+                if len(value_input) == 2:
+                    deleted = Deleted.objects.filter(article__icontains=value_input[1])
+                    info = 'Закрыть историю удаленных строк'
+                    return render(request, "sahr.html", {'data_table': deleted,  'info': info})
 
             def check_ru_symbol(): # все русские переводим в англисские
                 replacements = {
@@ -167,7 +161,7 @@ def sahr(request):
             address_ru = Q(address__icontains=check_ru_symbol())
             address_en = Q(address__icontains=find_en_ru())
             party = Q(party__icontains=value_input)
-            result_search = Data_Table.objects.filter(article | party | address_ru | address_en)
+            result_search = Data_Table.objects.filter(article | party | address_ru | address_en)[:50]
             if not result_search.exists():
                 error_search = 'Ничего не найдено'
                 return render(request, "sahr.html", {'error_search': error_search})
@@ -175,7 +169,6 @@ def sahr(request):
                 Data_Table.objects.all().order_by("-id")[:50][::-1]
             else:    
                 return render(request, "sahr.html", {'data_table': result_search})
-       
 
 
         if 'save_button_form' in request.POST:
@@ -208,6 +201,7 @@ def sahr(request):
 
 
 def change_row(request):
+    """Редактирование строк в таблице на фронте"""
     id_data_table = request.POST.get('id_data_table')
     address =  request.POST.get('address')
     comment =  request.POST.get('comment')
@@ -222,6 +216,7 @@ def change_row(request):
 
 
 def get_history(request, id):
+    """История удаленных файлов"""
     data_table = History.objects.filter(data_table_id=id).order_by('date')
     info = 'Закрыть историю'
     return render(request, "sahr.html", {"data_table": data_table, 'info': info})
@@ -229,12 +224,14 @@ def get_history(request, id):
 
 
 def del_row_sahr(request, id):
+    """Удаляет строку по id"""
     Data_Table.objects.filter(id=id).delete()
     return redirect("sahr")
 
 
 
 def check_article(request, art):
+    """Провекра для САХР есть ли такой артикул в базе"""
     article = Remains.objects.filter(article__icontains=art).first()
     total_quantity = Remains.objects.filter(article=article).aggregate(sum_quantity=Sum('quantity'))['sum_quantity']
     if article:
@@ -251,6 +248,7 @@ def check_article(request, art):
 
 
 def download_backup(request):
+    """Загрузка резервной копии на локальный компьютер"""
     file_path = backup_sahr_table()[0]
     # Определение MIME-типа файла
     mime_type, _ = guess_type(file_path)

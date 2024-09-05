@@ -16,6 +16,8 @@
             <div class="back">
                 <a href="{%url 'main' %}">Назад</a>
             </div>
+            {{task_id}}
+            
             <div class="load_file">
                 <form enctype="multipart/form-data" action="" method="POST">
                     {% csrf_token %}
@@ -39,6 +41,9 @@
                 </div>
             </div>
         </div>
+        <script>
+            const taskId = "{{ task_id }}";
+        </script>
         <script src="{% static 'js/query.js' %}"></script>
     </body>
 </html>

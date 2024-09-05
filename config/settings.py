@@ -116,6 +116,7 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+LOGIN_URL = 'login'  # Укажите URL вашей страницы входа
 
 
 
@@ -136,3 +137,4 @@ MEDIA_URL = os.path.join(BASE_DIR, "media/")
 STATIC_DIR = os.path.join(BASE_DIR, "finder/static")
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+

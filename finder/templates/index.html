@@ -77,17 +77,27 @@
                 <a class="button-link" href="{% url 'manual' %}">Инструкция</a>
               </div>
             </div>
-            {% if user_is_in_group %}
-            <div>
-              <a class="button-link" href="{% url 'upload' %}">Обновить базу</a>
-            </div>
-            <div>
-              <a class="button-link" href="{% url 'sahr' %}">С.А.ХР</a>
-            </div>
-            <div>
-              <a class="button-link" href="{% url 'inventory' %}">Инвентаризация</a>
-            </div>
-            {% endif %}
+                {% if user_is_in_group_update %}
+                <div>
+                  <a class="button-link" href="{% url 'upload' %}">Обновить базу</a>
+                </div>
+                <div>
+                  <a class="button-link" href="{% url 'sahr' %}">С.А.ХР</a>
+                </div>
+                {% endif  %}
+                {% if user_is_in_group_inventory %}
+                <div>
+                  <a class="button-link" href="{% url 'sahr' %}">С.А.ХР</a>
+                </div>
+                <div>
+                  <a class="button-link" href="{% url 'inventory' %}">Инвентаризация</a>
+                </div>
+                {% endif %}
+                {% if user_is_in_group_inventory_guest %}
+                <div>
+                  <a class="button-link" href="{% url 'inventory' %}">Инвентаризация</a>
+                </div>
+                {% endif %}
 
             <div class="header_button_reset">
               <a class="button-link" href="{% url 'clear' %}">Очистить фильтр</a>
@@ -122,6 +132,7 @@
                   <th>Количество</th>
                   <th>Единица</th>
                   <th>Проект</th>
+                  <th>Цена</th>
                 </tr>
               </thead>
               {% for r in remains %}
@@ -135,6 +146,7 @@
                   <td class="quantity_remains">{{ r.quantity }}</td>
                   <td class="base_unit_remains">{{ r.base_unit }}</td>
                   <td class="project_remains">{{ r.project }}</td>
+                  <td class="price_remains">{{ r.price }}</td>
                 </tr>
               </tbody>
               {% endfor %} {{ e_code }} {{ e_art_title }}
