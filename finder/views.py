@@ -1,4 +1,6 @@
 import os
+
+from django.contrib import messages
 from config import settings
 from datetime import datetime
 from mimetypes import guess_type
@@ -7,6 +9,7 @@ from django.db.models import Q, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
+from finder.forms import ReviewForm
 from finder.models import *
 from celery.result import AsyncResult
 from finder.tasks import backup_sahr_table, data_save_db
@@ -257,6 +260,23 @@ def download_backup(request):
         response = HttpResponse(file, content_type=mime_type)
         response['Content-Disposition'] = f'attachment; filename="{backup_sahr_table()[1]}"'
         return response
+    
+
+def review_list(request):
+    reviews = Review.objects.all()
+    form = ReviewForm()
+
+    if request.method == 'POST':
+        print(request.POST)
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.POST.get('user')
+            review.save()
+            messages.success(request, 'Спасибо за Ваш отзыв!')
+            return redirect('review_list')  # Перенаправить на ту же страницу
+
+    return render(request, 'review_list.html', {'reviews': reviews, 'form': form})
 
 
 

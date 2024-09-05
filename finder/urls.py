@@ -1,7 +1,6 @@
 from os import name
 from django.urls import path
 from .views import *
-   
 from .utils import clear_sort
 
 urlpatterns = [
@@ -21,5 +20,6 @@ urlpatterns = [
     path('download-excel/', download_backup, name='dowload_backup'),
     path('history/<int:id>', get_history, name='history'),
     path('check_task_status/<str:task_id>/', check_task_status, name='check_task_status'),
+    path('reviews/', review_list, name='review_list'),
 ]
 

@@ -1,0 +1,83 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0 auto;
+    padding: 20px;
+    background-image: url("../img/55.png");
+    background-size: cover;
+    height: 100vh;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+form {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+    background: #2a68b78a;
+    border: 1px solid black;
+}
+
+label {
+    font-weight: bold;
+}
+
+input, textarea {
+    /* width: 100%; */
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+    max-width: 100%; /* Максимальная ширина 100% от родителя */
+    box-sizing: border-box; /* Учитывать отступы и границы */
+}
+
+input:focus, textarea:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+button {
+    background-color: #007BFF;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: aquamarine;
+    border: 1px solid #cf7777;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.form_div {
+    margin: 0 auto;
+    width: 400px;
+}
+.message_div {
+    margin: 0 auto;
+    width: 400px;
+   
+}

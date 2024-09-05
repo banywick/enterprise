@@ -1,4 +1,4 @@
-from django.contrib import admin, messages
+from django.contrib import admin
 from finder.models import Remains
 from .models import RemainsInventory, OrderInventory
 from django.db import transaction
