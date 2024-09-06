@@ -32,7 +32,7 @@ tableRowsSahr.forEach((row) => {
             form_id_data_table.value = id_row
             choice_container.style.display = 'flex'
         });
-        fetch(`http://127.0.0.1:8000/details/${art}`)
+        fetch(`http://192.168.100.200/details/${art}`)
         .then(data=> data.json())
         .then(data => {
             console.log(data)
@@ -43,7 +43,6 @@ tableRowsSahr.forEach((row) => {
             if (data.error) {
                 document.querySelector(".sahr_details_sum").textContent = data.error;
             }
-          
     })})})
 
 
@@ -59,14 +58,14 @@ check_article.addEventListener('input', async function () {
             selectElement.innerHTML= '';
 
         } else {
-            const response = await fetch(`http://127.0.0.1:8000/check_article/${enteredArticle}`);
+            const response = await fetch(`http://192.168.100.200/check_article/${enteredArticle}`);
             const data = await response.json();
             // console.log(data)
             
             selectElement.innerHTML= ''
             for ( let i in data.party) {
                 const option = document.createElement('option');
-               ;
+                ;
                 console.log(data.party[i]);
                 option.value = data.party[i];
                 option.text = data.party[i];
@@ -76,7 +75,6 @@ check_article.addEventListener('input', async function () {
             if (data.title) {
                 views_title.value = data.title;
                 hidden_id.value = data.id;
-               
             }
             if (data.error) {
                 views_title.innerHTML = data.error;
