@@ -44,7 +44,6 @@ def set_status(request, status, article):
     if status == 'Сошлось':
         # Проверяем, существует ли уже запись в InventoryItem для данного продукта и пользователя
         if not OrderInventory.objects.filter(product=product).exists():
-            print(111)
             create_inventory_item(product, user, quantity_ord, address, comment)
 
 
@@ -61,7 +60,6 @@ def set_status(request, status, article):
 @login_required
 def user_detail(request):
     order = OrderInventory.objects.select_related('product').filter(user=request.user)
-    # order_count = OrderInventory.objects.values('product_id').distinct().count()
     order_count = order.values('product_id').distinct().count()
     print(order_count)
     return render(request, 'inventory/user_detail.html', {'order': order, 'order_count': order_count})

@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 import redis
 from finder.forms import InputValue
 from finder.models import Remains
-from django.db.models import Q, Sum
+from django.db.models import Q
 from finder.standarts import standarts_collection
 
 

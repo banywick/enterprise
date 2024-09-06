@@ -45,6 +45,8 @@ def upload_file(request):
     """Загрузка документа для обновления"""
     if request.POST and request.FILES:
         doc = request.FILES.get("doc")
+        filename = doc.name
+        connect_redis().set('file_name', filename)
         if doc.content_type.startswith(
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"):
             upload_folder = FileSystemStorage(location="finder/document")
@@ -63,14 +65,13 @@ def upload_file(request):
 
 def check_task_status(request, task_id):
     """Получение статуса задачи"""
+    async_result = AsyncResult(task_id)
     if task_id == 'unknown' :
         return JsonResponse({"status": 'unknown'})
-    else:
-        async_result = AsyncResult(task_id)
-        if async_result.status == "SUCCESS":
-            date_update_document = datetime.now().date().strftime('%d.%m.%Y')
-            connect_redis().set("file_name", date_update_document)
-        return JsonResponse({"status": async_result.status})
+    if async_result.status == 'FAILURE':
+        connect_redis().set("file_name", 'База не обновлена')
+    return JsonResponse({"status": async_result.status})
+        
 
 
 def search_engine(request):
