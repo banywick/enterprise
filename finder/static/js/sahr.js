@@ -32,7 +32,7 @@ tableRowsSahr.forEach((row) => {
             form_id_data_table.value = id_row
             choice_container.style.display = 'flex'
         });
-        fetch(`http://192.168.100.200/details/${art}`)
+        fetch(`/details/${art}`)
         .then(data=> data.json())
         .then(data => {
             console.log(data)
@@ -58,7 +58,7 @@ check_article.addEventListener('input', async function () {
             selectElement.innerHTML= '';
 
         } else {
-            const response = await fetch(`http://192.168.100.200/check_article/${enteredArticle}`);
+            const response = await fetch(`/check_article/${enteredArticle}`);
             const data = await response.json();
             // console.log(data)
             

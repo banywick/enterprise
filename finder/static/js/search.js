@@ -11,7 +11,7 @@ tableRows.forEach((row) => {
         const art = row.getAttribute('data-id');
         details_div.style.display = 'block'
         // Здесь вы можете выполнять дополнительные действия с полученным id
-        fetch(`http://192.168.100.200/details/${art}`)
+        fetch(`/details/${art}`)
         .then(data=> data.json())
         .then(data => {
             console.log(data)
