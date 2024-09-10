@@ -1,7 +1,7 @@
 from django.db.models import Sum, Q, OuterRef, Subquery
 from finder.models import Remains
 from ..forms import InputValue
-from ..models import RemainsInventory, OrderInventory
+from ..models import CreationdDateInventory, RemainsInventory, OrderInventory
 from django.db.models.functions import Round
 
 
@@ -98,6 +98,9 @@ def get_inventory(request):
     form = InputValue(request.POST)
 
     # Общие вычисления
+    create_invent_date = CreationdDateInventory.objects.first()
+    if create_invent_date is None:
+        create_invent_date = ''
     count_row = RemainsInventory.objects.values('article').distinct().count()
     not_empty_row = RemainsInventory.objects.filter(status='Сошлось').count()
     remainder_row = count_row - not_empty_row
@@ -173,7 +176,8 @@ def get_inventory(request):
         'count_row': count_row,
         'not_empty_row': not_empty_row,
         'remainder_row': remainder_row,
-        'percentage': percentage
+        'percentage': percentage,
+        'create_invent_date':create_invent_date,
     }
 
 

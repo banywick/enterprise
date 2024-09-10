@@ -1,7 +1,10 @@
 from django.contrib import admin
 from finder.models import Remains
-from .models import RemainsInventory, OrderInventory
+from .models import RemainsInventory, OrderInventory, CreationdDateInventory
 from django.db import transaction
+
+
+admin.site.register(CreationdDateInventory)
 
 @admin.register(Remains)
 class RemainsModelAdmin(admin.ModelAdmin):

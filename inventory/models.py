@@ -30,6 +30,16 @@ class OrderInventory(models.Model):
         verbose_name = 'Детализация иннвентаризации'
         verbose_name_plural = 'Детализация иннвентаризации'     
 
+class CreationdDateInventory(models.Model):    
+    date = models.CharField(verbose_name='Дата создания')
+
+    def __str__(self) -> str:
+        return self.date    
+    
+    class Meta:
+        verbose_name = 'Дата создания списка инвентаризации'
+        verbose_name_plural = 'Дата создания списка инвентаризации'   
+
 
 
 
