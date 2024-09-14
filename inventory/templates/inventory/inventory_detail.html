@@ -73,7 +73,7 @@
             <div class="form_set_quantity">
                 <form action="" method="POST">
                     {% csrf_token %}
-                    <input type="text" placeholder="количество найдено" name="quantity_set" required="required">
+                    <input type="text" id="quantity_input" placeholder="количество найдено" name="quantity_set" required="required">
                     <input type="text" placeholder="адрес" name="address">
                     <input type="text" placeholder="Коментарий" name="comment">
                     <button class="find_button">Сохранить</button>
@@ -84,7 +84,6 @@
             <h3>Выберите статус позийии</h3>
             <a class="button" href="{% url 'set_status'  'Сошлось' product.article %}">Сошлось</a>
             <a class="button" href="{% url 'set_status'  'Перепроверить' product.article %}">Перепроверить</a>
-            {% comment %} <a class="button" href="{% url 'set_status'  'В работе' product.article %}">В работе</a> {% endcomment %}
         </div>
         <div class="button_link_back">
             <a class="button" href="{% url 'inventory' %}"> Продолжить поиск </a>
@@ -127,7 +126,11 @@
     </div>
 
 </div>
-
+<script>
+    window.onload = function() {
+        document.getElementById('quantity_input').focus();
+    };
+</script>
 
 </body>
 </html>

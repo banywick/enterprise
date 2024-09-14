@@ -1,15 +1,15 @@
+
 header {
-    background-image: url("../img/back_detail.jpg");
+    background-image: url("../img/heder_back.jpg");
     background-size: cover;
     width: 100%;
-    height: 275px;
+    height: 185px;
     display: flex;
-    gap: 100px;
     align-items: center;
     padding-left: 5px;
     padding-top: 5px;
-    border: 1px solid black;
     justify-content: space-between;
+
 }
 
 .header_user_account img {
@@ -42,15 +42,22 @@ input {
 }
 
 
+
 .find_button {
     height: 36px;
     border: 2px solid #0e0e0e;
-    background: #00805ead;
+    background: #ff5e5ef0;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     text-align: center;
     box-shadow: 10px 10px 10px 2px rgba(34, 60, 80, 0.2);
+    cursor: pointer;
 }
+
+.find_button:hover {
+    background-color: #6fc253;
+}
+
 
 .header_logo img {
     height: 140px;
@@ -143,18 +150,16 @@ input {
 
 }
 .description_product_container {
-    border: 2px solid black;
+    border: 1px solid black;
     background-color: rgb(97 239 185 / 33%);
-       width: 306px;
+    width: 306px;
     box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    border-radius: 10px;
 }
 
 .title_article {
-    background: #498b6161;
     text-align: center;
     width: 500px;
-    border: 2px solid black;
-    box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .input_set_value_container {
@@ -174,15 +179,16 @@ input {
 .wrapper_choice {
     display: flex;
     justify-content: space-between;
-    border: 2px solid black;
-    background: rgba(0,0,0,.16);
+    border: 1px solid black;
+    background-image: url("../img/back_detail.jpg");
+
 }
 
 .choice_status a.button {
     display: inline-block;
     padding: 10px 20px;
-    color: #fff;
-    background-color: #007BFF;
+    color: #000000;
+    background-color: #ffd000f5;
     border: none;
     border-radius: 10px;
     text-decoration: none;
@@ -191,24 +197,23 @@ input {
 }
 
 .choice_status a.button:hover {
-    background-color: #0056b3;
+    background-color: #00b30f;
     border: 2px solid yellow;
 }
 .choice_status{
     text-align: center;
 }
 
-.button_link_back a.button{
+.button_link_back a.button {
     border: 1px solid black;
-     display: flex;
+    display: flex;
     margin-top: 40px;
     padding: 22px 82px;
-    color: #fff;
-    background-color: rgb(68 0 241 / 55%);
+    color: black;
+    background-color: #97d9c6;
     border-radius: 10px;
     text-decoration: none;
     box-shadow: 3px 6px 20px 6px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-
 }
 
 .button_link_back a.button:hover{
@@ -216,3 +221,25 @@ input {
     border: 2px solid yellow;
 }
 
+.custom_button {
+    background-color: #4CAF50; /* Зеленый фон */
+    border: none; /* Без рамки */
+    color: white; /* Белый текст */
+    padding: 15px 32px; /* Отступы (вертикальные, горизонтальные) */
+    text-align: center; /* Выравнивание текста по центру */
+    text-decoration: none; /* Без подчеркивания */
+    display: inline-block; /* Позволяет добавлять отступы */
+    font-size: 16px; /* Размер шрифта */
+    transition: background-color 0.3s, transform 0.2s; /* Плавный переход */
+    border-radius: 5px; /* Скругленные углы */
+    cursor: pointer; /* Указатель при наведении */
+}
+
+.button:hover {
+    background-color: #45a049; /* Более темный зеленый фон при наведении */
+    transform: translateY(-2px); /* Небольшое поднятие кнопки */
+}
+
+.button:active {
+    transform: translateY(0); /* Сброс поднятия при нажатии */
+}

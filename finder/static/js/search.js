@@ -3,6 +3,11 @@ const button_hide = document.querySelector('.button_hide');
 const details_div = document.querySelector('.overlay');
 button_hide.addEventListener('click', hide_details)
 
+
+window.onload = function() {
+    document.getElementById('id_input').focus();
+};
+
 // Добавляем обработчик события для каждой строки
 tableRows.forEach((row) => {
     row.addEventListener('click', () => {

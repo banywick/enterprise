@@ -59,7 +59,7 @@ def set_status(request, status, article):
 
 @login_required
 def user_detail(request):
-    order = OrderInventory.objects.select_related('product').filter(user=request.user)
+    order = OrderInventory.objects.select_related('product').filter(user=request.user).order_by('created_at')
     order_count = order.values('product_id').distinct().count()
     print(order_count)
     return render(request, 'inventory/user_detail.html', {'order': order, 'order_count': order_count})
