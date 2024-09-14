@@ -8,7 +8,7 @@ admin.site.register(CreationdDateInventory)
 
 @admin.register(Remains)
 class RemainsModelAdmin(admin.ModelAdmin):
-    list_display = ('article', 'title', 'base_unit', 'quantity')
+    list_display = ('article', 'title', 'base_unit', 'quantity', 'price')
     # list_display_links = ('Артикул', 'Название', 'Единица', 'Количество')
     search_fields = ('article',)
     actions = ['copy_to_inventory']
