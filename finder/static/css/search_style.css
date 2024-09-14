@@ -245,3 +245,30 @@ tr td:last-child {
   cursor: pointer;
 }
 
+.messages {
+  list-style-type: none;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.messages li {
+  padding: 10px;
+  border: 1px solid transparent;
+}
+
+.messages li.warning {
+  background-color: #e5d8af;
+  border-color: #000000;
+  color: #ff0000;
+  text-align: center;
+  font-size: 25px;
+}
+
+.error_find {
+  background-color: #c8ddd7;
+  border-color: #000000;
+  color: #ff0000;
+  text-align: center;
+  font-size: 25px;
+  
+}

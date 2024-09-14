@@ -123,6 +123,13 @@
         </div>
 
         <div class="center_colum">
+          {% if messages %}
+              <ul class="messages">
+              {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+              </ul>
+        {% endif %}
           <div class="table_div">
             <table>
               <thead>
@@ -152,7 +159,11 @@
                   <td class="price_remains">{{ r.price }}</td>
                 </tr>
               </tbody>
-              {% endfor %} {{ e_code }} {{ e_art_title }}
+              {% endfor %} 
+              <div class='error_find'> {{ e_art_title }}</div>
+              <div class='error_find'>{{ e_code }} </div>
+
+
             </table>
           </div>
         </div>

@@ -5,14 +5,20 @@ from finder.tasks import backup_inventory_table
 from inventory.utils.inventory_engine import create_inventory_item, get_inventory, inventory_detail
 from .models import OrderInventory, RemainsInventory
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 
 
 @login_required
 def get_main_inventory(request):
-    context = get_inventory(request)
-    return render(request, 'inventory/inventory.html', context=context)
+    try:
+        context = get_inventory(request)
+        return render(request, 'inventory/inventory.html', context=context)
+    except ZeroDivisionError as e:
+        messages.warning(request, "Произошла ошибка! Данные для инвентаризации не загружены.")
+        return redirect('main')
+    
 
 @login_required
 def get_inventory_detail(request, article):
