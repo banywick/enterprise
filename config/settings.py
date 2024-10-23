@@ -12,11 +12,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-from dotenv import dotenv_values
+from dotenv import load_dotenv
+
+
+# Загружаем переменные окружения из .env файла
+env = load_dotenv()
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-env_keys = dotenv_values()
 
 
 INSTALLED_APPS = [
@@ -28,7 +31,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "finder",
     "flower",
-    "inventory",
+    'inventory',
+    'comersant',
 ]
 
 MIDDLEWARE = [
@@ -44,7 +48,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "config.urls"
 
 
-SECRET_KEY = env_keys.get('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
 
@@ -53,9 +57,9 @@ ALLOWED_HOSTS = ["*"]
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "sklad_db",
-        "USER": "sklad",
-        "PASSWORD": "sklad",
+        "NAME": os.getenv('NAME'),
+        "USER": os.getenv('USER'),
+        "PASSWORD": os.getenv('PASSWORD'),
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
