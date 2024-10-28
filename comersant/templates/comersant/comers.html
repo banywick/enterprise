@@ -1,18 +1,50 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table App</title>
-    <link rel="stylesheet" href="{% static 'css/comers.css' %}">
-    <script src="{% static 'script.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css'%}">
+    <link rel="stylesheet" href="{% static 'css/comers.css'%}">
+    <title>Недопоставки</title>
 </head>
 <body>
-    <table id="data-table" border="1">
-        <tbody>
-            <!-- Table rows will be added here by JavaScript -->
-        </tbody>
-    </table>
+    <div class="wrapper">
+        <header>
+            <div class="filter">
+                фильтр
+            </div>
+            <div class="find">
+                найти
+            </div>
+            <div class="input_data">
+                Ввести данные
+            </div>
+            <div class="user_block">
+                <div class="user_icon">
+                    иконка
+                </div>
+                <div class="logout_button">
+                    выход
+                </div>
+            </div>
+
+        </header>
+        <div class="menu_windows">
+            <div class="menu_item">
+                <ul>
+                    <li><button>1</button></li>
+                    <li><button>2</button></li>
+                    <li><button>3</button></li>
+                    <li><button>4</button></li>
+                    <li><button>5</button></li>
+                    <li><button>1</button></li>
+                </ul>
+            </div>
+            <div class="input_data_form">
+                
+            </div>
+        </div>
+    </div>
 </body>
 </html>
