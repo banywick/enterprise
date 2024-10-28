@@ -1,7 +1,6 @@
 .wrapper {
     border: 1px solid black;
     height: 100vh;
-    
 }
 
 header {
@@ -11,19 +10,38 @@ header {
     border: 1px solid black;
     height: 100px;
 }
+
 .menu_windows {
     display: flex;
 }
 
-.menu_item {
+.menu_item, .input_data_form {
+    display: none;
+    position: absolute;
+    top: 100px; /* Высота хедера */
+    left: 50%;
+    transform: translateX(-50%);
     border: 1px solid black;
-    height: 500px;
+    background-color: white;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.menu_item {
     width: 250px;
 }
 
 .input_data_form {
-    border: 1px solid black;
-    height: 500px;
     width: 400px;
+}
 
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }

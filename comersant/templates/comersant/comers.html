@@ -11,13 +11,13 @@
 <body>
     <div class="wrapper">
         <header>
-            <div class="filter">
+            <div class="filter" onclick="openPopup('menu_item')">
                 фильтр
             </div>
             <div class="find">
                 найти
             </div>
-            <div class="input_data">
+            <div class="input_data" onclick="openPopup('input_data_form')">
                 Ввести данные
             </div>
             <div class="user_block">
@@ -28,7 +28,6 @@
                     выход
                 </div>
             </div>
-
         </header>
         <div class="menu_windows">
             <div class="menu_item">
@@ -42,9 +41,21 @@
                 </ul>
             </div>
             <div class="input_data_form">
-                
+                <!-- Ваш контент для ввода данных -->
+                <ul>
+                    <li><button>1</button></li>
+                    <li><button>2</button></li>
+                    <li><button>3</button></li>
+                    <li><button>4</button></li>
+                    <li><button>5</button></li>
+                    <li><button>1</button></li>
+                </ul>
+
             </div>
         </div>
+        <div class="overlay" onclick="closePopup()"></div>
     </div>
+
+    <script src='{% static 'js/popups.js'%}'></script>
 </body>
 </html>
