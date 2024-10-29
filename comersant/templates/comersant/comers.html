@@ -42,14 +42,11 @@
             </div>
             <div class="input_data_form">
                 <!-- Ваш контент для ввода данных -->
-                <ul>
-                    <li><button>1</button></li>
-                    <li><button>2</button></li>
-                    <li><button>3</button></li>
-                    <li><button>4</button></li>
-                    <li><button>5</button></li>
-                    <li><button>1</button></li>
-                </ul>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Submit</button>
+                </form>
 
             </div>
         </div>

@@ -7,3 +7,15 @@ class TableData(models.Model):
 
     class Meta:
         unique_together = ('row', 'col')
+
+class Comment(models.Model):
+    text = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.text
+
+class Leading(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name        

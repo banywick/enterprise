@@ -3,10 +3,12 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+from comersant.form import InputDataForm
 from comersant.models import TableData
 
 def shortfalls_view(request):
-    return render(request, 'comersant/comers.html')
+    form = InputDataForm()
+    return render(request, 'comersant/comers.html',  {'form': form})
 
 @csrf_exempt
 def data(request):
