@@ -5,27 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/null_for_templates.css'%}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/comers.css'%}">
+    <link rel="stylesheet" href="{% static 'css/data_form.css'%}">
     <title>Недопоставки</title>
 </head>
 <body>
     <div class="wrapper">
         <header>
-            <div class="filter" onclick="openPopup('menu_item')">
-                фильтр
-            </div>
             <div class="find">
-                найти
+                <p>Найти</p>
             </div>
             <div class="input_data" onclick="openPopup('input_data_form')">
-                Ввести данные
+                <p>Ввести данные</p>
             </div>
             <div class="user_block">
-                <div class="user_icon">
-                    иконка
-                </div>
                 <div class="logout_button">
-                    выход
+                    <p>Выход</p>
                 </div>
             </div>
         </header>
@@ -45,14 +41,45 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit">Submit</button>
+                    <button type="submit">Сохранить</button>
                 </form>
-
             </div>
         </div>
         <div class="overlay" onclick="closePopup()"></div>
+        <div class="container">
+            <h1 class="text-center">Input Data</h1>
+            <form id="inputDataForm">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% comment %} <div class="table-container">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Накладная</th>
+                            <th>Дата</th>
+                            <th>Поставщик</th>
+                            <th>Артикул</th>
+                            <th>Название</th>
+                            <th>Единица</th>
+                            <th>Количество</th>
+                            <th>Комментарий</th>
+                            <th>Ведущий</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceTableBody">
+                        <!-- Данные будут добавляться здесь -->
+                    </tbody>
+                </table>
+            </div> {% endcomment %}
+        </div>
     </div>
-
     <script src='{% static 'js/popups.js'%}'></script>
+    <script src="{% static 'js/auto_fields.js' %}"></script>
+    <script src="{% static 'js/table_fields.js' %}"></script>
+    {% comment %} <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> {% endcomment %}
+    {% comment %} <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> {% endcomment %}
 </body>
 </html>
