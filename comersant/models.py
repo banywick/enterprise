@@ -1,13 +1,5 @@
 from django.db import models
-from sqlalchemy import Null
 
-class TableData(models.Model):
-    row = models.IntegerField()
-    col = models.IntegerField()
-    value = models.TextField()
-
-    class Meta:
-        unique_together = ('row', 'col')
 
 class Comment(models.Model):
     text = models.CharField(max_length=255)

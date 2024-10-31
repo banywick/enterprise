@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 from comersant.form import InputDataForm
-from comersant.models import Invoice, TableData
+from comersant.models import Invoice
 
 def shortfalls_view(request):
     form = InputDataForm()

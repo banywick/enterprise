@@ -40,6 +40,19 @@ header p  {
     z-index: 1000;
 }
 
+.edit_menu {
+    display: none;
+    height: 100px;
+    width: 400px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid black;
+    background-color: white;
+    padding: 20px;
+    z-index: 1000;
+}
+
 .menu_item {
     width: 250px;
 }
@@ -79,7 +92,7 @@ thead {
 }
 th, td {
     padding: 12px;
-    text-align: left;
+    text-align: center;
     border: 1px solid #ddd;
 }
 th {
@@ -89,5 +102,5 @@ tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 tbody tr:hover {
-    background-color: #f1f1f1;
+    background-color: #bb9090;
 }
