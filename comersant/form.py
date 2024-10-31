@@ -55,3 +55,9 @@ class InputDataForm(forms.Form):
         empty_label="Ведущий накладную",
         label='Ведущий накладную'
     )
+    hidden_unit = forms.CharField(
+        widget=forms.HiddenInput(attrs={'id': 'hidden_unit'})  # Скрытое поле с id
+    )
+    hidden_article = forms.CharField(
+        widget=forms.HiddenInput(attrs={'id': 'hidden_article'})  # Скрытое поле с id
+    )

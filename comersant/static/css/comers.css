@@ -59,10 +59,35 @@ header p  {
     z-index: 999;
 }
 
-.table-container {
-    margin-top: 20px;
+.container {
+    width: 100%;
+    margin: 0;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
-.table th, .table td {
-    text-align: center;
-    vertical-align: middle;
+.table-container {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+thead {
+    background-color: #007bff;
+    color: #fff;
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+th {
+    font-weight: bold;
+}
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+tbody tr:hover {
+    background-color: #f1f1f1;
 }

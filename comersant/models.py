@@ -1,4 +1,5 @@
 from django.db import models
+from sqlalchemy import Null
 
 class TableData(models.Model):
     row = models.IntegerField()
@@ -25,6 +26,9 @@ class Supler(models.Model):
 
     def __str__(self):
         return self.name  
+    
+class Status(models.Model):
+    name = models.CharField(max_length=100, default='Запрос')     
 
 class Specialist(models.Model):
     name = models.CharField(max_length=100)
@@ -43,6 +47,9 @@ class Invoice(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
     leading = models.ForeignKey(Leading, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE,  default=1)
+    description = models.TextField(blank=True, null=True)
+
 
     def __str__(self):
         return self.invoice_number    

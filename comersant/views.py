@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -8,7 +8,12 @@ from comersant.models import Invoice, TableData
 
 def shortfalls_view(request):
     form = InputDataForm()
-    return render(request, 'comersant/comers.html',  {'form': form})
+    invoices = Invoice.objects.all()  # Получаем все объекты модели Invoice
+    context = {
+        'form': form,
+        'invoices': invoices
+    }
+    return render(request, 'comersant/comers.html', context)
 
 def input_data(request):
     if request.method == 'POST':
@@ -18,20 +23,17 @@ def input_data(request):
                 invoice_number=form.cleaned_data['invoice'],
                 date=form.cleaned_data['date'],
                 supplier=form.cleaned_data['supplier'],
-                article=form.cleaned_data['article'],
+                article=form.cleaned_data['hidden_article'],
                 name=form.cleaned_data['auto_title'],
-                unit='шт',  # Пример значения, можно изменить
+                unit=form.cleaned_data['hidden_unit'],  # Пример значения, можно изменить
                 quantity=form.cleaned_data['quantity'],
                 comment=form.cleaned_data['comment'],
-                manager=form.cleaned_data['leading']
+                specialist=form.cleaned_data['specialist'],
+                leading=form.cleaned_data['leading']
             )
             invoice.save()
-            return JsonResponse({'status': 'success', 'data': form.cleaned_data})
-        else:
-            return JsonResponse({'status': 'error', 'errors': form.errors})
-    else:
-        form = InputDataForm()
-    return render(request, 'input_data.html', {'form': form})
+            return redirect('shortfalls')
+    
 
 
 
