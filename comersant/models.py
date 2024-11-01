@@ -20,7 +20,10 @@ class Supler(models.Model):
         return self.name  
     
 class Status(models.Model):
-    name = models.CharField(max_length=100, default='Запрос')     
+    name = models.CharField(max_length=100, default='Запрос') 
+
+    def __str__(self):
+        return self.name      
 
 class Specialist(models.Model):
     name = models.CharField(max_length=100)

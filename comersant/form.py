@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, Leading, Supler, Specialist
+from .models import Comment, Leading, Supler, Specialist,Invoice
 
 class InputDataForm(forms.Form):
     invoice = forms.CharField(
@@ -61,3 +61,32 @@ class InputDataForm(forms.Form):
     hidden_article = forms.CharField(
         widget=forms.HiddenInput(attrs={'id': 'hidden_article'})  # Скрытое поле с id
     )
+
+
+
+class InvoiceEditForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ['invoice_number', 'date', 'supplier', 'article', 'name', 'unit', 'quantity', 'comment', 'specialist']
+        labels = {
+            'invoice_number': 'Номер накладной',
+            'date': 'Дата',
+            'supplier': 'Поставщик',
+            'article': 'Артикул',
+            'name': 'Наименование',
+            'unit': 'Единица измерения',
+            'quantity': 'Количество',
+            'comment': 'Комментарий',
+            'specialist': 'Специалист',
+        }
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
+class InvoiceEditFormStatus(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ['status', 'description']
+        labels = {
+            'status': 'Статус',
+            'description': 'Примечание',
+        }

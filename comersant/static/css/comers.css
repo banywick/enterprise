@@ -28,7 +28,7 @@ header p  {
     display: flex;
 }
 
-.menu_item, .input_data_form {
+.menu_item, .input_data_form{
     display: none;
     position: absolute;
     top: 100px; /* Высота хедера */
@@ -40,9 +40,8 @@ header p  {
     z-index: 1000;
 }
 
-.edit_menu {
-    display: none;
-    height: 100px;
+.edit_form {
+    display: block;
     width: 400px;
     position: absolute;
     left: 50%;
@@ -101,6 +100,65 @@ th {
 tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
-tbody tr:hover {
-    background-color: #bb9090;
+
+.button {
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 150px; /* Фиксированная ширина */
+    box-sizing: border-box; /* Учитывает padding и border в ширине */
+    color: white;
 }
+.edit_row {
+    width: 25px;
+}
+
+.edit_row .button {
+    background-color: #4CAF50; /* Зеленый цвет */
+}
+
+.edit_status .button {
+    background-color: #6b1fec; /* Красный цвет */
+}
+.del_row .button {
+    background-color: #ec1f1f; /* Красный цвет */
+}
+
+.button:hover {
+    transform: scale(1.1);
+}
+
+.title_edit {
+    text-align: center;
+    font-size: 24px;
+    padding: 14px;
+}
+.buttons_block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button_edit_form {
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: white;
+    background-color: green; /* Зеленый цвет для кнопки "Сохранить" */
+    border: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.button_edit_form.cancel {
+    background-color: red; /* Красный цвет для кнопки "Отмена" */
+}
+
+

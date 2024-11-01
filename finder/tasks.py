@@ -5,7 +5,6 @@ from sqlalchemy import create_engine
 from celery import shared_task
 from datetime import datetime
 from finder.models import Data_Table
-from finder.utils import connect_redis
 from inventory.models import OrderInventory
 
 

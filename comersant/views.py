@@ -1,9 +1,7 @@
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404, redirect, render
 import json
-
-from comersant.form import InputDataForm
+from comersant.form import InputDataForm, InvoiceEditForm, InvoiceEditFormStatus
 from comersant.models import Invoice
 
 def shortfalls_view(request):
@@ -33,29 +31,34 @@ def input_data(request):
             )
             invoice.save()
             return redirect('shortfalls')
+        
+def edit_row_form(request, id):
+    invoice = get_object_or_404(Invoice, id=id)
+    if request.method == "POST":
+        form = InvoiceEditForm(request.POST, instance=invoice)
+        if form.is_valid():
+            form.save()
+            return redirect('shortfalls') 
+    else:
+        form = InvoiceEditForm(instance=invoice)
+    return render(request, 'comersant/comers.html', {'form': form, 'flag': 'row'})
+
+    
+def edit_status(request, id):
+    invoice = get_object_or_404(Invoice, id=id)
+    if request.method == "POST":
+        form = InvoiceEditFormStatus(request.POST, instance=invoice)
+        if form.is_valid():
+            form.save()
+            return redirect('shortfalls') 
+    else:
+        form = InvoiceEditFormStatus(instance=invoice)
+    return render(request, 'comersant/comers.html', {'form': form, 'flag': 'status'})
+
     
 
+def delete_row(request, id):
+    get_object_or_404(Invoice, id=id).delete()
+    return redirect('shortfalls') 
 
 
-
-
-
-
-
-
-
-@csrf_exempt
-def data(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        row = data['row']
-        col = data['col']
-        value = data['value']
-
-        TableData.objects.update_or_create(row=row, col=col, defaults={'value': value})
-
-        return JsonResponse({'status': 'success'})
-
-    elif request.method == 'GET':
-        data = TableData.objects.all().values('row', 'col', 'value')
-        return JsonResponse(list(data), safe=False)
