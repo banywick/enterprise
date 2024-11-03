@@ -12,7 +12,7 @@
 <body>
     <div class="wrapper">
         <header>
-            <div class="find">
+            <div class="input_data" onclick="openPopup('menu_filter')">
                 <p>Фильтр</p>
             </div>
             <div class="input_data" onclick="openPopup('input_data_form')">
@@ -25,9 +25,15 @@
             </div>
         </header>
         <div class="menu_windows">
-            <div class="menu_item">
-                
+            <div class="menu_filter">
+                <p>Фильтр</p>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ filter_form.as_p }}
+                    <button type="submit">Применить фильтр</button>
+                </form>
             </div>
+            
             <div class="input_data_form">
                 <!-- Ваш контент для ввода данных -->
                 <form  method="post" action={% url 'input_data'%}>

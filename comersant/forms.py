@@ -90,3 +90,17 @@ class InvoiceEditFormStatus(forms.ModelForm):
             'status': 'Статус',
             'description': 'Примечание',
         }
+
+class FilterForm(forms.Form):
+    supplier = forms.ModelChoiceField(
+        queryset=Supler.objects.all(),
+        error_messages={'required': 'Не указан поставщик'},
+        widget=forms.Select(attrs={'placeholder': 'Выберите вариант'}),
+        empty_label="Выберите вариант",
+        label='Поставщик')
+    leading = forms.ModelChoiceField(
+        queryset=Leading.objects.all(),
+        error_messages={'required': 'Ведущий'},
+        widget=forms.Select(attrs={'placeholder': 'Ведущий накладную'}),
+        empty_label="Ведущий накладную",
+        label='Ведущий накладную')

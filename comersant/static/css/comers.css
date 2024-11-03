@@ -28,7 +28,7 @@ header p  {
     display: flex;
 }
 
-.menu_item, .input_data_form{
+.menu_filter, .input_data_form{
     display: none;
     position: absolute;
     top: 100px; /* Высота хедера */

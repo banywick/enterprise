@@ -4,7 +4,7 @@ function openPopup(popupId) {
 }
 
 function closePopup() {
-    // document.querySelector('.menu_item').style.display = 'none';
+    document.querySelector('.menu_filter').style.display = 'none';
     document.querySelector('.input_data_form').style.display = 'none';
     document.querySelector('.overlay').style.display = 'none';
 }

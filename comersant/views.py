@@ -1,14 +1,16 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 import json
-from comersant.form import InputDataForm, InvoiceEditForm, InvoiceEditFormStatus
+from comersant.forms import FilterForm, InputDataForm, InvoiceEditForm, InvoiceEditFormStatus
 from comersant.models import Invoice
 
 def shortfalls_view(request):
     form = InputDataForm()
+    filter_form = FilterForm()
     invoices = Invoice.objects.all()  # Получаем все объекты модели Invoice
     context = {
         'form': form,
+        'filter_form': filter_form,
         'invoices': invoices
     }
     return render(request, 'comersant/comers.html', context)
