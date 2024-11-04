@@ -1,5 +1,5 @@
 from django.urls import path
-from comersant.views import input_data, shortfalls_view, edit_row_form,edit_status, delete_row
+from comersant.views import *
 
 
 urlpatterns = [
@@ -8,4 +8,6 @@ urlpatterns = [
     path('shortfalls/edit_row/<int:id>/', edit_row_form, name='edit_row'),
     path('shortfalls/edit_status/<int:id>/', edit_status, name='edit_status'),
     path('shortfalls/delete_row/<int:id>/', delete_row, name='delete_row'),
+    path('shortfalls/filter/', add_session_filter, name='filter'),
+    path('shortfalls/add_suppler/', add_suppler, name='add_suppler'),
 ]

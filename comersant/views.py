@@ -1,18 +1,71 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-import json
-from comersant.forms import FilterForm, InputDataForm, InvoiceEditForm, InvoiceEditFormStatus
-from comersant.models import Invoice
+from comersant.forms import FilterForm, InputDataForm, InvoiceEditForm, InvoiceEditFormStatus, AddSupplerForm
+from comersant.models import Invoice, Leading, Supler
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
+
+
+def add_session_filter(request):
+
+    if request.method == 'POST':
+        supplier_id = request.POST.get('supplier')
+        leading_id = request.POST.get('leading')
+        if supplier_id:
+            try:
+                supplier = Supler.objects.get(id=supplier_id)
+                request.session['supplier_name'] = supplier.name
+            except ObjectDoesNotExist:
+                request.session['supplier_name'] = None
+        else:
+            request.session['supplier_name'] = None
+        if leading_id:
+            try:
+                leading = Leading.objects.get(id=leading_id)
+                request.session['leading_name'] = leading.name
+            except ObjectDoesNotExist:
+                request.session['leading_name'] = None
+        else:
+            request.session['leading_name'] = None
+        return redirect('shortfalls')
+    return redirect('shortfalls')
+
+
+def add_suppler(request):
+    if request.method == 'POST':
+        form = AddSupplerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('shortfalls')    
+        return redirect('shortfalls')    
+
 
 def shortfalls_view(request):
     form = InputDataForm()
-    filter_form = FilterForm()
-    invoices = Invoice.objects.all()  # Получаем все объекты модели Invoice
+    filter_form = FilterForm(request.POST)
+    add_suppler = AddSupplerForm()
+    # Получаем значения из сессии
+    supplier_name = request.session.get('supplier_name')
+    leading_name = request.session.get('leading_name')
+    filters = {'supplier_name': supplier_name, 'leading_name': leading_name }
+    print(filters)
+    # Создаем Q-объекты для фильтрации
+    q_objects = Q()
+    if supplier_name:
+        q_objects &= Q(supplier__name=supplier_name)
+
+    if leading_name:
+        q_objects &= Q(leading__name=leading_name)
+    # Фильтруем кверисет на основе Q-объектов
+    invoices = Invoice.objects.filter(q_objects)
     context = {
         'form': form,
         'filter_form': filter_form,
-        'invoices': invoices
+        'invoices': invoices,
+        'add_suppler': add_suppler,
+        'filters': filters
     }
+    
     return render(request, 'comersant/comers.html', context)
 
 def input_data(request):

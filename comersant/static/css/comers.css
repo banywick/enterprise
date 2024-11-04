@@ -28,7 +28,7 @@ header p  {
     display: flex;
 }
 
-.menu_filter, .input_data_form{
+.menu_filter, .input_data_form, .add_suppler{
     display: none;
     position: absolute;
     top: 100px; /* Высота хедера */
@@ -38,6 +38,10 @@ header p  {
     background-color: white;
     padding: 20px;
     z-index: 1000;
+}
+
+.menu_filter p {
+    text-align: center;
 }
 
 .edit_form {
@@ -52,9 +56,6 @@ header p  {
     z-index: 1000;
 }
 
-.menu_item {
-    width: 250px;
-}
 
 .input_data_form {
     width: 400px;
