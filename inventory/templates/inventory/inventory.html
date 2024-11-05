@@ -109,7 +109,7 @@
                     {% endif %}
                 </td>
                 <td>{{ i.base_unit }}</td>
-                <td>{{ i.total_quantity }}</td>
+                <td>{{ i.total_quantity|floatformat:2  }}</td>
                 <td class="{% if  i.status == 'Сошлось' %} green
                             {% elif  i.status == 'В работе' %} yellow
                             {% elif  i.status == 'Перепроверить' %} red

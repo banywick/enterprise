@@ -106,7 +106,11 @@
                                 <td>{{ invoice.comment }}</td>
                                 <td>{{ invoice.specialist }}</td>
                                 <td>{{ invoice.leading }}</td>
-                                <td>{{ invoice.status.name }}</td>
+                                <td style="{% if invoice.status.name == 'Обработка' %}background-color: #9ACD32;
+                                {% elif invoice.status.name == 'На списание' %}background-color: #00FA9A;
+                                {% elif invoice.status.name == 'Допоставка' %}background-color: #20B2AA;
+                                {% elif invoice.status.name == 'Ждем ответ' %}background-color: #A52A2A;{% endif %}">
+                                {{ invoice.status.name }}</td>
                                 <td>{% if invoice.description  %}{{ invoice.description  }}{% else %}{% endif %}</td>
                                 <td>
                                     <div class="edit_row">

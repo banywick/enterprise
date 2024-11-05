@@ -16,83 +16,6 @@ def set_status_if_none(inventory):
             i.total_quantity = 0
     return RemainsInventory.objects.filter(article__in=[i.article for i in inventory]).annotate(total_quantity=Subquery(subquery))
 
-# def get_inventory(request):
-    form = InputValue(request.POST)
-    count_row = RemainsInventory.objects.values('article').distinct().count()  # количество уникальных строк
-    not_empty_row = RemainsInventory.objects.filter(status='Сошлось').count()  # отмеченные как Сошлось
-    remainder_row = count_row - not_empty_row # Посчитанные позиции
-    percentage = f'{(not_empty_row / count_row) * 100:.2f}%' # выполненно процентов
-    if request.method == 'POST':
-        if request.POST.get('marker') == 'сошлось':
-            inventory = RemainsInventory.objects.filter(status='Сошлось')
-            annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
-            for i in annotated_inventory:
-                if i.total_quantity == None :
-                    i.total_quantity = 0
-            return {'form': form, 'inventory': annotated_inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
-                    'remainder_row': remainder_row, 'percentage': percentage}
-        
-        if request.POST.get('marker') == 'в работе':
-            inventory = RemainsInventory.objects.filter(status='В работе')
-            annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
-            for i in annotated_inventory:
-                if i.total_quantity == None :
-                    i.total_quantity = 0
-            return {'form': form, 'inventory': annotated_inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
-                    'remainder_row': remainder_row, 'percentage': percentage}
-        
-        if request.POST.get('marker') == 'перепроверить':
-            inventory = RemainsInventory.objects.filter(status='Перепроверить')
-            annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
-            for i in annotated_inventory:
-                if i.total_quantity == None :
-                    i.total_quantity = 0
-            return {'form': form, 'inventory': annotated_inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
-                    'remainder_row': remainder_row, 'percentage': percentage}
-        
-        if request.POST.get('marker') == 'Нет в базе':
-            inventory = RemainsInventory.objects.filter(status='Нет в базе')
-            annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
-            for i in annotated_inventory:
-                if i.total_quantity == None :
-                    i.total_quantity = 0
-            return {'form': form, 'inventory': annotated_inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
-                    'remainder_row': remainder_row, 'percentage': percentage}
-        query = Q()
-        input_value = request.POST.get('input')
-
-        if input_value:
-            # Создаем запрос для поиска по всем словам
-            values = input_value.split()
-            for element in values:
-                if element:  # только непустые элементы
-                    query |= Q(title__icontains=element)  # Объединяем условия через OR
-            # Применение Round для округления total_quantity до 2 знаков после запятой
-            inventory = RemainsInventory.objects.filter(query).annotate(total_quantity=Round(Subquery(subquery), 2)).distinct()[:50]
-
-            if inventory.exists():
-                set_status_if_none(inventory)
-
-                return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
-                    'remainder_row': remainder_row, 'percentage': percentage}
-            
-            # Если ничего не найдено, пробуем искать по артикулу
-            # Создаем подзапрос для суммирования quantity из Remains, где article соответствует статье из Remains
-            inventory = RemainsInventory.objects.filter(article__icontains=values[0]).annotate(total_quantity=Subquery(subquery))
-            if inventory.exists():
-                set_status_if_none(inventory)
-                return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
-                    'remainder_row': remainder_row, 'percentage': percentage}
-        
-        # Если ничего не нашли, возвращаем сообщение об ошибке
-        error_message = 'Товар не найден'
-        return {'form': form, 'e_art_title': error_message}
-
-    return {'form': form,
-            'count_row': count_row,
-            'not_empty_row': not_empty_row,
-            'remainder_row': remainder_row,
-            'percentage': percentage}  # Если метод GET
 
 def get_inventory(request):
     form = InputValue(request.POST)
@@ -107,8 +30,6 @@ def get_inventory(request):
         print(status)
         inventory = RemainsInventory.objects.filter(status=status)
         annotated_inventory = inventory.annotate(total_quantity=Subquery(subquery)).distinct()[:50]
-        for a in annotated_inventory:
-            print(a)
         for i in annotated_inventory:
             if i.total_quantity is None:
                 i.total_quantity = 0
@@ -133,9 +54,7 @@ def get_inventory(request):
 
         if input_value:
             values = input_value.split()
-            for element in values:
-                if element:
-                    query |= Q(title__icontains=element)
+            query = Q(article__icontains=values[0])
 
             inventory = RemainsInventory.objects.filter(query)\
                 .annotate(total_quantity=Round(Subquery(subquery), 2)).distinct()[:50]
@@ -210,7 +129,8 @@ def inventory_detail(request, article):
     user_set_invent =  OrderInventory.objects.filter(product=product)  # Фильтрация по выбору для всех пользователей
     total_quantity_ord = get_total_quantity_ord(product)  # Посчитанно всеми пользователями
     for r in remains_product:
-        remains_sum =  float(r.total_quantity) - float(total_quantity_ord)
+        remains_sum = round(float(r.total_quantity) - float(total_quantity_ord), 2)
+        remains_product_view = round(r.total_quantity, 2)
         if remains_sum < 0:
             alert_count = abs(remains_sum)
         else:
@@ -219,6 +139,7 @@ def inventory_detail(request, article):
     context = {'product': product,
                 'user_set_invent':user_set_invent,
                 'remains_product': remains_product,
+                'remains_product_view': remains_product_view,
                 'total_quantity_ord': total_quantity_ord,
                 'remains_sum' : remains_sum,
                 'alert_count': alert_count,
