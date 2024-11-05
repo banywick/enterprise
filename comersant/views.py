@@ -4,10 +4,11 @@ from comersant.forms import FilterForm, InputDataForm, InvoiceEditForm, InvoiceE
 from comersant.models import Invoice, Leading, Supler
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+
 
 
 def add_session_filter(request):
-
     if request.method == 'POST':
         supplier_id = request.POST.get('supplier')
         leading_id = request.POST.get('leading')
@@ -30,7 +31,15 @@ def add_session_filter(request):
         return redirect('shortfalls')
     return redirect('shortfalls')
 
+@login_required
+def clear_filter(request):
+    request.session['leading_name'] = None
+    request.session['supplier_name'] = None
+    return redirect('shortfalls')
 
+
+
+@login_required
 def add_suppler(request):
     if request.method == 'POST':
         form = AddSupplerForm(request.POST)
@@ -39,7 +48,7 @@ def add_suppler(request):
             return redirect('shortfalls')    
         return redirect('shortfalls')    
 
-
+@login_required
 def shortfalls_view(request):
     form = InputDataForm()
     filter_form = FilterForm(request.POST)
@@ -48,7 +57,6 @@ def shortfalls_view(request):
     supplier_name = request.session.get('supplier_name')
     leading_name = request.session.get('leading_name')
     filters = {'supplier_name': supplier_name, 'leading_name': leading_name }
-    print(filters)
     # Создаем Q-объекты для фильтрации
     q_objects = Q()
     if supplier_name:
@@ -65,9 +73,9 @@ def shortfalls_view(request):
         'add_suppler': add_suppler,
         'filters': filters
     }
-    
     return render(request, 'comersant/comers.html', context)
 
+@login_required
 def input_data(request):
     if request.method == 'POST':
         form = InputDataForm(request.POST)
@@ -85,8 +93,15 @@ def input_data(request):
                 leading=form.cleaned_data['leading']
             )
             invoice.save()
-            return redirect('shortfalls')
-        
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    else:
+        form = InputDataForm()
+
+    return redirect('shortfalls')     
+
+@login_required       
 def edit_row_form(request, id):
     invoice = get_object_or_404(Invoice, id=id)
     if request.method == "POST":
@@ -98,7 +113,7 @@ def edit_row_form(request, id):
         form = InvoiceEditForm(instance=invoice)
     return render(request, 'comersant/comers.html', {'form': form, 'flag': 'row'})
 
-    
+@login_required    
 def edit_status(request, id):
     invoice = get_object_or_404(Invoice, id=id)
     if request.method == "POST":
@@ -111,7 +126,7 @@ def edit_status(request, id):
     return render(request, 'comersant/comers.html', {'form': form, 'flag': 'status'})
 
     
-
+@login_required
 def delete_row(request, id):
     get_object_or_404(Invoice, id=id).delete()
     return redirect('shortfalls') 

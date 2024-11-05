@@ -84,6 +84,9 @@
                 <div>
                   <a class="button-link" href="{% url 'sahr' %}">С.А.ХР</a>
                 </div>
+                <div>
+                  <a class="button-link"  href="{% url 'shortfalls' %}">Недопоставки</a>
+                </div>
                 {% endif  %}
                 {% if user_is_in_group_inventory %}
                 <div>
@@ -92,10 +95,18 @@
                 <div>
                   <a class="button-link" href="{% url 'inventory' %}">Инвентаризация</a>
                 </div>
+                <div>
+                  <a class="button-link"  href="{% url 'shortfalls' %}">Недопоставки</a>
+                </div>
                 {% endif %}
                 {% if user_is_in_group_inventory_guest %}
                 <div>
                   <a class="button-link" href="{% url 'inventory' %}">Инвентаризация</a>
+                </div>
+                {% endif %}
+                {% if user_is_in_group_commers %}
+                <div>
+                  <a class="button-link"  href="{% url 'shortfalls' %}">Недопоставки</a>
                 </div>
                 {% endif %}
             <div class="header_button_reset">
@@ -118,10 +129,6 @@
             <div>
               <a class="button-link" href="{% url 'review_list' %}">Обратная связь</a>
             </div>
-            <div>
-              <a  href="{% url 'shortfalls' %}">Недопоставки</a>
-            </div>
-
           </div>
         </div>
 

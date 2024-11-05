@@ -32,7 +32,7 @@ class Specialist(models.Model):
         return self.name  
     
 class Invoice(models.Model):
-    invoice_number = models.CharField(max_length=20)
+    invoice_number = models.CharField(max_length=20, unique=True)
     date = models.DateField()
     supplier = models.ForeignKey(Supler, on_delete=models.CASCADE)
     article = models.CharField(max_length=100)

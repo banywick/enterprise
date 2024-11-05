@@ -11,9 +11,10 @@ def get_file_name(request):
 
 def user_permission_is_in_group(request):
     """Распределение пользователей по группам для отображения ссылок"""
-    user_is_in_group_update = request.user.groups.filter(name="update_base").exists()
-    user_is_in_group_inventory = request.user.groups.filter(name="inventory").exists()
-    user_is_in_group_inventory_guest = request.user.groups.filter(name="inventory_guest").exists()
-    return {"user_is_in_group_update": user_is_in_group_update,
-            'user_is_in_group_inventory': user_is_in_group_inventory,
-            'user_is_in_group_inventory_guest': user_is_in_group_inventory_guest}
+    groups = request.user.groups.values_list('name', flat=True)
+    return {
+        'user_is_in_group_update': 'update_base' in groups,
+        'user_is_in_group_commers': 'commers' in groups,
+        'user_is_in_group_inventory': 'inventory' in groups,
+        'user_is_in_group_inventory_guest': 'inventory_guest' in groups,
+    }

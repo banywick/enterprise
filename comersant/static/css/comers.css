@@ -1,7 +1,7 @@
-.wrapper {
+/* .wrapper {
     border: 1px solid black;
     height: 100vh;
-}
+} */
 
 header {
     background-image: url("../img/left_collum.jpg");
@@ -80,27 +80,28 @@ header p  {
     border-radius: 8px;
 }
 .table-container {
-    overflow-x: auto;
+    overflow: auto;
+    height: 90vh;
 }
 table {
     width: 100%;
     border-collapse: collapse;
-}
-thead {
-    background-color: #007bff;
-    color: #fff;
+    
 }
 th, td {
     padding: 12px;
     text-align: center;
     border: 1px solid #ddd;
+    
 }
 th {
-    font-weight: bold;
+    position: sticky;
+    top: 0;
+    background-color: #575759;
+    /* border: 2px solid black; */
+    color: #fff;
 }
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+
 
 .button {
     text-align: center;
@@ -160,6 +161,16 @@ tbody tr:nth-child(even) {
 
 .button_edit_form.cancel {
     background-color: red; /* Красный цвет для кнопки "Отмена" */
+}
+
+.error {
+    color: rgb(206, 72, 72);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.filter-value {
+    color: #0aff63; /* Красноватый цвет */
 }
 
 

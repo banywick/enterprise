@@ -10,4 +10,5 @@ urlpatterns = [
     path('shortfalls/delete_row/<int:id>/', delete_row, name='delete_row'),
     path('shortfalls/filter/', add_session_filter, name='filter'),
     path('shortfalls/add_suppler/', add_suppler, name='add_suppler'),
+    path('shortfalls/clear_filter/', clear_filter, name='clear_filter'),
 ]

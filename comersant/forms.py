@@ -61,6 +61,11 @@ class InputDataForm(forms.Form):
     hidden_article = forms.CharField(
         widget=forms.HiddenInput(attrs={'id': 'hidden_article'})  # Скрытое поле с id
     )
+    def clean_invoice(self):
+        invoice = self.cleaned_data.get('invoice')
+        if Invoice.objects.filter(invoice_number=invoice).exists():
+            raise forms.ValidationError("Такой номер уже зарегистрирован!.")
+        return invoice
 
 
 

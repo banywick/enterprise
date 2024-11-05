@@ -12,15 +12,20 @@
 <body>
     <div class="wrapper">
         <header>
+            <div class="back_finder">
+                <a href="{% url "main"%}">
+                    <p class='emoji'>⬅️</p>
+                </a>
+            </div>
             <div class="input_data" onclick="openPopup('menu_filter')">
                 <p>Фильтр</p>
             </div>
             <div class="filter_view">
                 <ul>
                     <li>Выбранный фильтр:</li>
-                    <li>Поставщик: {% if filters.supplier_name  %}{{ filters.supplier_name  }}{% else %} Нет фильтра {% endif %}</li>
-                    <li>Ведущий: {% if filters.leading_name  %}{{ filters.leading_name  }}{% else %}Нет фильтра{% endif %}</li>
-                    <li><a href="#">Сбросить</a></li>
+                    <li>Поставщик: {% if filters.supplier_name  %}<span class="filter-value">{{ filters.supplier_name  }}</span>{% else %} Нет фильтра {% endif %}</li>
+                    <li>Ведущий: {% if filters.leading_name  %}<span class="filter-value">{{ filters.leading_name  }}</span>{% else %}Нет фильтра{% endif %}</li>
+                    <li><a style="color:#fff900;" href="{% url 'clear_filter' %}">Сбросить</a></li>
                 </ul>
             </div>
             <div class="input_data" onclick="openPopup('input_data_form')">
@@ -31,7 +36,11 @@
             </div>
             <div class="user_block">
                 <div class="logout_button">
-                    <p>Выход</p>
+                    {% if request.user.is_authenticated %}
+                    <p>{{ user.username }}</p>
+                    <p class="auth_text">
+                    <a class="auth_text" href="{% url 'logout' %}">Выход</a>
+                    {% endif %}
                 </div>
             </div>
         </header>
@@ -55,7 +64,7 @@
             
             <div class="input_data_form">
                 <p>Внести данные</p>
-                <form  method="post" action={% url 'input_data'%}>
+                <form  id="inputDataForm" method="post" action={% url 'input_data'%}>
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit">Сохранить</button>
@@ -148,5 +157,6 @@
     </div>
     <script src='{% static 'js/popups.js'%}'></script>
     <script src="{% static 'js/auto_fields.js' %}"></script>
+    <script src="{% static 'js/validate_form.js' %}"></script>
 </body>
 </html>
