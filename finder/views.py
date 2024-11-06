@@ -93,11 +93,19 @@ def get_details_product(request, art):
     details = Remains.objects.filter(article__contains=art)
     if not details:
         return JsonResponse({"error": "Товар отсутствует в базе"})
+    
 
     detail = details.first()
     article = detail.article
     unit = detail.base_unit
     title = detail.title
+
+    projects_filter_q = Q()
+    for value in request.session.get("project"):
+            projects_filter_q |= Q(
+                **{"project": value}
+            )  # Динамическое создание Q по выбранным проектам
+    sum_art_proj = Remains.objects.filter(projects_filter_q).filter(article=article).aggregate(total=Sum('quantity'))['total']
 
     det = Remains.objects.filter(article=article)
     sum_art = sum(float(d.quantity) for d in det)
@@ -110,6 +118,7 @@ def get_details_product(request, art):
         {"title": "Детализация",
         "project": proj_quan_unit,
         "sum": sum_art_str,
+        "sum_art_proj": sum_art_proj,
         "art": article,
         "title": title,
         })

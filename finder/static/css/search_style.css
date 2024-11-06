@@ -138,12 +138,17 @@ td a {
   color: black;
 }
 
-td a:hover {
-  color: rgba(226, 43, 43, 0.84);
-}
 
 tr td:last-child {
   border-right: none;
+}
+
+tr:hover {
+  background-color: lightgray;
+}
+
+tr.copied {
+  background-color: lightblue;
 }
 .search-button {
   background-color: #007bff;
@@ -217,7 +222,7 @@ tr td:last-child {
   margin-bottom: 5px;
   background-color: #53e5747d;
 }
-.details_sum {
+.details_sum, .details_sum_article {
   font-weight: bold;
   font-size: 16px;
   color: #1300ff;
@@ -241,7 +246,7 @@ tr td:last-child {
   justify-content: space-around;
 }
 .title_remains:hover {
-  color: red; /* Например, желтый фон */
   cursor: pointer;
 }
+
 
