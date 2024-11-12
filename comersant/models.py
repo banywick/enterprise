@@ -51,7 +51,7 @@ class Specialist(models.Model):
         verbose_name_plural = 'Специалисты'
 
 class Invoice(models.Model):
-    invoice_number = models.CharField(max_length=20, unique=True, verbose_name='Номер счета')
+    invoice_number = models.CharField(max_length=20, verbose_name='Номер счета')
     date = models.DateField(verbose_name='Дата')
     supplier = models.ForeignKey(Supler, on_delete=models.CASCADE, verbose_name='Поставщик')
     article = models.CharField(max_length=100, verbose_name='Артикул')

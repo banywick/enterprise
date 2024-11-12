@@ -65,7 +65,7 @@ def shortfalls_view(request):
     if leading_name:
         q_objects &= Q(leading__name=leading_name)
     # Фильтруем кверисет на основе Q-объектов
-    invoices = Invoice.objects.filter(q_objects)
+    invoices = Invoice.objects.filter(q_objects).order_by("id")
     context = {
         'form': form,
         'filter_form': filter_form,
