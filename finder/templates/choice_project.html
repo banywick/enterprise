@@ -17,15 +17,19 @@
                 <div class="header_logo">
                     <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
                 </div>
-                <button
-                    class="button_form_submit"
-                    type="submit"
-                    form="form_project"
-                    formaction="{% url 'choice' %}"
-                    formmethod="POST"
-                >
-                    Применить фильтр!
-                </button>
+                    <button
+                        class="button_form_submit"
+                        type="submit"
+                        form="form_project"
+                        formaction="{% url 'choice' %}"
+                        formmethod="POST">
+                        Применить фильтр!
+                    </button>
+                    <div class="favorite">
+                        {% for favirite in top_projects %}
+                        <p>{{favirite}}</p>
+                        {% endfor %}
+                    </div>
 
                 <div class="header_user_account">
                     {% if request.user.is_authenticated %}
@@ -35,7 +39,6 @@
                     {% endif %}
                 </div>
             </header>
-          
                 <div class="center_colum">
                     <form id="form_project" action="" method="POST">
                         {% csrf_token %} 
@@ -43,7 +46,7 @@
                             <label >
                                 <div class='list_project'>
                                     <input type="checkbox"name="data_project" value="{{ p }}">
-                                   {{ p }}
+                                {{ p }}
                                 </div>
                             </label>
                         {% endfor %}

@@ -5,6 +5,7 @@ from finder.forms import InputValue
 from finder.models import Remains
 from django.db.models import Q
 from finder.standarts import standarts_collection
+from collections import Counter
 
 
 def connect_redis():
@@ -15,18 +16,45 @@ def clear_sort(request):
     return redirect("main")
 
 
-def choice_project_dict(request):  # Словарь из выбранных проектов
-    all_project = Remains.objects.values_list(
-        "project", flat=True
-    ).distinct()  # переводит из картежа в список уникальные значения
+def choice_project_dict(request):
+    # Словарь из выбранных проектов
+    all_project = Remains.objects.values_list("project", flat=True).distinct()  # переводит из картежа в список уникальные значения
     projects = request.POST.getlist("data_project")  # Выбор пользователя
+
+    # Сохраняем выбор пользователя в сессии
     request.session["project"] = projects
 
-    for i, projects in enumerate(projects):
-        request.session["i"] = projects
+    # Инициализируем список выборов проектов, если он еще не существует
+    if "project_choices" not in request.session:
+        request.session["project_choices"] = []
 
-    return {"all_project": all_project, "project": request.session.get("projects")}
+    # Добавляем текущие выборы в список выборов проектов
+    request.session["project_choices"].extend(projects)
 
+    # Явно указываем, что сессия была изменена
+    request.session.modified = True
+
+    # Убедимся, что все элементы в project_choices являются строками
+    project_choices = request.session["project_choices"]
+    if any(isinstance(item, list) for item in project_choices):
+        # Если есть списки, преобразуем их в строки
+        project_choices = [item if isinstance(item, str) else ''.join(item) for item in project_choices]
+        request.session["project_choices"] = project_choices
+
+    # Подсчитываем количество выборов каждого проекта
+    project_counter = Counter(project_choices)
+
+    # Получаем 5 самых часто выбранных проектов
+    most_common_projects = project_counter.most_common(4)
+
+    # Преобразуем результат в список проектов
+    top_projects = [project for project, count in most_common_projects]
+
+    return {
+        "all_project": all_project,
+        "project": request.session.get("project"),
+        "top_projects": top_projects
+    }
 
 def get_context_input_filter_all(request):  # Поиск всему
     form = InputValue(request.POST)
