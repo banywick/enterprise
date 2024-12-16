@@ -48,7 +48,7 @@ class InputDataForm(forms.Form):
             'cols': 50,  # Начальное количество столбцов
             'style': 'max-width: 100%; max-height: 200px; border: 1px solid #ccc;'  # Ограничение максимального размера и добавление границы
         }),
-        label='Комментарий по товару'
+        label='Описание проблемы'
     )
     specialist = forms.ModelChoiceField(
         queryset=Specialist.objects.all(),
@@ -70,18 +70,25 @@ class InputDataForm(forms.Form):
     hidden_article = forms.CharField(
         widget=forms.HiddenInput(attrs={'id': 'hidden_article'})  # Скрытое поле с id
     )
-    # def clean_invoice(self):
-    #     invoice = self.cleaned_data.get('invoice')
-    #     if Invoice.objects.filter(invoice_number=invoice).exists():
-    #         raise forms.ValidationError("Такой номер уже зарегистрирован!.")
-    #     return invoice
+
 
 
 
 class InvoiceEditForm(forms.ModelForm):
+    description_problem = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'rows': 2,
+            'cols': 45,
+            'style': 'max-width: 100%; max-height: 200px; border: 1px solid #ccc;'
+        }),
+        label='Описание проблемы',
+        required=False
+    )
+
+class InvoiceEditForm(forms.ModelForm):
     class Meta:
         model = Invoice
-        fields = ['invoice_number', 'date', 'supplier', 'article', 'name', 'unit', 'quantity', 'comment','description_problem', 'specialist']
+        fields = ['invoice_number', 'date', 'supplier', 'article', 'name', 'unit', 'quantity', 'comment', 'description_problem', 'specialist']
         labels = {
             'invoice_number': 'Номер накладной',
             'date': 'Дата',
@@ -96,7 +103,13 @@ class InvoiceEditForm(forms.ModelForm):
         }
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
+            'description_problem': forms.Textarea(attrs={
+                'rows': 2,
+                'cols': 45,
+                'style': 'max-width: 100%; max-height: 200px; border: 1px solid #ccc;'
+            }),
         }
+
 class InvoiceEditFormStatus(forms.ModelForm):
     class Meta:
         model = Invoice

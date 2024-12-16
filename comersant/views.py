@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from comersant.forms import FilterForm, InputDataForm, InvoiceEditForm, InvoiceEditFormStatus, AddSupplerForm
-from comersant.models import Invoice, Leading, Supler, DescriptionProblem
+from comersant.models import Invoice, Leading, Supler
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -83,10 +83,6 @@ def input_data(request):
     if request.method == 'POST':
         form = InputDataForm(request.POST)
         if form.is_valid():
-            description_problem_name = form.cleaned_data['description_problem']
-
-            # Попытаемся получить существующий объект DescriptionProblem
-            description_problem, created = DescriptionProblem.objects.get_or_create(name=description_problem_name)
             invoice = Invoice(
                 invoice_number=form.cleaned_data['invoice'],
                 date=form.cleaned_data['date'],
@@ -96,7 +92,7 @@ def input_data(request):
                 unit=form.cleaned_data['hidden_unit'],  # Пример значения, можно изменить
                 quantity=form.cleaned_data['quantity'],
                 comment=form.cleaned_data['comment'],
-                description_problem=description_problem,
+                description_problem = form.cleaned_data['description_problem'],
                 specialist=form.cleaned_data['specialist'],
                 leading=form.cleaned_data['leading']
             )
