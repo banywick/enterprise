@@ -29,7 +29,7 @@ class InputDataForm(forms.Form):
         widget=forms.TextInput(attrs={'class':'views_title','placeholder': 'Автоматическая подстановка наименования'}),
         label=''
     )
-    quantity = forms.IntegerField(
+    quantity = forms.FloatField(
         error_messages={'required': 'Введите количество'},
         widget=forms.TextInput(attrs={'placeholder': 'Количество'}),
         label='Введите количество '
@@ -40,6 +40,15 @@ class InputDataForm(forms.Form):
         widget=forms.Select(attrs={'placeholder': 'Выберите вариант'}),
         empty_label="Выберите вариант",
         label='Коментарий по товару'
+    )
+    description_problem = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Опишите проблему',
+            'rows': 2,  # Начальное количество строк
+            'cols': 50,  # Начальное количество столбцов
+            'style': 'max-width: 100%; max-height: 200px; border: 1px solid #ccc;'  # Ограничение максимального размера и добавление границы
+        }),
+        label='Комментарий по товару'
     )
     specialist = forms.ModelChoiceField(
         queryset=Specialist.objects.all(),
@@ -72,7 +81,7 @@ class InputDataForm(forms.Form):
 class InvoiceEditForm(forms.ModelForm):
     class Meta:
         model = Invoice
-        fields = ['invoice_number', 'date', 'supplier', 'article', 'name', 'unit', 'quantity', 'comment', 'specialist']
+        fields = ['invoice_number', 'date', 'supplier', 'article', 'name', 'unit', 'quantity', 'comment','description_problem', 'specialist']
         labels = {
             'invoice_number': 'Номер накладной',
             'date': 'Дата',
@@ -82,6 +91,7 @@ class InvoiceEditForm(forms.ModelForm):
             'unit': 'Единица измерения',
             'quantity': 'Количество',
             'comment': 'Комментарий',
+            'description_problem': 'Описание проблемы',
             'specialist': 'Специалист',
         }
         widgets = {

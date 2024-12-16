@@ -77,6 +77,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Проект</th>
                             <th>Номер накладной</th>
                             <th>Дата</th>
                             <th>Поставщик</th>
@@ -85,6 +86,7 @@
                             <th>Единица измерения</th>
                             <th>Количество</th>
                             <th>Комментарий</th>
+                            <th>Описание</th>
                             <th>Специалист</th>
                             <th>Ведущий</th>
                             <th>Статус</th>
@@ -96,6 +98,7 @@
                     <tbody>
                         {% for invoice in invoices %}
                             <tr>
+                                <td>{{ invoice.project }}</td>
                                 <td>{{ invoice.invoice_number }}</td>
                                 <td>{{ invoice.date }}</td>
                                 <td>{{ invoice.supplier }}</td>
@@ -104,6 +107,7 @@
                                 <td>{{ invoice.unit }}</td>
                                 <td>{{ invoice.quantity }}</td>
                                 <td>{{ invoice.comment }}</td>
+                                <td>{{ invoice.description_problem }}</td>
                                 <td>{{ invoice.specialist }}</td>
                                 <td>{{ invoice.leading }}</td>
                                 <td style="{% if invoice.status.name == 'Обработка' %}background-color: #9ACD32;
@@ -159,7 +163,7 @@
             </div>
         </div>
     </div>
-    <script src='{% static 'js/popups.js'%}'></script>
+    <script src='{% static 'js/popups.js' %}'></script>
     <script src="{% static 'js/auto_fields.js' %}"></script>
     <script src="{% static 'js/validate_form.js' %}"></script>
 </body>
