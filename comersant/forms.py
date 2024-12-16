@@ -48,7 +48,8 @@ class InputDataForm(forms.Form):
             'cols': 50,  # Начальное количество столбцов
             'style': 'max-width: 100%; max-height: 200px; border: 1px solid #ccc;'  # Ограничение максимального размера и добавление границы
         }),
-        label='Описание проблемы'
+        label='Описание проблемы',
+        required=False  # Указываем, что поле не является обязательным
     )
     specialist = forms.ModelChoiceField(
         queryset=Specialist.objects.all(),
@@ -69,6 +70,9 @@ class InputDataForm(forms.Form):
     )
     hidden_article = forms.CharField(
         widget=forms.HiddenInput(attrs={'id': 'hidden_article'})  # Скрытое поле с id
+    )
+    hidden_project = forms.CharField(
+        widget=forms.HiddenInput(attrs={'id': 'hidden_project'})  # Скрытое поле с id
     )
 
 

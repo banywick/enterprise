@@ -88,6 +88,7 @@ def input_data(request):
                 date=form.cleaned_data['date'],
                 supplier=form.cleaned_data['supplier'],
                 article=form.cleaned_data['hidden_article'],
+                project=form.cleaned_data['hidden_project'],
                 name=form.cleaned_data['auto_title'],
                 unit=form.cleaned_data['hidden_unit'],  # Пример значения, можно изменить
                 quantity=form.cleaned_data['quantity'],

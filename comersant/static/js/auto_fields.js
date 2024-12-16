@@ -2,6 +2,7 @@ const check_article = document.querySelector('.check_article');
 const views_title = document.querySelector('.views_title');
 const views_article = document.getElementById('hidden_article');
 const views_unit = document.getElementById('hidden_unit');
+const views_project = document.getElementById('hidden_project');
 
 
 
@@ -25,6 +26,9 @@ check_article.addEventListener('input', async function () {
             }
             if (data.article) {
                 views_article.value = data.article;
+            }
+            if (data.project) {
+                views_project.value = data.project;
             }
             if (data.unit) {
                 views_unit.value = data.unit;

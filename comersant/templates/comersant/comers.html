@@ -77,7 +77,6 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Проект</th>
                             <th>Номер накладной</th>
                             <th>Дата</th>
                             <th>Поставщик</th>
@@ -97,8 +96,7 @@
                     </thead>
                     <tbody>
                         {% for invoice in invoices %}
-                            <tr>
-                                <td>{% if invoice.project %}{{ invoice.project}}{% else %}{% endif %}</td>
+                            <tr style="{% if invoice.project == 'БУК-МБ2-6' %}background-color: #ffe60024;{% endif %}">
                                 <td>{{ invoice.invoice_number }}</td>
                                 <td>{{ invoice.date }}</td>
                                 <td>{{ invoice.supplier }}</td>
@@ -110,10 +108,10 @@
                                 <td>{% if invoice.description_problem %}{{ invoice.description_problem}}{% else %}{% endif %}</td>
                                 <td>{{ invoice.specialist }}</td>
                                 <td>{{ invoice.leading }}</td>
-                                <td style="{% if invoice.status.name == 'Обработка' %}background-color: #9ACD32;
-                                {% elif invoice.status.name == 'На списание' %}background-color: #00FA9A;
+                                <td style="{% if invoice.status.name == 'Обработка' %}background-color: #daff0073;
+                                {% elif invoice.status.name == 'На списание' %}background-color: #36d3399c;
                                 {% elif invoice.status.name == 'Допоставка' %}background-color: #20B2AA;
-                                {% elif invoice.status.name == 'Ждем ответ' %}background-color: #A52A2A;{% endif %}">
+                                {% elif invoice.status.name == 'Ждем ответ' %}background-color: #f56d6dde;{% endif %}">
                                 {{ invoice.status.name }}</td>
                                 <td>{% if invoice.description  %}{{ invoice.description  }}{% else %}{% endif %}</td>
                                 <td>
