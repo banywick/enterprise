@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="{% static 'css/null_for_templates.css' %}"
+        />
+        <link rel="stylesheet" href="{% static 'css/search_style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sahr.css' %}" />
+        <title>С.А.ХР</title>
+    </head>
+    <body>
+        <header>
+            <div class="header_left_container">
+                <div class="back_finder">
+                    <a href="{% url "main"%}">
+                        <p class='emoji'>⬅️</p>
+                    </a>
+                   
+                </div>
+                <div class="inputs_div">
+                    <form action="" method="POST" id="sahr_form">
+                        {% csrf_token %}
+                        <div>
+                            <input
+                                class="check_article"
+                                type="text"
+                                placeholder="Артикул"
+                                name="article"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <input
+                                class="views_title"
+                                type="text"
+                                placeholder="Название"
+                                name="title"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <input
+                                class="comment"
+                                type="text"
+                                placeholder="Комментарий"
+                                name="comment"
+                            />
+                        </div>
+                        <div>
+                            <input
+                                class="write_address"
+                                type="text"
+                                placeholder="Адрес"
+                                name="address"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <input class="hidden_id" type="text" hidden name="id" />
+                        </div>
+                        <div>
+                            <button
+                                class="search-button"
+                                name="save_button_form"
+                                form="sahr_form"
+                            >
+                                Сохранить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+           
+            <div class="select_div">
+                <select
+                    class="selectElement"
+                    name="select"
+                    size="6"
+                    form="sahr_form"
+                    required
+                ></select>
+            </div>
+            <div class="input_container">
+                <div class="popup_sahr">
+                    <div class="sahr_details_info">Артикул</div>
+                    <div class="sahr_details_article"></div>
+                    <div class="sahr_details_article">Остаток:</div>
+                    <div class="sahr_details_sum"></div>
+                </div>
+                <div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input
+                            class="search-input_sahr"
+                            type="text"
+                            name="value_input"
+                        />
+                        <button class="search-button" name="search_sahr_form">
+                            Найти 🔎
+                        </button>
+                        <p style="color: red; font-size: 20px">
+                            {{error_search}}
+                        </p>
+                    </form>
+                </div>
+            </div>
+          
+            
+            <div class="header_right_container">
+                <div>
+                    <a href="{% url 'dowload_backup' %}">Скачать Excel-файл</a>
+                </div>
+              
+                <div class="count_row">
+                    <p>
+                        Количество строк - {{count_row}}
+                    </p>
+                </div>
+                <div class="header_user_account_sahr">
+                    {% if request.user.is_authenticated %}
+                    <h3>{{ user.username }}</h3>
+                    <p class="auth_text">
+                        <a class="auth_text" href="{% url 'logout' %}">Выход</a>
+                    </p>
+                    {% else%}
+                    <p class="auth_text">
+                        <a href="{% url 'login' %}">Войти</a>
+                    </p>
+                    {% endif %}
+                </div>
+               
+            </div>
+        </header>
+        <div class="choice_address">
+            <form method='POST' action="{% url 'change_row' %}">
+                {% csrf_token %}
+                 <div class="choice_container">
+                    <input class='form_id_data_table' type="id" hidden name='id_data_table'>
+                    <input type="text" placeholder="Введите адрес" name='address' >
+                    <input type="text" placeholder="Введите комментарий" name='comment'>
+                    <button class="change_cell_button">
+                    Сохранить изменения
+                    </button>
+              </div> 
+            </form>
+        </div>
+        <div class="table_div">
+          
+            <table class='sahr_table'>
+                <div>
+                    <p style="text-align: center; color: red">{{error_save}}</p>
+                </div>
+                <div class='close_history'>
+                    <a href="{% url 'sahr' %}">{{info}}</a>
+                </div>
+               
+                <thead>
+                    <tr>
+                        <th>Партия</th>
+                        <th>Артикул</th>
+                        <th>Номенклатура</th>
+                        <th>Адрес</th>
+                        <th>Единица</th>
+                        <th>Комментарий</th>
+                        <th>Дата</th>
+                        {% if not info %}
+                        <th>Действие</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                {% for t in data_table %}
+                <tbody>
+                    <tr
+                        data-id="{{ t.article }}"
+                        class="{% if info %}
+                            white_row
+                        {% elif t.index_remains == 1 %}
+                            red_row
+                        {% endif %}"
+
+                        
+                       
+                        >   
+                        <td hidden>{{t.id}}</td>
+                        <td class='party_remains'>{% if t.party %}{{ t.party }}{% else %}{% endif %}</td>
+                        <td class="article_remains">{{t.article}}</td>
+                        <td class="title_remains_sahr">{{t.title}}</td>
+                        <td class="address_remains">{{ t.address }}</td>
+                        <td class='base_unit_remains'>{% if t.base_unit %}{{ t.base_unit }}{% else %}{% endif %}</td>
+                        <td class='comment_remains'>{% if t.comment %}{{ t.comment }}{% else %}{% endif %}</td>
+                        <td class="date_remains">{% if t.date %}{{ t.date }}{% else %}{% endif %}</td>
+                        {% if not info %}
+                        <td>
+                            <div class="delete_sahr_row">
+                                <div class="div_del">
+                                    <a href="{% url 'del_row_sahr' t.id %}">
+                                        Удалить
+                                    </a>
+                                    <br />
+                                </div>
+                                <div>
+                                    <p class="change_button">
+                                        Редактировать
+                                    </p>
+                                </div>
+                                <div class="history">
+                                    <a href="{% url 'history' t.id %}">История</a>
+                                </div>
+                            </div>
+                        </td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+        </div>
+        <script src="{% static 'js/sahr.js' %}"></script>
+    </body>
+</html>

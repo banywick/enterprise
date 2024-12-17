@@ -1,0 +1,184 @@
+header {
+    background-image: url("../img/header_sahr.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 215px;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    padding-top: 5px;
+    justify-content: space-between;
+  }
+
+
+
+  .popup_sahr {
+    border: 2px solid #ccc;
+    padding: 10px;
+    display: block;
+    height: 94px;
+    width: 245px;
+    background: #ffffff61;
+}
+
+.check_article, .views_title, .comment, .write_address {
+    font-size: 17px;
+    margin: 5px 5px;
+    height: 26px;
+    padding-left: 10px;
+    width: 370px;
+    border-radius: 9px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+
+.inputs_div {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.selectElement {
+    font-size: 16px;
+    font-family: sans-serif;
+    padding: 2.5999999999999996em 3.4000000000000004em 0.5em 1.8000000000000007em;
+    background-color: #f5232300;
+}
+  
+.search-input_sahr {
+    font-size: 15px;
+    height: 40px;
+    padding-left: 10px;
+    width: 143px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+    margin-bottom: 10px;
+}
+
+.input_container {
+    height: 100%;
+
+}
+
+.red_row {
+    background-color: #ff000082;
+}
+.white_row {
+    background: none;
+}
+
+.change_button {
+    cursor: pointer;
+}
+
+.change_button:hover {
+    color:rgb(32, 121, 10);
+}
+.history a:hover {
+    color:rgb(57, 145, 204)
+}
+.choice_container {
+    display: none;
+    justify-content: center;
+    height: 35px;
+    background: #53618dab;
+        & input {
+        border: 1px solid black;
+        width: 230px;
+        border-radius: 15px;
+        font-size: 17px;
+    }
+} 
+
+.change_cell_button {
+    background: #00d7ff59;
+    border: 1px solid black;
+    border-radius: 9px;
+    font-size: 16px;
+}
+
+
+.div_del, .change_button {
+    width: 110px;
+    margin-bottom: 10px;
+    border: none;
+  }
+  .div_chenge {
+    background-color: #4ee45b;
+    border-radius: 5px;
+    border: 1px solid black; 
+    width: 110px;
+  }
+
+.header_right_container {
+    height: 216px;
+    & .count_row {
+        margin-bottom: 100px;
+    }
+  }
+
+
+.header_user_account_sahr {
+    text-align: center;
+}
+
+.back_finder {
+    width: 47px;
+  
+}
+
+.header_left_container {
+    display: flex;
+}
+
+.emoji {
+    font-size: 25px;
+}
+
+.table_div {
+    overflow: auto;
+    max-height: 74vh;
+}
+
+.sahr_table {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+font-size: 14px;
+border-radius: 10px;
+border-spacing: 0;
+text-align: center;
+width: 100%;
+}
+
+.sahr_table td {
+    background: #bd9d1a4a;
+    padding: 6px;
+    border: 1px solid black;
+}
+
+.sahr_table th {
+    background: #87c587;
+    padding: 10px 20px;
+}
+
+.title_remains_sahr:hover {
+    color: rgb(18, 148, 235);
+}
+
+.close_history {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: blue;
+    font-size: 30px;
+    background-color: #f1ff39a1;
+}
+
+.delete_sahr_row {
+    border: 1px solid;
+    width: 109px;
+    background: #7aff4866;
+    border-radius: 10px;
+}
+

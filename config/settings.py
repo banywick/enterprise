@@ -13,20 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import dotenv_values
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-from config.local_settings import BASE_DIR
 
 env_keys = dotenv_values()
 
-
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -37,6 +28,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "finder",
     "flower",
+    "inventory",
 ]
 
 MIDDLEWARE = [
@@ -50,6 +42,24 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+
+
+SECRET_KEY = env_keys.get('SECRET_KEY')
+
+DEBUG = False
+
+ALLOWED_HOSTS = ["*"]
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "sklad_db",
+        "USER": "sklad",
+        "PASSWORD": "sklad",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
+    }
+}
 
 TEMPLATES = [
     {
@@ -70,17 +80,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 
 # Password validation
@@ -105,43 +104,37 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+LOGIN_URL = 'login'  # Укажите URL вашей страницы входа
 
 
-MEDIA_URL = '/madia/'
-MEDIA_URL = os.path.join(BASE_DIR, 'media/')
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# CELERY_BROKER_URL = env_keys.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
-# CELERY_RESULT_BACKEND = env_keys.get("CELERY_BACKEND", "redis://127.0.0.1:6379/0")
-# CELERY_BROKER_URL = "redis://redis:6379/0"
-# CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True 
 
 
-FLOWER_RPC_HOST = "http://127.0.0.1:8000/"  # Хост, на котором запущен Celery
+FLOWER_RPC_HOST = "http://127.0.0.1:8000"  # Хост, на котором запущен Celery
 FLOWER_RPC_PORT = 5555  # Порт для Flower
 
+STATIC_URL = "static/"
+MEDIA_URL = "/madia/"
+MEDIA_URL = os.path.join(BASE_DIR, "media/")
+STATIC_DIR = os.path.join(BASE_DIR, "finder/static")
+STATICFILES_DIRS = [STATIC_DIR]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-try:
-    from .local_settings import *
-except ImportError:
-    from .prod_settings import *

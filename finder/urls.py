@@ -1,25 +1,25 @@
+from os import name
 from django.urls import path
-from .views import (
-    upload_file,
-    check_task_status,
-    search_engine,
-    choice_projects,
-    get_access,
-    user_logout,
-    get_details_product,
-    get_manual
-)
+from .views import *
 from .utils import clear_sort
 
 urlpatterns = [
-    path("", get_access, name="login"),
+    path("login", get_access, name="login"),
     path("logout/", user_logout, name="logout"),
     path("upload/", upload_file, name="upload"),
-    path("main/", search_engine, name="main"),
+    path("", search_engine, name="main"),
     path("check_task_status/", check_task_status, name="check_task_status"),
     path("choice/", choice_projects, name="choice"),
     path("clear/", clear_sort, name="clear"),
-    path("details/<int:id>", get_details_product, name="details"),
-    path('manual/', get_manual, name='manual')
-   
+    path("details/<str:art>", get_details_product, name="details"),
+    path('change_row/', change_row, name='change_row'),
+    path("manual/", get_manual, name="manual"),
+    path("sahr/", sahr, name="sahr"),
+    path("check_article/<str:art>", check_article, name="check_article"),
+    path("del_row_sahr/<int:id>", del_row_sahr, name='del_row_sahr'),
+    path('download-excel/', download_backup, name='dowload_backup'),
+    path('history/<int:id>', get_history, name='history'),
+    path('check_task_status/<str:task_id>/', check_task_status, name='check_task_status'),
+    path('reviews/', review_list, name='review_list'),
 ]
+

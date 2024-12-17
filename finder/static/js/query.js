@@ -9,12 +9,13 @@ submit_button.addEventListener('click', (event) => {
     }
 });
 
-
+console.log({taskId})
 function checkTaskStatus() {
-    fetch('http://127.0.0.1:8000/check_task_status/')
+    fetch(`/check_task_status/${taskId}/`)
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'pending') {
+            console.log(data)
+            if (data.status === 'PENDING') {
                 console.log('Обработка данных!');
                 load_animation.style.display = 'flex'
 
@@ -24,16 +25,16 @@ function checkTaskStatus() {
                 clearInterval(intervalId);
 
             }
-            if (data.status === 'failure') {
+            if (data.status === 'FAILURE') {
                 console.log('Ошибка загрузки данных!');
                 error_load_file.style.display = 'flex'
                 load_animation.style.display = 'none'
                 clearInterval(intervalId);
             }
-            if (data.status === 'success') {
+            if (data.status === 'SUCCESS') {
                 console.log('Задача выполнена!');
                 clearInterval(intervalId); // Останавливаем интервал
-                window.location.href = "http://127.0.0.1:8000/main/";
+                window.location.href = "/";
             }
         });
 }

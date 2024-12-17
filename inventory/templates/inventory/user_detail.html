@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/inventory_detail_style.css' %}">
+    <title>Пользователь</title>
+</head>
+<body>
+
+<div class="main_wrapper">
+    <header>
+        <div class="header_logo">
+            <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+        </div>
+        <div class="hello_user">
+            <h2>Детализация подсчета позиций для {{ user.username }}</h2><br>
+            Количество посчитанных позиций в инвентаризации - {{ order_count }}
+
+        </div>
+        <div class="button_link_back">
+            <a class="button" href="{% url 'inventory' %}"> Продолжить поиск </a>
+        </div>
+
+    </header>
+    <div class="table">
+        <table class="table_inv">
+            <tr>
+                <th>Пользователь</th>
+                <th>Артикул</th>
+                <th>Наименование</th>
+                <th>Единица</th>
+                <th>Найдено</th>
+                <th>Дата время</th>
+                <th>Адрес</th>
+                <th>Коментарий</th>
+            </tr>
+            {% for o in order %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td class="article_table"><a
+                            href="{% url 'inventory_detail' o.product.article %}">{{ o.product.article }}</a></td>
+                    <td class="article_table"><a
+                            href="{% url 'inventory_detail' o.product.article %}">{{ o.product.title }}</a></td>
+                    <td>{{ o.product.base_unit }}</td>
+                    <td>{{ o.quantity_ord }}</td>
+                    <td>{{ o.created_at }}</td>
+                    <td>{{ o.address }}</td>
+                    <td>{{ o.comment }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>
