@@ -5,11 +5,12 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}" />
     <link rel="stylesheet" href="{% static 'css/search_style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/info_window_style.css' %}" />
     <title>{{ Поиск }}</title>
   </head>
   <body>
     <div class="wrapper">
-       <header>
+      <header>
           <div class="header_wrapper">
               <div class="header_logo">
                 <a href=""><img src="{% static 'img/logo.jpg' %}" alt="" /></a>
@@ -24,6 +25,7 @@
                       </form>
                     </div>
                     <button class="search-button" type="submit" form="find_form">Найти 🔎</button>
+                    
 
                   </div>
                   <div class="choice_find">
@@ -39,6 +41,15 @@
                 </ul>
                 {% endfor %}
               </div>
+              <div class="info_manual">
+                <img src="{% static 'img/info.png' %}" alt="" />
+                <div class="info_find">При клике правой кнопкой мыши по найденной позиции
+                  строка становится голубого цвета и автоматически копируется 
+                  <strong> код и номенклатура </strong>. <br>
+                    Комбинацией клавиш
+                  <strong> CTRL V </strong> можно вставить данные в документ.
+                </div>
+            </div>
               <div class="header_user_account">
                 {% if request.user.is_authenticated %}
                 <img src="{% static 'img/user_icon.png' %}" alt="" />
@@ -53,6 +64,7 @@
                 {% endif %}
               </div>
           </div>
+          
         </header>
 
       <div class="overlay">
@@ -130,7 +142,7 @@
               </ul>
             </div>
             <div>
-              <a class="button-link" href="{% url 'review_list' %}">Обратная связь</a>
+              <a class="button-link" id="button_link" href="{% url 'review_list' %}">Отзывы и предложения</a>
             </div>
           </div>
         </div>
@@ -161,7 +173,9 @@
                   <td class="title_remains">{{ r.title }}</td>
                   <td class="quantity_remains">{{ r.quantity }}</td>
                   <td class="base_unit_remains">{{ r.base_unit }}</td>
-                  <td class="project_remains">{{ r.project }}</td>
+                  {% comment %} <td class="project_remains">{{ r.project }}</td> {% endcomment %}
+                  <td class="project_remains" style="{% if r.project == 'БУК-МБ2-6' %}background-color: #ff680061;{% endif %}">{{ r.project }}</td>
+
                   <td class="price_remains">{{ r.price }}</td>
                 </tr>
               </tbody>

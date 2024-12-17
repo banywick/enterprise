@@ -66,6 +66,9 @@ def shortfalls_view(request):
         q_objects &= Q(leading__name=leading_name)
     # Фильтруем кверисет на основе Q-объектов
     invoices = Invoice.objects.filter(q_objects).order_by("id")
+    for invoice in invoices:
+        if invoice.quantity.is_integer():
+            invoice.quantity = int(invoice.quantity)
     context = {
         'form': form,
         'filter_form': filter_form,
@@ -85,14 +88,17 @@ def input_data(request):
                 date=form.cleaned_data['date'],
                 supplier=form.cleaned_data['supplier'],
                 article=form.cleaned_data['hidden_article'],
+                project=form.cleaned_data['hidden_project'],
                 name=form.cleaned_data['auto_title'],
                 unit=form.cleaned_data['hidden_unit'],  # Пример значения, можно изменить
                 quantity=form.cleaned_data['quantity'],
                 comment=form.cleaned_data['comment'],
+                description_problem = form.cleaned_data['description_problem'],
                 specialist=form.cleaned_data['specialist'],
                 leading=form.cleaned_data['leading']
             )
             invoice.save()
+            print(form.cleaned_data)
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})

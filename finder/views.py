@@ -255,13 +255,15 @@ def check_article(request, art):
         title = article.title
         unit = article.base_unit
         art_product = article.article
+        project = article.project
         id = article.id
         total_quantity = f'{total_quantity:.2f}'
         return JsonResponse({"title": title,
                             "id": id, "party": party,
                             'total_quantity': total_quantity,
                             'unit': unit,
-                            'article': art_product})
+                            'article': art_product,
+                            "project":project})
     return JsonResponse({"error": "Товара нет в базе"})
 
 

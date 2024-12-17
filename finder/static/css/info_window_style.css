@@ -1,0 +1,32 @@
+.info_manual {
+    position: relative;
+    cursor: pointer;
+}
+.info_choice {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+.info_find {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+.info_manual:hover .info_choice {
+    display: block;
+}
+.info_manual:hover .info_find {
+    display: block;
+}
