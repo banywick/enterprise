@@ -9,6 +9,7 @@
         />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <link rel="stylesheet" href="{% static 'css/choice_style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/info_window_style.css' %}" />
         <title>Проект</title>
     </head>
     <body>
@@ -25,10 +26,11 @@
                         formmethod="POST">
                         Применить фильтр!
                     </button>
-                    <div class="favorite">
-                        {% for favirite in top_projects %}
-                        <p>{{favirite}}</p>
-                        {% endfor %}
+                    <div class="info_manual">
+                        <img src="{% static 'img/info.png' %}" alt="" />
+                        <div class="info_choice">Для удобного поиска проектов используйте
+                            комбинацию <strong>CTRL-F</strong>
+                        </div>
                     </div>
 
                 <div class="header_user_account">
@@ -39,12 +41,33 @@
                     {% endif %}
                 </div>
             </header>
+            <div class="columns_container">
+                <div class="favorite_colum">
+                    <h2>Избранное</h2>
+                    <div class="favorite">
+                        <form id="favorite_form" action="" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" id="data_project" name="data_project" value="">
+                            {% for favorite in top_projects %}
+                                <div>
+                                    <button type="button" class="button" onclick="submitForm('{{ favorite }}')">{{ favorite }}</button>
+                                </div>
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+                <script>
+                    function submitForm(value) {
+                        document.getElementById('data_project').value = value;
+                        document.getElementById('favorite_form').submit();
+                    }
+                </script>
                 <div class="center_colum">
                     <form id="form_project" action="" method="POST">
                         {% csrf_token %} 
                         {% for p in all_project %}
                             <label >
-                                <div class='list_project'>
+                                <div class='list_project {% if p == "БУК-МБ2-6" %}red{% endif %}'>
                                     <input type="checkbox"name="data_project" value="{{ p }}">
                                 {{ p }}
                                 </div>
@@ -53,6 +76,7 @@
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     </body>
 </html>

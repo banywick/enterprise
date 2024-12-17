@@ -18,7 +18,7 @@ def clear_sort(request):
 
 def choice_project_dict(request):
     # Словарь из выбранных проектов
-    all_project = Remains.objects.values_list("project", flat=True).distinct()  # переводит из картежа в список уникальные значения
+    all_project = Remains.objects.values_list("project", flat=True).distinct().order_by('project')  # переводит из картежа в список уникальные значения
     projects = request.POST.getlist("data_project")  # Выбор пользователя
 
     # Сохраняем выбор пользователя в сессии
@@ -45,7 +45,7 @@ def choice_project_dict(request):
     project_counter = Counter(project_choices)
 
     # Получаем 5 самых часто выбранных проектов
-    most_common_projects = project_counter.most_common(4)
+    most_common_projects = project_counter.most_common(10)
 
     # Преобразуем результат в список проектов
     top_projects = [project for project, count in most_common_projects]

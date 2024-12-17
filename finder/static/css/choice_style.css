@@ -45,7 +45,7 @@
 
 .center_colum form {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 10px;
 }
 
@@ -77,4 +77,35 @@
     border: 1px solid #ccc;
     border-radius: 10px;
 }
+.list_project.red {
+    background-color: #ff000096;
+}
 
+.columns_container{
+    display: flex;
+}
+
+.favorite_colum {
+    background-image: url(../img/22.jpg);
+    flex: 0 0 200px;
+    background-position: top;
+    & h2 {
+        text-align: center;
+    }
+}   
+
+
+
+
+.favorite {
+    margin: 10px;
+}
+.button {
+    padding: 9px 26px;
+    margin: 6px;
+    background-color: #f4ff3399;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: #88ff71;
+}
