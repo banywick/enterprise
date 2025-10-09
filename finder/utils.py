@@ -149,7 +149,7 @@ def get_context_input_filter_all(request):  # Поиск всему
                         and not re.match(r"^[aа][24]\b", element)
                         and not element.startswith("-")
                     ):
-                        any_elements = Q(title__icontains=element) | Q(party__icontains=element)
+                        any_elements &= Q(title__icontains=element) | Q(party__icontains=element)
 
                 res = any_elements & metiz_all & replace_a & comment_body
                 return res
