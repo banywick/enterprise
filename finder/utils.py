@@ -122,6 +122,7 @@ def get_context_input_filter_all(request):  # Поиск всему
             any_elements = Q()
             replace_a = Q()
             comment_body = Q()
+            print(111)
             if input_str and input_str[0] not in ("+", "*", "-"):
                 for element in values:
                     if re.match(r"^(\d+(\.\d+)?[*]\d+|5f[*]\d+)$", element):
@@ -148,7 +149,7 @@ def get_context_input_filter_all(request):  # Поиск всему
                         and not re.match(r"^[aа][24]\b", element)
                         and not element.startswith("-")
                     ):
-                        any_elements &= Q(title__icontains=element)
+                        any_elements = Q(title__icontains=element) | Q(party__icontains=element)
 
                 res = any_elements & metiz_all & replace_a & comment_body
                 return res
